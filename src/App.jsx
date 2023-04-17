@@ -3,8 +3,8 @@ import './App.css';
 
 function App() {
   return (
-    <div>
-      <h1>Testing</h1>
+    <div className="bg-gray-200">
+      <h1 className="underline">Testing</h1>
     </div>
   );
 }
