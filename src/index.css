@@ -2,7 +2,38 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-:root {
+body {
+  background-color: rgb(209, 209, 209);
+}
+
+@layer components {
+  .btn {
+    background-color: 0;
+    border: 2px solid white;
+    padding: 0.3rem 0.8rem;
+    color: white;
+    transition: all 0.5s ease-in-out;
+  }
+
+  .btn:hover {
+    background-color: white;
+    color: rgb(56, 56, 56);
+  }
+}
+
+@layer utilities {
+  .nav-link {
+    color: rgb(185, 185, 185);
+    transition: all 0.3s ease-in-out;
+  }
+  .nav-link:hover,
+  .nav-link:focus,
+  .nav-link:focus-visible,
+  .active {
+    color: white;
+  }
+}
+/*:root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -59,7 +90,7 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
     color: #213547;
     background-color: #ffffff;
@@ -70,4 +101,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+}*/
