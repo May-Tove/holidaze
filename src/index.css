@@ -2,22 +2,19 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-body {
-  background-color: rgb(209, 209, 209);
-}
-
 @layer components {
   .btn {
-    background-color: 0;
-    border: 2px solid white;
-    padding: 0.3rem 0.8rem;
+    background-color: theme('colors.primary');
+    padding: 0.5rem 1rem;
     color: white;
-    transition: all 0.5s ease-in-out;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease-in-out;
   }
 
-  .btn:hover {
-    background-color: white;
-    color: rgb(56, 56, 56);
+  .btn:hover,
+  .btn:focus,
+  .btn:focus-visible {
+    background-color: theme('colors.secondary');
   }
 }
 
@@ -32,7 +29,29 @@ body {
   .active {
     color: white;
   }
+
+  .category-card-container {
+    overflow: hidden;
+  }
+
+  .category-card {
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 350px;
+    transition: all 0.5s ease;
+  }
+
+  .category-card:hover,
+  .category-card:focus,
+  .category-card:focus-visible {
+    transform: scale(1.2);
+  }
 }
+
 /*:root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
