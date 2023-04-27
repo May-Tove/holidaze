@@ -13,7 +13,7 @@ export default {
         sans: [
           'kumbh-sans-variable, sans-serif',
           {
-            fontVariationSettings: '"wght" 300',
+            fontVariationSettings: '"wght" 400',
           },
         ],
         serif: ['quiche-flare, sans-serif'],
@@ -22,8 +22,8 @@ export default {
         bold: '900',
       },
       gridTemplateColumns: {
-        2: 'repeat(auto-fit, minmax(170px, 1fr))',
-        4: 'repeat(auto-fit, minmax(200px, 1fr))',
+        2: 'repeat(auto-fit, minmax(300px, 1fr))',
+        4: 'repeat(auto-fit, minmax(400px, 1fr))',
       },
     },
   },
