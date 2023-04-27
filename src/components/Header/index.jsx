@@ -10,7 +10,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="bg-primary fixed w-screen transition-colors duration-300 ease-in-out">
+      <header className="bg-primary fixed w-screen transition-colors duration-300 ease-in-out z-50">
         <nav className="py-5 px-3 lg:px-6 ">
           <div className="flex flex-wrap items-center justify-between mx-auto max-w-screen-xl">
             <Link to={'/'} className="text-white">
