@@ -21,7 +21,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="Venues" element={<Venues />} />
           <Route path="Venue/:id" element={<Venue />} />
-          <Route path="Profile" element={<Profile />} />
+          <Route path="Profile/:name" element={<Profile />} />
           <Route path="Contact" element={<Contact />} />
           <Route path="About" element={<About />} />
           <Route path="Login" element={<Login />} />

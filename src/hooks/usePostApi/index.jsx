@@ -3,13 +3,13 @@ import { useState } from 'react';
 const usePostApi = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('An error occurred');
 
   const post = async (url, data) => {
     try {
       setIsLoading(true);
       setIsError(false);
-      setIsSuccess(true);
+      setErrorMessage('');
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -17,19 +17,24 @@ const usePostApi = () => {
         },
         body: JSON.stringify(data),
       });
+
       if (!response.ok) {
-        throw new Error(response.statusText);
+        const error = await response.json();
+        const message = error.errors[0].message;
+
+        throw new Error(message);
       }
+
+      return response;
     } catch (error) {
       setIsError(true);
-      console.error(error);
+      setErrorMessage(error.message);
     } finally {
       setIsLoading(false);
-      setIsSuccess(true);
     }
   };
 
-  return { post, isLoading, isError, isSuccess };
+  return { post, isLoading, isError, errorMessage };
 };
 
 export default usePostApi;

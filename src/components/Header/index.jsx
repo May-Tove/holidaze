@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { HiBars2, HiOutlineXMark } from 'react-icons/hi2';
+import { useLogin } from '../../context/LoginProvider';
+import LoggedInNav from '../LoggedInNav';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleMenuToggle = () => setIsOpen(!isOpen);
   const handleCloseMenu = () => setIsOpen(false);
+
+  const { isLoggedIn } = useLogin();
 
   return (
     <>
@@ -17,17 +21,19 @@ const Header = () => {
               Holidaze
             </Link>
             <div className="flex items-center lg:order-2 gap-x-7 text-white">
-              <NavLink
-                to={'/Login'}
-                className={({ isActive }) =>
-                  isActive ? 'active' : ' nav-link'
-                }
-              >
-                Login
-              </NavLink>
-              <Link to={'/Register'} className="btn">
-                Get Started
-              </Link>
+              {isLoggedIn ? (
+                <LoggedInNav />
+              ) : (
+                <NavLink
+                  to={'/Login'}
+                  className={({ isActive }) =>
+                    isActive ? 'active' : ' nav-link'
+                  }
+                >
+                  Login
+                </NavLink>
+              )}
+
               <button
                 className="block lg:hidden text-xl"
                 aria-label="Menu button"
@@ -94,3 +100,8 @@ const Header = () => {
 };
 
 export default Header;
+
+/*
+  <Link to={'/Register'} className="btn">
+                Get Started
+              </Link>*/
