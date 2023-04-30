@@ -1,30 +1,33 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const useApi = (url) => {
-  const [venues, setVenues] = useState([]);
-
+/**
+ * Our API hook
+ */
+function useApi(url, options) {
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    async function getVenues() {
+    const fetchData = async () => {
       try {
         setIsLoading(true);
         setIsError(false);
-        const response = await fetch(url);
-        const json = await response.json();
-        setVenues(json);
+        const response = await fetch(url, options);
+        const result = await response.json();
+        setData(result);
       } catch (error) {
+        console.error(error);
         setIsError(true);
       } finally {
         setIsLoading(false);
       }
-    }
+    };
 
-    getVenues();
-  }, [url]);
+    fetchData();
+  }, [url, options]);
 
-  return { venues, isLoading, isError };
-};
+  return { data, isLoading, isError };
+}
 
 export default useApi;
