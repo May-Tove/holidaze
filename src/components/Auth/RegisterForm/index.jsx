@@ -1,22 +1,30 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
 import usePostApi from '../../../hooks/usePostApi';
+import { useLogin } from '../../../context/LoginProvider';
+import FormSubmitError from '../../Error/FormError';
 
 const RegisterForm = () => {
+  const { setIsLoggedIn } = useLogin();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const { post, isLoading, isError, isSuccess } = usePostApi();
+  const { post, isLoading, isError, errorMessage } = usePostApi();
 
-  const onSubmit = async (data, e) => {
-    console.log(data);
-    await post('https://api.noroff.dev/api/v1/holidaze/auth/register', data);
+  const onSubmit = async (data) => {
+    const response = await post(
+      'https://api.noroff.dev/api/v1/holidaze/auth/register',
+      data
+    );
 
-    if (isSuccess) {
-      e.target.reset();
+    if (response.ok) {
+      setIsLoggedIn(true);
+      navigate('/Venues');
     }
   };
 
@@ -94,12 +102,16 @@ const RegisterForm = () => {
           {...register('venueManager')}
         />
       </div>
+      <div>
+        Already have an account?{' '}
+        <Link to={'/Login'} className="text-blue-600 underline">
+          Login
+        </Link>
+      </div>
       <button className="btn" type="submit" disabled={isLoading}>
-        {isLoading ? 'Submitting...' : 'Register'}
+        {isLoading ? 'Registering...' : 'Register'}
       </button>
-      {isLoading && <p>Loading...</p>}
-      {isError && <p>Registration failed.</p>}
-      {isSuccess && <p>Yay success</p>}
+      {isError && <FormSubmitError message={errorMessage} />}
     </form>
   );
 };
