@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { HiOutlineLocationMarker } from 'react-icons/hi';
+import { HiOutlineLocationMarker, HiOutlineHeart } from 'react-icons/hi';
 import ImageSlider from '../ImageSlider';
 import Rating from '../Rating';
 import formatCurrency from '../../utilities/formatCurrency';
@@ -11,7 +11,17 @@ const VenueCard = ({ venue: { name, id, price, media, rating, location } }) => {
 
   return (
     <article className="flex flex-col items-center bg-gray-100  drop-shadow">
-      <ImageSlider media={media} />
+      <div className="w-full h-72 relative">
+        <ImageSlider media={media} />
+
+        <button
+          className="absolute top-1 right-1 rounded-full shadow bg-white/80 hover:bg-white p-1 z-10"
+          aria-label="Add to favourites"
+        >
+          <HiOutlineHeart size={20} />
+        </button>
+      </div>
+
       <Link
         to={`/Venue/${id}`}
         className="w-full flex flex-col gap-2 justify-between p-4"
