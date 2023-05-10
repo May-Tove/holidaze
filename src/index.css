@@ -54,6 +54,18 @@ body {
   .category-card:focus-visible {
     transform: scale(1.2);
   }
+
+  .image-gallery {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 10px;
+  }
+
+  .image-gallery img:first-child {
+    grid-column: 1 / span 3;
+    grid-row: 1 / span 2;
+  }
 }
 
 /*:root {
