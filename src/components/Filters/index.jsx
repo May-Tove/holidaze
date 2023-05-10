@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import useApi from '../../hooks/useApi';
 import API_URL from '../../shared/url';
 
@@ -61,4 +61,4 @@ const Filters = () => {
   );
 };
 
-export default Filters;
+export default Filters;*/
