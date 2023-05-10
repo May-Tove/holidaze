@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { HiChevronLeft, HiChevronRight, HiOutlineHeart } from 'react-icons/hi';
+import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import { BiImage } from 'react-icons/bi';
 
 const ImageSlider = ({ media }) => {
@@ -20,13 +20,7 @@ const ImageSlider = ({ media }) => {
   const hasMultipleImages = slides.length > 1;
 
   return (
-    <div className="overflow-hidden relative w-full h-72">
-      <button
-        className="absolute top-1 right-1 rounded-full shadow bg-white/80 hover:bg-white p-1 z-10"
-        aria-label="Add to favourites"
-      >
-        <HiOutlineHeart size={20} />
-      </button>
+    <div className="overflow-hidden relative w-full h-full">
       {slides.length > 0 ? (
         <>
           <div
@@ -68,9 +62,9 @@ const ImageSlider = ({ media }) => {
                   <div
                     key={i}
                     className={`
-                transition-all w-2 h-2  bg-white rounded-full shadow
-                ${currentIndex === i ? '' : 'bg-opacity-50'}
-              `}
+              transition-all w-2 h-2  bg-white rounded-full shadow
+              ${currentIndex === i ? '' : 'bg-opacity-50'}
+            `}
                   />
                 ))}
               </div>
@@ -78,7 +72,7 @@ const ImageSlider = ({ media }) => {
           )}
         </>
       ) : (
-        <div className="w-full h-full flex justify-center items-center bg-gray-300 text-gray-400">
+        <div className="w-full h-72 flex justify-center items-center bg-gray-300 text-gray-400">
           <BiImage size={100} />
         </div>
       )}
