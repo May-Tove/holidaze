@@ -5,7 +5,8 @@ import VenueCard from '../VenueCard';
 import API_URL from '../../shared/url';
 
 const VenuesList = () => {
-  const { data, isLoading, isError } = useApi(API_URL);
+  const { data, isLoading, isError } = useApi(`${API_URL}/venues?_owner=true`);
+  console.log(data);
 
   if (isError) {
     return <div>Error</div>;
