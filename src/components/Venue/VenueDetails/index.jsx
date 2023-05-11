@@ -8,6 +8,7 @@ import Rating from '../../Rating';
 import ImageGallery from '../../VenueImages/ImageGallery';
 import VenueMeta from '../VenueMeta';
 import CreateBooking from '../CreateBooking';
+import SkeletonLoader from '../SkeletonLoader';
 
 const VenueDetails = () => {
   let { id } = useParams();
@@ -29,12 +30,12 @@ const VenueDetails = () => {
     owner,
   } = data;
 
-  if (isLoading || !data) {
-    return <div>Loading</div>;
+  if (isError || !data) {
+    return <div>Error</div>;
   }
 
-  if (isError) {
-    return <div>Error</div>;
+  if (isLoading || !data) {
+    return <SkeletonLoader />;
   }
 
   return (
@@ -82,7 +83,7 @@ const VenueDetails = () => {
             <h2 className="my-3 text-lg font-bold">Details</h2>
             <div className="flex gap-2 items-center text-sm">
               <IoPeopleOutline size={20} />
-              <p> Maximum {maxGuests} guests</p>
+              <p>Maximum {maxGuests} guests</p>
             </div>
             {meta && <VenueMeta meta={meta} />}
           </div>
