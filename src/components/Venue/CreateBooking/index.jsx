@@ -3,10 +3,11 @@ import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { DateRange } from 'react-date-range';
-import { eachDayOfInterval, format, parse, addDays } from 'date-fns';
+import { eachDayOfInterval } from 'date-fns';
 import { parseISO } from 'date-fns/esm';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
+import { useLogin } from '../../../context/LoginProvider';
 import usePostApi from '../../../hooks/usePostApi';
 import FormSubmitError from '../../Error/FormError';
 
@@ -18,11 +19,12 @@ const CreateBooking = ({ bookings }) => {
     formState: { errors },
   } = useForm();
 
+  const { isLoggedIn } = useLogin();
   const today = new Date();
   const [range, setRange] = useState([
     {
-      startDate: today,
-      endDate: addDays(today, 1),
+      startDate: new Date(),
+      endDate: new Date(),
       key: 'selection',
       color: '#32746D',
     },
@@ -32,18 +34,23 @@ const CreateBooking = ({ bookings }) => {
 
   const { post, isLoading, isError, errorMessage } = usePostApi();
 
-  const onSubmit = async (data) => {
-    const { dateFrom, dateTo, guests } = data;
+  const onSubmit = async (formData) => {
+    range.map((value) => {
+      const updatedFormData = {
+        ...formData,
+        dateFrom: value.startDate.toISOString(),
+        dateTo: value.endDate.toISOString(),
+      };
+      return Object.assign(formData, updatedFormData);
+    });
 
-    const parsedDateFrom = parse(dateFrom, 'dd/MM/yyyy', new Date());
-    const parsedDateTo = parse(dateTo, 'dd/MM/yyyy', new Date());
-    const parsedGuests = parseInt(guests);
+    const parsedGuests = parseInt(formData.guests);
 
     const response = await post(
       'https://api.noroff.dev/api/v1/holidaze/bookings',
       {
-        dateFrom: parsedDateFrom.toISOString(),
-        dateTo: parsedDateTo.toISOString(),
+        dateFrom: formData.dateFrom,
+        dateTo: formData.dateTo,
         guests: parsedGuests,
         venueId: id,
       }
@@ -63,14 +70,6 @@ const CreateBooking = ({ bookings }) => {
         bookings.flatMap((booking) => {
           const startDate = parseISO(booking.dateFrom);
           const endDate = parseISO(booking.dateTo);
-          if (endDate < startDate) {
-            console.error(`Invalid booking dates`);
-            const datesBetween = eachDayOfInterval({
-              start: endDate,
-              end: startDate,
-            });
-            return datesBetween.map((date) => new Date([date]));
-          }
           const datesBetween = eachDayOfInterval({
             start: startDate,
             end: endDate,
@@ -83,70 +82,55 @@ const CreateBooking = ({ bookings }) => {
   }, [bookings]);
 
   return (
-    <>
-      <div className="calendarWrap">
-        <DateRange
-          onChange={(item) => setRange([item.selection])}
-          editableDateInputs={true}
-          moveRangeOnFirstSelection={false}
-          ranges={range}
-          months={1}
-          direction="horizontal"
-          className="calendarElement"
-          disabledDates={disabledDates}
-          minDate={today}
-        />
-        <form
-          className="flex flex-col gap-3 mt-3"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <div className="flex gap-3">
-            <div className="flex flex-col w-full">
-              <label htmlFor="dateFrom">Check in</label>
-              <input
-                value={`${format(range[0].startDate, 'dd/MM/yyyy')}`}
-                readOnly
-                id="dateFrom"
-                className="bg-transparent border-2 border-primary p-1"
-                {...register('dateFrom')}
-              />
-            </div>
-            <div className="flex flex-col w-full">
-              <label htmlFor="dateTo">Check out</label>
-              <input
-                value={`${format(range[0].endDate, 'dd/MM/yyyy')}`}
-                readOnly
-                id="dateTo"
-                className="bg-transparent border-2 border-primary p-1"
-                {...register('dateTo')}
-              />
-            </div>
-          </div>
+    <section className="w-full sm:w-[320px]">
+      <form
+        className="flex flex-col gap-3 mt-3 "
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="calendarWrap">
+          <DateRange
+            onChange={(item) => setRange([item.selection])}
+            editableDateInputs={true}
+            moveRangeOnFirstSelection={false}
+            ranges={range}
+            months={1}
+            direction="horizontal"
+            className="calendarElement w-full"
+            disabledDates={disabledDates}
+            minDate={today}
+          />
+        </div>
 
-          <div className="flex flex-col w-full">
-            <label htmlFor="guests">Guests</label>
-            <input
-              className="bg-transparent border-2 border-primary p-1"
-              type="number"
-              id="guests"
-              min={1}
-              {...register('guests', {
-                required: true,
-              })}
-            />
-            {errors.guests && (
-              <span className="text-red-600 text-sm mt-1">
-                This field is required
-              </span>
-            )}
-          </div>
+        <div className="flex flex-col">
+          <label htmlFor="guests">Guests</label>
+          <input
+            className="bg-transparent border-2 border-primary p-1"
+            type="number"
+            id="guests"
+            min={1}
+            {...register('guests', {
+              required: true,
+            })}
+          />
+          {errors.guests && (
+            <span className="text-red-600 text-sm mt-1">
+              This field is required
+            </span>
+          )}
+        </div>
+
+        {isLoggedIn ? (
           <button className="btn" type="submit" disabled={isLoading}>
             {isLoading ? 'Booking...' : 'Book'}
           </button>
-          {isError && <FormSubmitError message={errorMessage} />}
-        </form>
-      </div>
-    </>
+        ) : (
+          <button className="btn opacity-50 cursor-not-allowed" disabled>
+            Log in to book
+          </button>
+        )}
+        {isError && <FormSubmitError message={errorMessage} />}
+      </form>
+    </section>
   );
 };
 
