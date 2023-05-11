@@ -54,7 +54,7 @@ const ImageGallery = ({ galleryImages }) => {
         {openModal && (
           <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black/90 z-50">
             <button
-              className="absolute top-5 right-5 flex items-center gap-2 cursor-pointer text-white p-1 hover:bg-gray-500/80 hover:rounded"
+              className="absolute top-5 right-5 flex items-center gap-2 cursor-pointer text-white p-1 hover:bg-gray-500/80"
               onClick={handleCloseModal}
             >
               <AiOutlineCloseCircle size={20} />
