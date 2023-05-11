@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { HiOutlineLocationMarker, HiOutlineHeart } from 'react-icons/hi';
-import ImageSlider from '../ImageSlider';
+import ImageSlider from '../VenueImages/ImageSlider';
 import Rating from '../Rating';
 import formatCurrency from '../../utilities/formatCurrency';
 

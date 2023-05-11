@@ -3,8 +3,9 @@ import { Link, useParams } from 'react-router-dom';
 import useApi from '../../../hooks/useApi';
 import API_URL from '../../../shared/url';
 import { IoPeopleOutline } from 'react-icons/io5';
+import { HiOutlineLocationMarker } from 'react-icons/hi';
 import Rating from '../../Rating';
-import ImageGallery from '../ImageGallery';
+import ImageGallery from '../../VenueImages/ImageGallery';
 import VenueMeta from '../VenueMeta';
 import CreateBooking from '../CreateBooking';
 
@@ -28,12 +29,12 @@ const VenueDetails = () => {
     owner,
   } = data;
 
-  if (isError) {
-    return <div>Error</div>;
-  }
-
   if (isLoading || !data) {
     return <div>Loading</div>;
+  }
+
+  if (isError) {
+    return <div>Error</div>;
   }
 
   return (
@@ -41,14 +42,15 @@ const VenueDetails = () => {
       {media && <ImageGallery galleryImages={media} />}
 
       <div className="my-5 flex flex-col lg:flex-row justify-between items-start">
-        <div>
+        <div className="flex flex-col gap-2">
           <h1 className="font-serif font-bold text-2xl">{name}</h1>
           <div className="flex gap-2">
             <Rating rating={rating} />
           </div>
           {location && (
-            <p>
-              {location.address}, {location.city}, {location.country}
+            <p className="flex items-center gap-2">
+              <HiOutlineLocationMarker /> {location.address}, {location.city},{' '}
+              {location.country}
             </p>
           )}
         </div>
@@ -74,7 +76,7 @@ const VenueDetails = () => {
         )}
       </div>
       <section className="flex gap-20">
-        <div className="w-3/4">
+        <div className="lg:w-3/4">
           <div>
             <h2 className="mb-3 text-lg font-bold">About the place</h2>
             <p>{description}</p>
