@@ -54,6 +54,38 @@ body {
   .category-card:focus-visible {
     transform: scale(1.2);
   }
+
+  .image-gallery {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 10px;
+  }
+
+  .image-gallery img:first-child {
+    grid-column: 1 / span 4;
+    grid-row: 1 / span 2;
+  }
+
+  .calendarWrap .rdrDateDisplayWrapper {
+    all: unset;
+    padding: 10px;
+    background-color: #f8f8f8;
+  }
+
+  .calendarWrap .rdrDateDisplay {
+    all: unset;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .calendarWrap .rdrDateInput {
+    all: unset;
+    border: 2px solid theme('colors.primary');
+    width: 100%;
+    padding-left: 10px;
+    font-size: 13px;
+  }
 }
 
 /*:root {

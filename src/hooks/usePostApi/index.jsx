@@ -5,6 +5,8 @@ const usePostApi = () => {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('An error occurred');
 
+  const token = localStorage.getItem('token');
+
   const post = async (url, data) => {
     try {
       setIsLoading(true);
@@ -14,6 +16,7 @@ const usePostApi = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       });

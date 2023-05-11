@@ -27,6 +27,7 @@ const LoginForm = () => {
     if (response.ok) {
       setIsLoggedIn(true);
       setProfile(data);
+      localStorage.setItem('token', data.accessToken);
       navigate('/Venues');
     }
   };

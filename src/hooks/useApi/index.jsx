@@ -25,7 +25,7 @@ function useApi(url, options) {
     };
 
     fetchData();
-  }, [url, options]);
+  }, [url]);
 
   return { data, isLoading, isError };
 }
