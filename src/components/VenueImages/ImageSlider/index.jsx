@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
-import { BiImage } from 'react-icons/bi';
+import PlaceholderImage from '../PlaceholderImage';
 
 const ImageSlider = ({ media }) => {
   const slides = media.map((image) => ({ url: image }));
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [slideNumber, setSlideNumber] = useState(0);
 
-  const prev = () =>
-    setCurrentIndex((currentIndex) =>
-      currentIndex === 0 ? slides.length - 1 : currentIndex - 1
-    );
-  const next = () =>
-    setCurrentIndex((currentIndex) =>
-      currentIndex === slides.length - 1 ? 0 : currentIndex + 1
-    );
+  const prevSlide = () => {
+    slideNumber === 0
+      ? setSlideNumber(slides.length - 1)
+      : setSlideNumber(slideNumber - 1);
+  };
+
+  const nextSlide = () => {
+    slideNumber + 1 === slides.length
+      ? setSlideNumber(0)
+      : setSlideNumber(slideNumber + 1);
+  };
 
   const hasMultipleImages = slides.length > 1;
 
@@ -25,7 +28,7 @@ const ImageSlider = ({ media }) => {
         <>
           <div
             className="flex w-full h-full transition-transform ease-out duration-500"
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            style={{ transform: `translateX(-${slideNumber * 100}%)` }}
           >
             {slides.map((slide, index) => (
               <img
@@ -39,14 +42,14 @@ const ImageSlider = ({ media }) => {
           {hasMultipleImages && (
             <div className="absolute inset-0 flex items-center justify-between p-4">
               <button
-                onClick={prev}
+                onClick={prevSlide}
                 className="p-1 rounded-full shadow bg-white/80 text-gray-800 hover:bg-white"
                 aria-label="Previous image"
               >
                 <HiChevronLeft size={25} />
               </button>
               <button
-                onClick={next}
+                onClick={nextSlide}
                 className="p-1 rounded-full shadow bg-white/80 text-gray-800 hover:bg-white"
                 aria-label="Next image"
               >
@@ -63,7 +66,7 @@ const ImageSlider = ({ media }) => {
                     key={i}
                     className={`
               transition-all w-2 h-2  bg-white rounded-full shadow
-              ${currentIndex === i ? '' : 'bg-opacity-50'}
+              ${slideNumber === i ? '' : 'bg-opacity-50'}
             `}
                   />
                 ))}
@@ -72,8 +75,8 @@ const ImageSlider = ({ media }) => {
           )}
         </>
       ) : (
-        <div className="w-full h-72 flex justify-center items-center bg-gray-300 text-gray-400">
-          <BiImage size={100} />
+        <div className="w-full h-72 ">
+          <PlaceholderImage />
         </div>
       )}
     </div>
