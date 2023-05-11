@@ -66,6 +66,26 @@ body {
     grid-column: 1 / span 4;
     grid-row: 1 / span 2;
   }
+
+  .calendarWrap .rdrDateDisplayWrapper {
+    all: unset;
+    padding: 10px;
+    background-color: #f8f8f8;
+  }
+
+  .calendarWrap .rdrDateDisplay {
+    all: unset;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .calendarWrap .rdrDateInput {
+    all: unset;
+    border: 2px solid theme('colors.primary');
+    width: 100%;
+    padding-left: 10px;
+    font-size: 13px;
+  }
 }
 
 /*:root {
