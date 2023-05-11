@@ -8,13 +8,17 @@ const ImageSlider = ({ media }) => {
 
   const [slideNumber, setSlideNumber] = useState(0);
 
-  const prevSlide = () => {
+  const prevSlide = (event) => {
+    event.preventDefault();
+
     slideNumber === 0
       ? setSlideNumber(slides.length - 1)
       : setSlideNumber(slideNumber - 1);
   };
 
-  const nextSlide = () => {
+  const nextSlide = (event) => {
+    event.preventDefault();
+
     slideNumber + 1 === slides.length
       ? setSlideNumber(0)
       : setSlideNumber(slideNumber + 1);

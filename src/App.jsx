@@ -19,13 +19,13 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="Venues" element={<Venues />} />
-          <Route path="Venue/:id" element={<Venue />} />
-          <Route path="Profile/:name" element={<Profile />} />
-          <Route path="Contact" element={<Contact />} />
-          <Route path="About" element={<About />} />
-          <Route path="Login" element={<Login />} />
-          <Route path="Register" element={<Register />} />
+          <Route path="venues" element={<Venues />} />
+          <Route path="venue/:id" element={<Venue />} />
+          <Route path="profile/:name" element={<Profile />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="about" element={<About />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

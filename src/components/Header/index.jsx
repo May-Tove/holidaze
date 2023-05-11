@@ -25,7 +25,7 @@ const Header = () => {
                 <LoggedInNav />
               ) : (
                 <NavLink
-                  to={'/Login'}
+                  to={'/login'}
                   className={({ isActive }) =>
                     isActive ? 'active' : ' nav-link'
                   }
@@ -60,7 +60,7 @@ const Header = () => {
               </li>
               <li>
                 <NavLink
-                  to={'/Venues'}
+                  to={'/venues'}
                   className={({ isActive }) =>
                     isActive ? 'active' : ' nav-link'
                   }
@@ -71,7 +71,7 @@ const Header = () => {
               </li>
               <li>
                 <NavLink
-                  to={'/Contact'}
+                  to={'/contact'}
                   className={({ isActive }) =>
                     isActive ? 'active' : ' nav-link'
                   }
@@ -82,7 +82,7 @@ const Header = () => {
               </li>
               <li>
                 <NavLink
-                  to={'/About'}
+                  to={'/about'}
                   className={({ isActive }) =>
                     isActive ? 'active' : ' nav-link'
                   }

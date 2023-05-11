@@ -104,8 +104,8 @@ const RegisterForm = () => {
       </div>
       <div>
         Already have an account?{' '}
-        <Link to={'/Login'} className="text-blue-600 underline">
-          Login
+        <Link to={'/login'} className="text-blue-600 underline">
+          ogin
         </Link>
       </div>
       <button className="btn" type="submit" disabled={isLoading}>

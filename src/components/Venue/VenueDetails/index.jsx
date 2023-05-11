@@ -57,7 +57,7 @@ const VenueDetails = () => {
         </div>
         {owner && (
           <Link
-            to={`/Profile/${owner.name}`}
+            to={`/profile/${owner.name}`}
             className="flex items-center gap-2"
           >
             <img

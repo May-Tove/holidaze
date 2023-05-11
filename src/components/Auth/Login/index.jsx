@@ -68,7 +68,7 @@ const LoginForm = () => {
       </div>
       <div>
         Do not have an account?{' '}
-        <Link to={'/Register'} className="text-blue-800 underline">
+        <Link to={'/register'} className="text-blue-800 underline">
           Register
         </Link>
       </div>

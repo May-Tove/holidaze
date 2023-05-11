@@ -67,7 +67,7 @@ export const Home = () => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 justify-center text-white">
           <div className="category-card-container">
             <Link
-              to={'/Venues'}
+              to={'/venues'}
               className="category-card"
               style={{
                 backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.73)),url(${BackgroundHero})`,
@@ -78,7 +78,7 @@ export const Home = () => {
           </div>
           <div className="category-card-container">
             <Link
-              to={'/Venues'}
+              to={'/venues'}
               className="category-card"
               style={{
                 backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.73)),url(${BackgroundHero})`,
@@ -89,7 +89,7 @@ export const Home = () => {
           </div>
           <div className="category-card-container">
             <Link
-              to={'/Venues'}
+              to={'/venues'}
               className="category-card"
               style={{
                 backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.73)),url(${BackgroundHero})`,
@@ -100,7 +100,7 @@ export const Home = () => {
           </div>
           <div className="category-card-container">
             <Link
-              to={'/Venues'}
+              to={'/venues'}
               className="category-card"
               style={{
                 backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.73)),url(${BackgroundHero})`,
@@ -138,7 +138,7 @@ export const Home = () => {
             accommodations. Our user-friendly platform allows you to manage your
             accommodations and accept bookings all in one place.
           </p>
-          <Link to={'/Register'} className="btn w-max">
+          <Link to={'/register'} className="btn w-max">
             Register
           </Link>
         </div>
@@ -176,7 +176,7 @@ export const Home = () => {
             learn more about how we can help you list your property on our
             platform and reach a wider audience.
           </p>
-          <Link to={'/Contact'} className="btn w-max">
+          <Link to={'/contact'} className="btn w-max">
             Contact
           </Link>
         </div>
