@@ -42,7 +42,7 @@ const VenueDetails = () => {
       {media && <ImageGallery galleryImages={media} />}
 
       <div className="my-5 flex flex-col lg:flex-row justify-between items-start">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 mb-5">
           <h1 className="font-serif font-bold text-2xl">{name}</h1>
           <div className="flex gap-2">
             <Rating rating={rating} />
@@ -59,23 +59,19 @@ const VenueDetails = () => {
             to={`/Profile/${owner.name}`}
             className="flex items-center gap-2"
           >
-            {owner && owner.avatar && (
-              <img
-                className="w-10 h-10 rounded-full object-cover"
-                src={owner.avatar}
-                alt=""
-              />
-            )}
+            <img
+              className="w-10 h-10 lg:w-14 lg:h-14 rounded-full object-cover"
+              src={owner.avatar}
+              alt={`Image of ${owner.name}`}
+            />
             <div>
-              {owner && owner.name && (
-                <h5 className="font-bold">{owner.name}</h5>
-              )}
-              {owner && owner.email && <p>{owner.email}</p>}
+              <h5 className="font-bold text-lg">{owner.name}</h5>
+              <p className="text-sm">{owner.email}</p>
             </div>
           </Link>
         )}
       </div>
-      <section className="flex gap-20">
+      <section className="flex flex-col lg:flex-row items-start gap-20">
         <div className="lg:w-3/4">
           <div>
             <h2 className="mb-3 text-lg font-bold">About the place</h2>
@@ -91,11 +87,11 @@ const VenueDetails = () => {
             {meta && <VenueMeta meta={meta} />}
           </div>
         </div>
+        <div>
+          <h2 className="mb-3 text-lg font-bold">Book your stay</h2>
+          <CreateBooking bookings={bookings} />
+        </div>
       </section>
-      <div>
-        <h2 className="mt-10 mb-3 text-lg font-bold">Book your stay</h2>
-        <CreateBooking bookings={bookings} />
-      </div>
     </div>
   );
 };
