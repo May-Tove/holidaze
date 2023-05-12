@@ -1,12 +1,14 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext } from 'react';
+import useLocalStorage from '../../hooks/useLocalStorage';
 import PropTypes from 'prop-types';
 
 //https://www.youtube.com/watch?v=v2R0DFXqaF0&t=445s&ab_channel=FullStackNiraj
 const LoginContext = createContext();
 
 const LoginProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [profile, setProfile] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useLocalStorage('isLoggedIn', false);
+  const [profile, setProfile] = useLocalStorage('profile', {});
+  const [token, setToken] = useLocalStorage('token', '');
 
   return (
     <LoginContext.Provider
@@ -15,6 +17,8 @@ const LoginProvider = ({ children }) => {
         setIsLoggedIn,
         profile,
         setProfile,
+        token,
+        setToken,
       }}
     >
       {children}
