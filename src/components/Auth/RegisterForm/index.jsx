@@ -2,11 +2,10 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import usePostApi from '../../../hooks/usePostApi';
-import { useLogin } from '../../../context/LoginProvider';
+
 import FormSubmitError from '../../Error/FormError';
 
 const RegisterForm = () => {
-  const { setIsLoggedIn } = useLogin();
   const navigate = useNavigate();
   const {
     register,
@@ -23,8 +22,7 @@ const RegisterForm = () => {
     );
 
     if (response.ok) {
-      setIsLoggedIn(true);
-      navigate('/Venues');
+      navigate('/login');
     }
   };
 
