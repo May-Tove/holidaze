@@ -3,7 +3,7 @@ import { useState } from 'react';
 const usePostApi = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('An error occurred');
+  const [errorMessage, setErrorMessage] = useState();
 
   const token = localStorage.getItem('token');
 
@@ -23,9 +23,16 @@ const usePostApi = () => {
 
       if (!response.ok) {
         const error = await response.json();
+        let errorFeedback = '';
         const message = error.errors[0].message;
 
-        throw new Error(message);
+        if (!message) {
+          errorFeedback = error.status;
+        } else {
+          errorFeedback = message;
+        }
+
+        throw new Error(errorFeedback);
       }
 
       return response;
