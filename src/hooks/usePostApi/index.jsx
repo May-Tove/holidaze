@@ -1,11 +1,13 @@
 import { useState } from 'react';
+import { useLogin } from '../../context/LoginProvider';
 
 const usePostApi = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  const token = localStorage.getItem('token');
+  const { token } = useLogin();
 
   const post = async (url, data) => {
     try {
@@ -44,7 +46,14 @@ const usePostApi = () => {
     }
   };
 
-  return { post, isLoading, isError, errorMessage };
+  return {
+    post,
+    isLoading,
+    isError,
+    errorMessage,
+    setShowSuccess,
+    showSuccess,
+  };
 };
 
 export default usePostApi;
