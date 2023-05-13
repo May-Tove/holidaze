@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import useApi from '../../../hooks/useApi';
 import API_URL from '../../../shared/url';
@@ -9,14 +9,33 @@ import ImageGallery from '../../VenueImages/ImageGallery';
 import VenueMeta from '../VenueMeta';
 import CreateBooking from '../CreateBooking';
 import SkeletonLoader from '../SkeletonLoader';
+import { useLogin } from '../../../context/LoginProvider';
+import RemoveVenue from '../../RemoveVenue';
+import avatarPlaceholder from '../../../assets/avatar-placeholder.png';
+import { VenueForm } from '../../Forms';
 
 const VenueDetails = () => {
   let { id } = useParams();
   const { data, isLoading, isError } = useApi(
     `${API_URL}/venues/${id}?_owner=true&_bookings=true`
   );
+  const { profile, token } = useLogin();
 
-  console.log(data);
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  // Handle edit button click
+  const handleEditButtonClick = () => {
+    setShowEditModal(true);
+  };
+
+  // Handle modal close
+  const handleCloseModal = () => {
+    setShowEditModal(false);
+  };
+
+  const handleDeleteVenue = () => {
+    RemoveVenue(id, token);
+  };
 
   const {
     name,
@@ -38,8 +57,28 @@ const VenueDetails = () => {
     return <SkeletonLoader />;
   }
 
+  const isOwnerOfVenue = owner && profile.name === owner.name;
+
   return (
     <div>
+      {owner && isOwnerOfVenue && (
+        <div>
+          <button className="btn" onClick={handleDeleteVenue}>
+            Delete
+          </button>
+          <button className="btn" onClick={handleEditButtonClick}>
+            Edit
+          </button>
+        </div>
+      )}
+      {showEditModal && (
+        <VenueForm
+          mode={'update'}
+          venue={data}
+          handleClose={handleCloseModal}
+          token={token}
+        />
+      )}
       {media && <ImageGallery galleryImages={media} />}
 
       <div className="my-5 flex flex-col lg:flex-row justify-between items-start">
@@ -64,6 +103,9 @@ const VenueDetails = () => {
               className="w-10 h-10 lg:w-14 lg:h-14 rounded-full object-cover"
               src={owner.avatar}
               alt={`Image of ${owner.name}`}
+              onError={(e) => {
+                e.target.src = avatarPlaceholder;
+              }}
             />
             <div>
               <h5 className="font-bold text-lg">{owner.name}</h5>
