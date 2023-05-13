@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLogin } from '../../context/LoginProvider';
 import { HiChevronDown } from 'react-icons/hi';
+import avatarPlaceholder from '../../assets/avatar-placeholder.png';
 
 const LoggedInNav = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -29,6 +30,9 @@ const LoggedInNav = () => {
           className="w-5 h-5 lg:w-8 lg:h-8 mr-1 lg:mr-2 rounded-full object-cover"
           src={profile.avatar}
           alt={`Profile image of ${profile.name}`}
+          onError={(e) => {
+            e.target.src = avatarPlaceholder;
+          }}
         />
 
         <HiChevronDown />
