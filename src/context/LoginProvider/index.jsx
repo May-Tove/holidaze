@@ -9,6 +9,7 @@ const LoginProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage('isLoggedIn', false);
   const [profile, setProfile] = useLocalStorage('profile', {});
   const [token, setToken] = useLocalStorage('token', '');
+  const [avatar, setAvatar] = useLocalStorage('avatar', '');
 
   return (
     <LoginContext.Provider
@@ -19,6 +20,8 @@ const LoginProvider = ({ children }) => {
         setProfile,
         token,
         setToken,
+        avatar,
+        setAvatar,
       }}
     >
       {children}
