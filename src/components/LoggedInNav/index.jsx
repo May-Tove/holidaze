@@ -7,7 +7,7 @@ import avatarPlaceholder from '../../assets/avatar-placeholder.png';
 const LoggedInNav = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const { setIsLoggedIn, profile } = useLogin();
+  const { setIsLoggedIn, profile, avatar } = useLogin();
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -28,7 +28,7 @@ const LoggedInNav = () => {
         <span className="sr-only">Open Menu</span>
         <img
           className="w-5 h-5 lg:w-8 lg:h-8 mr-1 lg:mr-2 rounded-full object-cover"
-          src={profile.avatar}
+          src={avatar}
           alt={`Profile image of ${profile.name}`}
           onError={(e) => {
             e.target.src = avatarPlaceholder;

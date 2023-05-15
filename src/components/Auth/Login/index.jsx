@@ -14,7 +14,7 @@ const LoginForm = () => {
 
   const navigate = useNavigate();
 
-  const { setIsLoggedIn, setProfile, setToken } = useLogin();
+  const { setIsLoggedIn, setProfile, setToken, setAvatar } = useLogin();
   const { post, isLoading, isError, errorMessage } = usePostApi();
 
   const onSubmit = async (formData) => {
@@ -27,7 +27,8 @@ const LoginForm = () => {
     if (response.ok) {
       setIsLoggedIn(true);
       setProfile(data);
-      setToken(data.accessToken); // Store the token in local storage
+      setToken(data.accessToken);
+      setAvatar(data.avatar);
       navigate('/venues');
     }
   };
