@@ -1,17 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import useApi from '../../../hooks/useApi';
+import useAxiosFetch from '../../../hooks/useAxiosFetch';
+import { API_PROFILE_URL } from '../../../shared';
 
-export const Reservations = ({ token, name }) => {
-  const { data } = useApi(
-    `https://api.noroff.dev/api/v1/holidaze/profiles/${name}/venues?_bookings=true`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }
+export const Reservations = ({ name }) => {
+  const { data, isLoading, isError } = useAxiosFetch(
+    `${API_PROFILE_URL}/${name}/venues?_bookings=true`
   );
+
+  if (isLoading) {
+    return <div>Loading</div>;
+  }
+
+  if (isError) {
+    return <div>Error</div>;
+  }
 
   return (
     <>
@@ -49,7 +52,6 @@ export const Reservations = ({ token, name }) => {
 };
 
 Reservations.propTypes = {
-  token: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 };
 

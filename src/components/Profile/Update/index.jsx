@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
-import usePostApi from '../../../hooks/usePostApi';
 import { useLogin } from '../../../context/LoginProvider';
 import FormSubmitError from '../../Error/FormError';
 import { CgClose, CgCheckO } from 'react-icons/cg';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 import avatarPlaceholder from '../../../assets/avatar-placeholder.png';
+import { API_PROFILE_URL } from '../../../shared';
+import useMethodApi from '../../../hooks/useMethodApi';
 
-const UpdateAvatar = ({ profile, handleClose, token }) => {
+const UpdateAvatar = ({ profile, handleClose }) => {
   const {
     register,
     handleSubmit,
@@ -16,37 +17,19 @@ const UpdateAvatar = ({ profile, handleClose, token }) => {
     formState: { errors },
   } = useForm();
 
-  const { isLoading, isError, errorMessage, showSuccess, setShowSuccess } =
-    usePostApi();
-
   const { setAvatar, avatar } = useLogin();
-
   const { name } = profile;
   const [inputValue, setInputValue] = useState(avatar);
+
+  const { fetchWithMethod, isError, isLoading, errorMessage, success } =
+    useMethodApi();
 
   const onSubmit = async (formData) => {
     const payload = {
       avatar: formData.avatar,
     };
-    const response = await fetch(
-      `https://api.noroff.dev/api/v1/holidaze/profiles/${name}/media`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      }
-    );
-    const data = await response.json();
-
-    if (response.ok) {
-      console.log('avatar is updated');
-      console.log(data);
-      setShowSuccess(true);
-      setAvatar(formData.avatar);
-    }
+    await fetchWithMethod(`${API_PROFILE_URL}/${name}/media`, 'put', payload);
+    setAvatar(formData.avatar);
   };
 
   const handleClearInputField = (e) => {
@@ -125,7 +108,7 @@ const UpdateAvatar = ({ profile, handleClose, token }) => {
               </div>
 
               {isError && <FormSubmitError message={errorMessage} />}
-              {showSuccess && (
+              {success && (
                 <div
                   className="p-2 mt-5 w-full bg-green-600 items-center gap-2 text-green-100 leading-none rounded flex lg:inline-flex"
                   role="alert"

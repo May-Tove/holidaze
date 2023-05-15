@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import useApi from '../../../hooks/useApi';
-import API_URL from '../../../shared/url';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import useApi from '../../../hooks/useAxiosFetch';
 import { IoPeopleOutline } from 'react-icons/io5';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import Rating from '../../Rating';
@@ -10,18 +9,21 @@ import VenueMeta from '../VenueMeta';
 import CreateBooking from '../CreateBooking';
 import SkeletonLoader from '../SkeletonLoader';
 import { useLogin } from '../../../context/LoginProvider';
-import RemoveVenue from '../../RemoveVenue';
 import avatarPlaceholder from '../../../assets/avatar-placeholder.png';
 import { VenueForm } from '../../Forms';
+import { API_VENUE_URL } from '../../../shared';
+import useMethodApi from '../../../hooks/useMethodApi';
 
 const VenueDetails = () => {
+  const [showEditModal, setShowEditModal] = useState(false);
   let { id } = useParams();
   const { data, isLoading, isError } = useApi(
-    `${API_URL}/venues/${id}?_owner=true&_bookings=true`
+    `${API_VENUE_URL}/${id}?_owner=true&_bookings=true`
   );
-  const { profile, token } = useLogin();
+  const { profile } = useLogin();
+  const { fetchWithMethod } = useMethodApi();
 
-  const [showEditModal, setShowEditModal] = useState(false);
+  const navigate = useNavigate();
 
   // Handle edit button click
   const handleEditButtonClick = () => {
@@ -33,8 +35,11 @@ const VenueDetails = () => {
     setShowEditModal(false);
   };
 
-  const handleDeleteVenue = () => {
-    RemoveVenue(id, token);
+  // Handle delete venue
+  const handleDeleteVenue = async () => {
+    await fetchWithMethod(`${API_VENUE_URL}/${id}`, 'delete');
+
+    navigate('/venues');
   };
 
   const {
@@ -49,11 +54,11 @@ const VenueDetails = () => {
     owner,
   } = data;
 
-  if (isError || !data) {
+  if (isError) {
     return <div>Error</div>;
   }
 
-  if (isLoading || !data) {
+  if (isLoading) {
     return <SkeletonLoader />;
   }
 
@@ -76,7 +81,6 @@ const VenueDetails = () => {
           mode={'update'}
           venue={data}
           handleClose={handleCloseModal}
-          token={token}
         />
       )}
       {media && <ImageGallery galleryImages={media} />}

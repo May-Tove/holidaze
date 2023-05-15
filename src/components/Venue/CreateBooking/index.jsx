@@ -8,9 +8,10 @@ import { parseISO } from 'date-fns/esm';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { useLogin } from '../../../context/LoginProvider';
-import usePostApi from '../../../hooks/usePostApi';
 import FormSubmitError from '../../Error/FormError';
 import { AiOutlineCloseCircle } from 'react-icons/Ai';
+import { API_BOOKINGS_URL } from '../../../shared';
+import useMethodApi from '../../../hooks/useMethodApi';
 
 const CreateBooking = ({ bookings }) => {
   let { id } = useParams();
@@ -33,10 +34,16 @@ const CreateBooking = ({ bookings }) => {
   ]);
 
   const [disabledDates, setDisabledDates] = useState([]);
-  const [showBookingConfirmation, setShowBookingConfirmation] = useState(false);
   const [responseData, setResponseData] = useState(null);
 
-  const { post, isLoading, isError, errorMessage } = usePostApi();
+  const {
+    fetchWithMethod,
+    isLoading,
+    isError,
+    errorMessage,
+    success,
+    setSuccess,
+  } = useMethodApi();
 
   const onSubmit = async (formData) => {
     range.map((value) => {
@@ -50,23 +57,16 @@ const CreateBooking = ({ bookings }) => {
 
     const parsedGuests = parseInt(formData.guests);
 
-    const response = await post(
-      'https://api.noroff.dev/api/v1/holidaze/bookings',
-      {
-        dateFrom: formData.dateFrom,
-        dateTo: formData.dateTo,
-        guests: parsedGuests,
-        venueId: id,
-      }
-    );
+    const response = await fetchWithMethod(API_BOOKINGS_URL, 'post', {
+      dateFrom: formData.dateFrom,
+      dateTo: formData.dateTo,
+      guests: parsedGuests,
+      venueId: id,
+    });
 
-    const responseData = await response.json();
-
-    if (response.ok) {
-      setShowBookingConfirmation(true);
-      setResponseData(responseData);
-      reset();
-    }
+    const responseData = response.data;
+    setResponseData(responseData);
+    reset();
   };
 
   useEffect(() => {
@@ -100,10 +100,10 @@ const CreateBooking = ({ bookings }) => {
         color: '#32746D',
       },
     ]);
-    setShowBookingConfirmation(false);
+    setSuccess(false);
   };
 
-  if (showBookingConfirmation) {
+  if (success) {
     const { dateFrom, dateTo, guests } = responseData;
 
     return (

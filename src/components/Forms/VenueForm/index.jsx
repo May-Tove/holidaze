@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
-import usePostApi from '../../../hooks/usePostApi';
 import FormSubmitError from '../../Error/FormError';
 import { CgTrash, CgClose, CgCheckO } from 'react-icons/cg';
 import { TbPhotoPlus } from 'react-icons/tb';
 import imgPlaceholder from '../../../assets/placeholderImg@2x.jpg';
 import { useNavigate } from 'react-router-dom';
+import { API_VENUE_URL } from '../../../shared';
+import useMethodApi from '../../../hooks/useMethodApi';
 
-export const VenueForm = ({ mode, venue, handleClose, token }) => {
+export const VenueForm = ({ mode, venue, handleClose }) => {
   const {
     register,
     handleSubmit,
@@ -16,14 +17,10 @@ export const VenueForm = ({ mode, venue, handleClose, token }) => {
     reset,
   } = useForm();
 
-  const {
-    post,
-    isLoading,
-    isError,
-    errorMessage,
-    showSuccess,
-    setShowSuccess,
-  } = usePostApi();
+  const navigate = useNavigate();
+
+  const { fetchWithMethod, isLoading, isError, errorMessage, success } =
+    useMethodApi();
 
   const { id, name, description, location, meta, price, maxGuests, media } =
     venue;
@@ -47,8 +44,6 @@ export const VenueForm = ({ mode, venue, handleClose, token }) => {
     deleteUrl.splice(index, 1);
     setImageUrls(deleteUrl);
   };
-
-  const navigate = useNavigate();
 
   const onSubmit = async (formData) => {
     formData.price = Number(formData.price);
@@ -80,40 +75,28 @@ export const VenueForm = ({ mode, venue, handleClose, token }) => {
     };
 
     if (mode === 'create') {
-      const response = await post(
-        'https://api.noroff.dev/api/v1/holidaze/venues',
+      const response = await fetchWithMethod(
+        API_VENUE_URL,
+        'post',
         requestData
       );
 
-      const data = await response.json();
+      const data = response.data;
 
-      if (response.ok) {
-        setShowSuccess(true);
-        reset();
-        setTimeout(() => {
-          navigate(`/venue/${data.id}`);
-        }, 1000);
-      }
+      reset();
+      setTimeout(() => {
+        navigate(`/venue/${data.id}`);
+      }, 1000);
     } else if (mode === 'update') {
-      const response = await fetch(
-        `https://api.noroff.dev/api/v1/holidaze/venues/${id}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(requestData),
-        }
+      const response = await fetchWithMethod(
+        `${API_VENUE_URL}/${id}`,
+        'put',
+        requestData
       );
-      const data = await response.json();
-
-      if (response.ok) {
-        setShowSuccess(true);
-        setTimeout(() => {
-          navigate(`/venue/${data.id}`);
-        }, 1000);
-      }
+      const data = response.data;
+      setTimeout(() => {
+        navigate(`/venue/${data.id}`);
+      }, 1000);
     }
   };
 
@@ -386,7 +369,7 @@ export const VenueForm = ({ mode, venue, handleClose, token }) => {
               </div>
 
               {isError && <FormSubmitError message={errorMessage} />}
-              {showSuccess && (
+              {success && (
                 <div
                   className="p-2 mt-5 w-full bg-green-600 items-center gap-2 text-green-100 leading-none rounded flex lg:inline-flex"
                   role="alert"
