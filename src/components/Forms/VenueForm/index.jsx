@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import usePostApi from '../../../hooks/usePostApi';
 import FormSubmitError from '../../Error/FormError';
-import { CgTrash } from 'react-icons/cg';
+import { CgTrash, CgClose, CgCheckO } from 'react-icons/cg';
 import { TbPhotoPlus } from 'react-icons/tb';
-import { AiOutlineCheckCircle, AiOutlineClose } from 'react-icons/ai';
 import imgPlaceholder from '../../../assets/placeholderImg@2x.jpg';
 import { useNavigate } from 'react-router-dom';
 
@@ -136,7 +135,7 @@ export const VenueForm = ({ mode, venue, handleClose, token }) => {
                 className="bg-gray-200 p-1 rounded-lg hover:bg-gray-300"
                 onClick={handleClose}
               >
-                <AiOutlineClose size={20} />
+                <CgClose size={20} />
               </button>
             </div>
             <div className="flex flex-col w-full">
@@ -392,7 +391,7 @@ export const VenueForm = ({ mode, venue, handleClose, token }) => {
                   className="p-2 mt-5 w-full bg-green-600 items-center gap-2 text-green-100 leading-none rounded flex lg:inline-flex"
                   role="alert"
                 >
-                  <AiOutlineCheckCircle size={20} />
+                  <CgCheckO size={20} />
 
                   <span className="font-semibold mr-2 text-left flex-auto">
                     {mode === 'create'
