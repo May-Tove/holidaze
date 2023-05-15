@@ -1,6 +1,48 @@
 import { useState } from 'react';
+import axios from 'axios';
 import { useLogin } from '../../context/LoginProvider';
 
+const useMethodApi = () => {
+  const [data, setData] = useState([]);
+  const [success, setSuccess] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { token } = useLogin();
+
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
+
+  const fetchWithMethod = async (url, method, data) => {
+    setIsLoading(true);
+    try {
+      const response = await axios({
+        url: url,
+        method: method,
+        headers: headers,
+        data: data,
+      });
+      setData(response.data);
+      setSuccess(true);
+      return response;
+    } catch (error) {
+      setIsError(true);
+      setErrorMessage(error.message);
+      setSuccess(false);
+      setData([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { fetchWithMethod, data, isLoading, isError, errorMessage, success };
+};
+
+export default useMethodApi;
+/*
 const usePostApi = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -56,4 +98,4 @@ const usePostApi = () => {
   };
 };
 
-export default usePostApi;
+export default usePostApi;*/

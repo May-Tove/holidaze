@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLogin } from '../../context/LoginProvider';
-import useApi from '../../hooks/useApi';
+import useAxiosFetch from '../../hooks/useAxiosFetch';
 import { MyVenues, Bookings, Reservations } from '../../components/Profile';
 import avatarPlaceholder from '../../assets/avatar-placeholder.png';
 import UpdateAvatar from '../../components/Profile/Update';
+import { API_PROFILE_URL } from '../../shared';
 
 export const Profile = () => {
   const { name } = useParams();
@@ -13,14 +14,8 @@ export const Profile = () => {
 
   const { isLoggedIn, token, avatar } = useLogin();
 
-  const { data, isLoading, isError } = useApi(
-    `https://api.noroff.dev/api/v1/holidaze/profiles/${name}?_bookings=true&_venues=true`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }
+  const { data, isLoading, isError } = useAxiosFetch(
+    `${API_PROFILE_URL}/${name}?_bookings=true&_venues=true`
   );
 
   console.log(data);
@@ -51,7 +46,7 @@ export const Profile = () => {
     if (selectedTab === 'venues') {
       return <MyVenues venues={venues} />;
     } else if (selectedTab === 'reservation') {
-      return <Reservations token={token} name={name} />;
+      return <Reservations name={name} />;
     } else if (selectedTab === 'bookings') {
       return <Bookings bookings={bookings} />;
     }

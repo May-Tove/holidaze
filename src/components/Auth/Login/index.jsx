@@ -1,36 +1,37 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import useMethodApi from '../../../hooks/useMethodApi';
 import { useLogin } from '../../../context/LoginProvider';
-import usePostApi from '../../../hooks/usePostApi';
 import FormSubmitError from '../../Error/FormError';
+import { API_AUTH_URL, EMAIL_REGEX } from '../../../shared';
 
 const LoginForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
   const navigate = useNavigate();
 
   const { setIsLoggedIn, setProfile, setToken, setAvatar } = useLogin();
-  const { post, isLoading, isError, errorMessage } = usePostApi();
+  const { fetchWithMethod, isLoading, isError, errorMessage } = useMethodApi();
 
   const onSubmit = async (formData) => {
-    const response = await post(
-      'https://api.noroff.dev/api/v1/holidaze/auth/login',
+    const response = await fetchWithMethod(
+      `${API_AUTH_URL}/login`,
+      'post',
       formData
     );
-    const data = await response.json();
 
-    if (response.ok) {
-      setIsLoggedIn(true);
-      setProfile(data);
-      setToken(data.accessToken);
-      setAvatar(data.avatar);
-      navigate('/venues');
-    }
+    setIsLoggedIn(true);
+    setProfile(response.data);
+    setToken(response.data.accessToken);
+    setAvatar(response.data.avatar);
+    navigate('/venues');
+    reset();
   };
 
   return (
@@ -43,7 +44,7 @@ const LoginForm = () => {
           id="email"
           {...register('email', {
             required: true,
-            pattern: /^[\w-\.]+@(?:noroff|stud\.noroff)\.no$/, // eslint-disable-line
+            pattern: EMAIL_REGEX,
           })}
         />
         {errors.email && (
@@ -82,3 +83,22 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
+/*
+const onSubmit = async (formData) => {
+    try {
+      const response = await axios.post(
+        'https://api.noroff.dev/api/v1/holidaze/auth/login',
+        formData
+      );
+      const data = response.data;
+      setIsLoggedIn(true);
+      setProfile(data);
+      setToken(data.accessToken);
+      setAvatar(data.avatar);
+      navigate('/venues');
+    } catch (error) {
+      console.log(error.response.data.errors[0].message);
+    }
+  };
+*/

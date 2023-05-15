@@ -1,9 +1,14 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import usePostApi from '../../../hooks/usePostApi';
-
+import useMethodApi from '../../../hooks/useMethodApi';
 import FormSubmitError from '../../Error/FormError';
+import {
+  API_AUTH_URL,
+  AVATAR_REGEX,
+  EMAIL_REGEX,
+  NAME_REGEX,
+} from '../../../shared';
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -11,30 +16,27 @@ const RegisterForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
-  const { post, isLoading, isError, errorMessage } = usePostApi();
+  const { fetchWithMethod, isLoading, isError, errorMessage } = useMethodApi();
 
-  const onSubmit = async (data) => {
-    const response = await post(
-      'https://api.noroff.dev/api/v1/holidaze/auth/register',
-      data
-    );
+  const onSubmit = async (formData) => {
+    await fetchWithMethod(`${API_AUTH_URL}/register`, 'post', formData);
 
-    if (response.ok) {
-      navigate('/login');
-    }
+    navigate('/login');
+    reset();
   };
 
   return (
     <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col w-full">
-        <label htmlFor="name">Name:</label>
+        <label htmlFor="name">Name</label>
         <input
           className="bg-transparent border-2 border-primary p-1"
           type="text"
           id="name"
-          {...register('name', { required: true, pattern: /^[A-Za-z0-9_]+$/ })}
+          {...register('name', { required: true, pattern: NAME_REGEX })}
         />
         {errors.name && (
           <span className="text-red-900 text-sm">
@@ -44,14 +46,14 @@ const RegisterForm = () => {
         )}
       </div>
       <div className="flex flex-col w-full">
-        <label htmlFor="email">Email:</label>
+        <label htmlFor="email">Email</label>
         <input
           className="bg-transparent border-2 border-primary p-1"
           type="email"
           id="email"
           {...register('email', {
             required: true,
-            pattern: /^[\w-\.]+@(?:noroff|stud\.noroff)\.no$/, // eslint-disable-line
+            pattern: EMAIL_REGEX,
           })}
         />
         {errors.email && (
@@ -62,7 +64,7 @@ const RegisterForm = () => {
         )}
       </div>
       <div className="flex flex-col w-full">
-        <label htmlFor="password">Password:</label>
+        <label htmlFor="password">Password</label>
         <input
           className="bg-transparent border-2 border-primary p-1"
           type="password"
@@ -76,14 +78,14 @@ const RegisterForm = () => {
         )}
       </div>
       <div className="flex flex-col w-full">
-        <label htmlFor="avatar">Avatar:</label>
+        <label htmlFor="avatar">Avatar</label>
         <input
           className="bg-transparent border-2 border-primary p-1"
           type="url"
           id="avatar"
           {...register('avatar', {
             required: true,
-            pattern: /^(ftp|http|https):\/\/[^ "]+$/,
+            pattern: AVATAR_REGEX,
           })}
         />
         {errors.avatar && (
@@ -93,7 +95,7 @@ const RegisterForm = () => {
         )}
       </div>
       <div className="flex items-center gap-2">
-        <label htmlFor="venueManager">Venue Manager:</label>
+        <label htmlFor="venueManager">Venue Manager</label>
         <input
           type="checkbox"
           id="venueManager"
@@ -103,7 +105,7 @@ const RegisterForm = () => {
       <div>
         Already have an account?{' '}
         <Link to={'/login'} className="text-blue-600 underline">
-          ogin
+          Login
         </Link>
       </div>
       <button className="btn" type="submit" disabled={isLoading}>

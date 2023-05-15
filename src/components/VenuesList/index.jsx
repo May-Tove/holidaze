@@ -1,14 +1,16 @@
 import React from 'react';
-import useApi from '../../hooks/useApi';
 import VenueSkeletonLoader from '../VenueSkeletonLoader';
 import VenueCard from '../VenueCard';
-import API_URL from '../../shared/url';
+import useAxiosFetch from '../../hooks/useAxiosFetch';
+import { API_VENUE_URL } from '../../shared';
 
 const VenuesList = () => {
-  const { data, isLoading, isError } = useApi(`${API_URL}/venues?_owner=true`);
+  const { data, isLoading, fetchError } = useAxiosFetch(
+    `${API_VENUE_URL}?_owner=true`
+  );
   console.log(data);
 
-  if (isError) {
+  if (fetchError) {
     return <div>Error</div>;
   }
 
