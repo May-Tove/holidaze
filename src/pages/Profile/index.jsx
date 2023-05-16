@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLogin } from '../../context/LoginProvider';
 import useAxiosFetch from '../../hooks/useAxiosFetch';
-import { MyVenues, Bookings, Reservations } from '../../components/Profile';
+import {
+  ProfileVenues,
+  Bookings,
+  Reservations,
+} from '../../components/Profile';
 import avatarPlaceholder from '../../assets/avatar-placeholder.png';
-import UpdateAvatar from '../../components/Profile/Update';
+import UpdateAvatar from '../../components/Forms/UpdateAvatar';
 import { API_PROFILE_URL } from '../../shared';
 
 export const Profile = () => {
@@ -44,7 +48,7 @@ export const Profile = () => {
 
   const renderContent = () => {
     if (selectedTab === 'venues') {
-      return <MyVenues venues={venues} />;
+      return <ProfileVenues venues={venues} />;
     } else if (selectedTab === 'reservation') {
       return <Reservations name={name} />;
     } else if (selectedTab === 'bookings') {

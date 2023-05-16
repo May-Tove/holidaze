@@ -1,19 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import useToggle from '../../../hooks/useToggle';
 import VenueCard from '../../VenueCard';
 import { VenueForm } from '../../Forms';
 import { TbHomePlus } from 'react-icons/tb';
 
-export const MyVenues = ({ venues }) => {
-  const [showCreateModal, setShowCreateModal] = useState(false);
-
-  const handleCreateButtonClick = () => {
-    setShowCreateModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowCreateModal(false);
-  };
+export const ProfileVenues = ({ venues }) => {
+  const [isCreateVenueOpen, toggleCreateVenue] = useToggle();
 
   return (
     <>
@@ -23,19 +16,14 @@ export const MyVenues = ({ venues }) => {
         </h2>
         <button
           className="btn flex items-center gap-2"
-          onClick={handleCreateButtonClick}
+          onClick={toggleCreateVenue}
         >
           <TbHomePlus size={20} />
           New venue
         </button>
       </div>
-      {showCreateModal && (
-        <VenueForm
-          mode={'create'}
-          venue={{}}
-          handleClose={handleCloseModal}
-          token=""
-        />
+      {isCreateVenueOpen && (
+        <VenueForm mode={'create'} venue={{}} handleClose={toggleCreateVenue} />
       )}
       {venues && venues.length > 0 ? (
         <div>
@@ -52,7 +40,7 @@ export const MyVenues = ({ venues }) => {
   );
 };
 
-MyVenues.propTypes = {
+ProfileVenues.propTypes = {
   venues: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
