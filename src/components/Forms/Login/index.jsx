@@ -1,10 +1,10 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import useMethodApi from '../../../hooks/useMethodApi';
+import { useForm } from 'react-hook-form';
 import { useLogin } from '../../../context/LoginProvider';
-import FormSubmitError from '../../Error/FormError';
+import useAxiosFetch from '../../../hooks/useAxiosFetch';
 import { API_AUTH_URL, EMAIL_REGEX } from '../../../shared';
+import ErrorMessage from '../../../shared/errorMessage';
 
 const LoginForm = () => {
   const {
@@ -17,14 +17,10 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const { setIsLoggedIn, setProfile, setToken, setAvatar } = useLogin();
-  const { fetchWithMethod, isLoading, isError, errorMessage } = useMethodApi();
+  const { isLoading, isError, fetchError, submit } = useAxiosFetch();
 
   const onSubmit = async (formData) => {
-    const response = await fetchWithMethod(
-      `${API_AUTH_URL}/login`,
-      'post',
-      formData
-    );
+    const response = await submit(`${API_AUTH_URL}/login`, 'post', formData);
 
     setIsLoggedIn(true);
     setProfile(response.data);
@@ -77,28 +73,9 @@ const LoginForm = () => {
       <button className="btn" type="submit" disabled={isLoading}>
         {isLoading ? 'Logging in...' : 'Login'}
       </button>
-      {isError && <FormSubmitError message={errorMessage} />}
+      {isError && <ErrorMessage message={fetchError} />}
     </form>
   );
 };
 
 export default LoginForm;
-
-/*
-const onSubmit = async (formData) => {
-    try {
-      const response = await axios.post(
-        'https://api.noroff.dev/api/v1/holidaze/auth/login',
-        formData
-      );
-      const data = response.data;
-      setIsLoggedIn(true);
-      setProfile(data);
-      setToken(data.accessToken);
-      setAvatar(data.avatar);
-      navigate('/venues');
-    } catch (error) {
-      console.log(error.response.data.errors[0].message);
-    }
-  };
-*/

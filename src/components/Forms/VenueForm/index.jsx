@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
-import FormSubmitError from '../../Error/FormError';
+import useAxiosFetch from '../../../hooks/useAxiosFetch';
 import { CgTrash, CgClose, CgCheckO } from 'react-icons/cg';
 import { TbPhotoPlus } from 'react-icons/tb';
-import imgPlaceholder from '../../../assets/placeholderImg@2x.jpg';
 import { useNavigate } from 'react-router-dom';
-import { API_VENUE_URL } from '../../../shared';
-import useMethodApi from '../../../hooks/useMethodApi';
+import { API_VENUE_URL, handleErrorImage } from '../../../shared';
+import ErrorMessage from '../../../shared/errorMessage';
 
 export const VenueForm = ({ mode, venue, handleClose }) => {
   const {
@@ -19,8 +18,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
 
   const navigate = useNavigate();
 
-  const { fetchWithMethod, isLoading, isError, errorMessage, success } =
-    useMethodApi();
+  const { submit, isLoading, isError, fetchError, success } = useAxiosFetch();
 
   const { id, name, description, location, meta, price, maxGuests, media } =
     venue;
@@ -75,11 +73,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
     };
 
     if (mode === 'create') {
-      const response = await fetchWithMethod(
-        API_VENUE_URL,
-        'post',
-        requestData
-      );
+      const response = await submit(API_VENUE_URL, 'post', requestData);
 
       const data = response.data;
 
@@ -88,7 +82,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
         navigate(`/venue/${data.id}`);
       }, 1000);
     } else if (mode === 'update') {
-      const response = await fetchWithMethod(
+      const response = await submit(
         `${API_VENUE_URL}/${id}`,
         'put',
         requestData
@@ -328,9 +322,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                       className="w-5/6 h-[130px] rounded object-cover"
                       src={url}
                       alt="Venue image"
-                      onError={(e) => {
-                        e.target.src = imgPlaceholder;
-                      }}
+                      onError={handleErrorImage}
                     />
                   </div>
                 ))}
@@ -368,7 +360,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                 </button>
               </div>
 
-              {isError && <FormSubmitError message={errorMessage} />}
+              {isError && <ErrorMessage message={fetchError} />}
               {success && (
                 <div
                   className="p-2 mt-5 w-full bg-green-600 items-center gap-2 text-green-100 leading-none rounded flex lg:inline-flex"

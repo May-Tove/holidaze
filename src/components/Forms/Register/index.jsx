@@ -1,8 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import useMethodApi from '../../../hooks/useMethodApi';
-import FormSubmitError from '../../Error/FormError';
+import useAxiosFetch from '../../../hooks/useAxiosFetch';
+import ErrorMessage from '../../../shared/errorMessage';
 import {
   API_AUTH_URL,
   AVATAR_REGEX,
@@ -11,7 +11,6 @@ import {
 } from '../../../shared';
 
 const RegisterForm = () => {
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -19,10 +18,12 @@ const RegisterForm = () => {
     reset,
   } = useForm();
 
-  const { fetchWithMethod, isLoading, isError, errorMessage } = useMethodApi();
+  const navigate = useNavigate();
+
+  const { submit, isLoading, isError, fetchError } = useAxiosFetch();
 
   const onSubmit = async (formData) => {
-    await fetchWithMethod(`${API_AUTH_URL}/register`, 'post', formData);
+    await submit(`${API_AUTH_URL}/register`, 'post', formData);
 
     navigate('/login');
     reset();
@@ -111,7 +112,7 @@ const RegisterForm = () => {
       <button className="btn" type="submit" disabled={isLoading}>
         {isLoading ? 'Registering...' : 'Register'}
       </button>
-      {isError && <FormSubmitError message={errorMessage} />}
+      {isError && <ErrorMessage message={fetchError} />}
     </form>
   );
 };
