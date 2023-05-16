@@ -1,17 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { useLogin } from '../../context/LoginProvider';
+import PropTypes from 'prop-types';
+import { useLogin } from '../../../context/LoginProvider';
 import { HiChevronDown } from 'react-icons/hi';
-import avatarPlaceholder from '../../assets/avatar-placeholder.png';
+import { handleErrorImage } from '../../../shared';
 
-const LoggedInNav = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+const UserNavigation = ({ toggle, isOpen }) => {
   const { setIsLoggedIn, profile, avatar } = useLogin();
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
 
   const LogOutUser = () => {
     setIsLoggedIn(false);
@@ -23,16 +18,14 @@ const LoggedInNav = () => {
       <button
         className="flex items-center"
         id="dropdownAvatarNameButton"
-        onClick={toggleDropdown}
+        onClick={toggle}
       >
         <span className="sr-only">Open Menu</span>
         <img
           className="w-5 h-5 lg:w-8 lg:h-8 mr-1 lg:mr-2 rounded-full object-cover"
           src={avatar}
           alt={`Profile image of ${profile.name}`}
-          onError={(e) => {
-            e.target.src = avatarPlaceholder;
-          }}
+          onError={handleErrorImage}
         />
 
         <HiChevronDown />
@@ -40,7 +33,7 @@ const LoggedInNav = () => {
 
       <div
         className={`${
-          isDropdownOpen ? 'block' : 'hidden'
+          isOpen ? 'block' : 'hidden'
         } origin-top-right absolute right-0 mt-2 w-content rounded shadow-lg bg-white divide-y divide-gray-200 `}
         id="dropdownAvatarName"
       >
@@ -56,6 +49,7 @@ const LoggedInNav = () => {
             <Link
               className="block px-4 py-2 hover:bg-gray-100 "
               to={`/profile/${profile.name}`}
+              onClick={toggle}
             >
               Dashboard
             </Link>
@@ -75,4 +69,9 @@ const LoggedInNav = () => {
   );
 };
 
-export default LoggedInNav;
+UserNavigation.propTypes = {
+  toggle: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+};
+
+export default UserNavigation;
