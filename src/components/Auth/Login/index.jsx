@@ -1,10 +1,11 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import useMethodApi from '../../../hooks/useMethodApi';
+/*import useMethodApi from '../../../hooks/useMethodApi';*/
 import { useLogin } from '../../../context/LoginProvider';
 import FormSubmitError from '../../Error/FormError';
 import { API_AUTH_URL, EMAIL_REGEX } from '../../../shared';
+import useAxiosFetch from '../../../hooks/useAxiosFetch';
 
 const LoginForm = () => {
   const {
@@ -17,10 +18,11 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const { setIsLoggedIn, setProfile, setToken, setAvatar } = useLogin();
-  const { fetchWithMethod, isLoading, isError, errorMessage } = useMethodApi();
+  /* const { fetchWithMethod, isLoading, isError, errorMessage } = useMethodApi();*/
+  const { isLoading, isError, errorMessage } = useAxiosFetch();
 
   const onSubmit = async (formData) => {
-    const response = await fetchWithMethod(
+    const response = await useAxiosFetch(
       `${API_AUTH_URL}/login`,
       'post',
       formData
