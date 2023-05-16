@@ -1,34 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import useImageSlider from '../../../hooks/useImageSlider';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
-import PlaceholderImage from '../PlaceholderImage';
+import { handleErrorImage } from '../../../shared';
 
 const ImageSlider = ({ media }) => {
   const slides = media.map((image) => ({ url: image }));
 
-  const [slideNumber, setSlideNumber] = useState(0);
-
-  const prevSlide = (event) => {
-    event.preventDefault();
-
-    slideNumber === 0
-      ? setSlideNumber(slides.length - 1)
-      : setSlideNumber(slideNumber - 1);
-  };
-
-  const nextSlide = (event) => {
-    event.preventDefault();
-
-    slideNumber + 1 === slides.length
-      ? setSlideNumber(0)
-      : setSlideNumber(slideNumber + 1);
-  };
+  const { slideNumber, prevSlide, nextSlide } = useImageSlider(slides);
 
   const hasMultipleImages = slides.length > 1;
 
   return (
     <div className="overflow-hidden relative w-full h-full">
-      {slides.length > 0 ? (
+      {slides.length > 0 && (
         <>
           <div
             className="flex w-full h-full transition-transform ease-out duration-500"
@@ -40,6 +25,7 @@ const ImageSlider = ({ media }) => {
                 src={slide.url}
                 className="w-full object-cover flex-shrink-0 "
                 alt="Image of venue"
+                onError={handleErrorImage}
               />
             ))}
           </div>
@@ -78,10 +64,6 @@ const ImageSlider = ({ media }) => {
             </div>
           )}
         </>
-      ) : (
-        <div className="w-full h-72 ">
-          <PlaceholderImage />
-        </div>
       )}
     </div>
   );

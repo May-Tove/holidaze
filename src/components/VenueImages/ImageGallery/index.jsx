@@ -1,33 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import useToggle from '../../../hooks/useToggle';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import { AiOutlineCloseCircle } from 'react-icons/Ai';
 import ImageSlider from '../ImageSlider';
-import PlaceholderImage from '../PlaceholderImage';
+import { handleErrorImage } from '../../../shared';
+import useImageSlider from '../../../hooks/useImageSlider';
 
 const ImageGallery = ({ galleryImages }) => {
-  const [slideNumber, setSlideNumber] = useState(0);
-  const [openModal, setOpenModal] = useState(false);
+  const [isImgGalleryOpen, toggleImgGallery] = useToggle();
+  const { slideNumber, setSlideNumber, prevSlide, nextSlide } =
+    useImageSlider(galleryImages);
 
   const handleOpenModal = (index = 0) => {
     setSlideNumber(index);
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-
-  const prevSlide = () => {
-    slideNumber === 0
-      ? setSlideNumber(galleryImages.length - 1)
-      : setSlideNumber(slideNumber - 1);
-  };
-
-  const nextSlide = () => {
-    slideNumber + 1 === galleryImages.length
-      ? setSlideNumber(0)
-      : setSlideNumber(slideNumber + 1);
+    toggleImgGallery();
   };
 
   // Only displaying the three first images from the array in the grid by default
@@ -51,11 +38,11 @@ const ImageGallery = ({ galleryImages }) => {
         <ImageSlider media={galleryImages} />
       </div>
       <div className="hidden lg:block relative">
-        {openModal && (
+        {isImgGalleryOpen && (
           <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black/90 z-50">
             <button
               className="absolute top-5 right-5 flex items-center gap-2 cursor-pointer text-white p-1 hover:bg-gray-500/80"
-              onClick={handleCloseModal}
+              onClick={toggleImgGallery}
             >
               <AiOutlineCloseCircle size={20} />
               Close
@@ -92,7 +79,7 @@ const ImageGallery = ({ galleryImages }) => {
         )}
 
         <div className={`${gridLayout} h-[600px]`}>
-          {galleryImages.length > 0 ? (
+          {galleryImages &&
             defaultImages.map((image, index) => {
               return (
                 <img
@@ -101,18 +88,14 @@ const ImageGallery = ({ galleryImages }) => {
                   alt={`Image ${index + 1}`}
                   key={index}
                   onClick={() => handleOpenModal(index)}
+                  onError={handleErrorImage}
                 />
               );
-            })
-          ) : (
-            <div className="row-span-2 col-span-5">
-              <PlaceholderImage />
-            </div>
-          )}
+            })}
           {galleryImages.length > 3 && (
             <button
               className="btn absolute top-4 left-4"
-              onClick={() => handleOpenModal()}
+              onClick={toggleImgGallery}
             >
               View all ({galleryImages.length})
             </button>
