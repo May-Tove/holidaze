@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { HiOutlineLocationMarker, HiOutlineHeart } from 'react-icons/hi';
 import ImageSlider from '../VenueImages/ImageSlider';
-import Rating from '../Rating';
-import formatCurrency from '../../utilities/formatCurrency';
+import formatCurrency from '../../shared/formatCurrency';
 
 const VenueCard = ({ venue: { name, id, price, media, rating, location } }) => {
   const venuePrice = formatCurrency(price);
@@ -38,9 +37,7 @@ const VenueCard = ({ venue: { name, id, price, media, rating, location } }) => {
                 : location.country}
             </p>
           </div>
-          <div className="flex gap-2 mb-2">
-            <Rating rating={rating} />
-          </div>
+          <div className="flex gap-2 mb-2">{rating}</div>
           <p className="pt-4 font-bold border-t">{venuePrice} / Night</p>
         </div>
       </article>

@@ -1,16 +1,15 @@
 import React from 'react';
-import VenueSkeletonLoader from '../VenueSkeletonLoader';
-import VenueCard from '../VenueCard';
-import useAxiosFetch from '../../hooks/useAxiosFetch';
-import { API_VENUE_URL } from '../../shared';
+import useAxiosFetch from '../../../hooks/useAxiosFetch';
+import { API_VENUE_URL } from '../../../shared';
+import CardSkeletonLoader from '../CardSkeletonLoader';
+import VenueCard from '../../VenueCard';
 
 const VenuesList = () => {
-  const { data, isLoading, fetchError } = useAxiosFetch(
+  const { data, isLoading, isError } = useAxiosFetch(
     `${API_VENUE_URL}?_owner=true`
   );
-  console.log(data);
 
-  if (fetchError) {
+  if (isError) {
     return <div>Error</div>;
   }
 
@@ -19,7 +18,7 @@ const VenuesList = () => {
       <section className="py-40 w-full m-auto">
         <div className="grid grid-cols-2 gap-4">
           {[...Array(8)].map((_, index) => (
-            <VenueSkeletonLoader key={index} />
+            <CardSkeletonLoader key={index} />
           ))}
         </div>
       </section>

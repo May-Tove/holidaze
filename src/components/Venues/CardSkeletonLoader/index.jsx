@@ -1,6 +1,6 @@
 import React from 'react';
 
-const VenueSkeletonLoader = () => {
+const CardSkeletonLoader = () => {
   return (
     <div className="flex flex-col items-center bg-gray-100 drop-shadow animate-pulse">
       <div className="h-72 w-full animate-pulse bg-gray-300" />
@@ -19,4 +19,4 @@ const VenueSkeletonLoader = () => {
   );
 };
 
-export default VenueSkeletonLoader;
+export default CardSkeletonLoader;

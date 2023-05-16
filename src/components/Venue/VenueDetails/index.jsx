@@ -1,43 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import useApi from '../../../hooks/useAxiosFetch';
+import { useLogin } from '../../../context/LoginProvider';
+import useAxiosFetch from '../../../hooks/useAxiosFetch';
+import useToggle from '../../../hooks/useToggle';
 import { IoPeopleOutline } from 'react-icons/io5';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
-import Rating from '../../Rating';
+import { API_VENUE_URL, handleErrorImage } from '../../../shared';
+import { VenueForm, CreateBooking } from '../../Forms';
 import ImageGallery from '../../VenueImages/ImageGallery';
-import VenueMeta from '../VenueMeta';
-import CreateBooking from '../CreateBooking';
+import VenueMeta from '../Meta';
 import SkeletonLoader from '../SkeletonLoader';
-import { useLogin } from '../../../context/LoginProvider';
-import avatarPlaceholder from '../../../assets/avatar-placeholder.png';
-import { VenueForm } from '../../Forms';
-import { API_VENUE_URL } from '../../../shared';
-import useMethodApi from '../../../hooks/useMethodApi';
 
 const VenueDetails = () => {
-  const [showEditModal, setShowEditModal] = useState(false);
+  const [isEditModalOpen, toggleEditModal] = useToggle();
+
   let { id } = useParams();
-  const { data, isLoading, isError } = useApi(
+
+  const { data, isLoading, isError, submit } = useAxiosFetch(
     `${API_VENUE_URL}/${id}?_owner=true&_bookings=true`
   );
-  const { profile } = useLogin();
-  const { fetchWithMethod } = useMethodApi();
+  const { profile, isLoggedIn } = useLogin();
 
   const navigate = useNavigate();
 
-  // Handle edit button click
-  const handleEditButtonClick = () => {
-    setShowEditModal(true);
-  };
-
-  // Handle modal close
-  const handleCloseModal = () => {
-    setShowEditModal(false);
-  };
-
-  // Handle delete venue
   const handleDeleteVenue = async () => {
-    await fetchWithMethod(`${API_VENUE_URL}/${id}`, 'delete');
+    await submit(`${API_VENUE_URL}/${id}`, 'delete');
 
     navigate('/venues');
   };
@@ -71,26 +58,20 @@ const VenueDetails = () => {
           <button className="btn" onClick={handleDeleteVenue}>
             Delete
           </button>
-          <button className="btn" onClick={handleEditButtonClick}>
+          <button className="btn" onClick={toggleEditModal}>
             Edit
           </button>
         </div>
       )}
-      {showEditModal && (
-        <VenueForm
-          mode={'update'}
-          venue={data}
-          handleClose={handleCloseModal}
-        />
+      {isEditModalOpen && (
+        <VenueForm mode={'update'} venue={data} handleClose={toggleEditModal} />
       )}
       {media && <ImageGallery galleryImages={media} />}
 
       <div className="my-5 flex flex-col lg:flex-row justify-between items-start">
         <div className="flex flex-col gap-2 mb-5">
           <h1 className="font-serif font-bold text-2xl">{name}</h1>
-          <div className="flex gap-2">
-            <Rating rating={rating} />
-          </div>
+          <div className="flex gap-2">{rating}</div>
           {location && (
             <p className="flex items-center gap-2">
               <HiOutlineLocationMarker /> {location.address}, {location.city},{' '}
@@ -107,9 +88,7 @@ const VenueDetails = () => {
               className="w-10 h-10 lg:w-14 lg:h-14 rounded-full object-cover"
               src={owner.avatar}
               alt={`Image of ${owner.name}`}
-              onError={(e) => {
-                e.target.src = avatarPlaceholder;
-              }}
+              onError={handleErrorImage}
             />
             <div>
               <h5 className="font-bold text-lg">{owner.name}</h5>
@@ -136,7 +115,7 @@ const VenueDetails = () => {
         </div>
         <div>
           <h2 className="mb-3 text-lg font-bold">Book your stay</h2>
-          <CreateBooking bookings={bookings} />
+          <CreateBooking bookings={bookings} id={id} isLoggedIn={isLoggedIn} />
         </div>
       </section>
     </div>
