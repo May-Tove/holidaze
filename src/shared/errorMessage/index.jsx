@@ -2,17 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { BiErrorCircle } from 'react-icons/bi';
 
-const FormSubmitError = ({ message }) => {
+const ErrorMessage = ({ message }) => {
   return (
     <div className="flex gap-2 p-2 bg-red-600 text-white rounded">
       <BiErrorCircle size={20} />
-      <p>{message}</p>
+      {message ? <p>{message}</p> : <p>An unknown error occurred.</p>}
     </div>
   );
 };
 
-FormSubmitError.propTypes = {
+ErrorMessage.propTypes = {
   message: PropTypes.string.isRequired,
 };
 
-export default FormSubmitError;
+export default ErrorMessage;
