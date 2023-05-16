@@ -4,8 +4,10 @@ import { useLogin } from '../../context/LoginProvider';
 
 const useAxiosFetch = (dataUrl, method) => {
   const [data, setData] = useState([]);
+  const [success, setSuccess] = useState(null);
   const [fetchError, setFetchError] = useState(null);
-  const [isLoading, setIsLoading] = useState(null);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { token } = useLogin();
 
@@ -14,12 +16,48 @@ const useAxiosFetch = (dataUrl, method) => {
     Authorization: `Bearer ${token}`,
   };
 
+  const handleFetchError = (error) => {
+    setIsError(true);
+    setFetchError(error.message);
+    setData([]);
+    setSuccess(null);
+  };
+
+  const handleSuccessFetch = (response) => {
+    setData(response.data);
+    setSuccess(true);
+    setIsError(false);
+    setFetchError(null);
+  };
+
+  const submit = async (url, method, formData) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios({
+        url: url,
+        method: method,
+        headers: headers,
+        data: formData,
+      });
+
+      handleSuccessFetch(response);
+
+      return response;
+    } catch (error) {
+      handleFetchError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     let isMounted = true;
     const source = axios.CancelToken.source();
 
     const fetchData = async (url) => {
       setIsLoading(true);
+
       try {
         const response = await axios({
           url: url,
@@ -27,14 +65,13 @@ const useAxiosFetch = (dataUrl, method) => {
           headers: headers,
           cancelToken: source.token,
         });
+
         if (isMounted) {
-          setData(response.data);
-          setFetchError(null);
+          handleSuccessFetch(response);
         }
       } catch (error) {
         if (isMounted) {
-          setFetchError(error.message);
-          setData([]);
+          handleFetchError(error);
         }
       } finally {
         isMounted && setIsLoading(false);
@@ -43,14 +80,14 @@ const useAxiosFetch = (dataUrl, method) => {
 
     fetchData(dataUrl);
 
-    const cleanUp = () => {
+    const cleanup = () => {
       isMounted = false;
       source.cancel();
     };
-    return cleanUp;
+    return cleanup;
   }, [dataUrl, method]);
 
-  return { data, fetchError, isLoading };
+  return { data, success, fetchError, isError, isLoading, submit };
 };
 
 export default useAxiosFetch;
