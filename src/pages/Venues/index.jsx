@@ -1,5 +1,5 @@
 import React from 'react';
-import VenuesList from '../../components/VenuesList';
+import VenuesList from '../../components/Venues/List';
 
 export const Venues = () => {
   return (
