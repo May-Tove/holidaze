@@ -32,38 +32,49 @@ const LoginForm = () => {
 
   return (
     <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col w-full">
-        <label htmlFor="email">Email:</label>
-        <input
-          className="bg-transparent border-2 border-primary p-1"
-          type="email"
-          id="email"
-          {...register('email', {
-            required: true,
-            pattern: EMAIL_REGEX,
-          })}
-        />
+      <div>
+        <div className="relative">
+          <input
+            className="floating-input peer"
+            type="email"
+            id="email"
+            placeholder=" "
+            {...register('email', {
+              required: true,
+              pattern: EMAIL_REGEX,
+            })}
+          />
+          <label className="floating-label" htmlFor="email">
+            Email
+          </label>
+        </div>
         {errors.email && (
-          <span className="text-red-600 text-sm mt-1">
+          <span className="text-red-600 text-sm">
             This field is required and must be a valid noroff.no or
             stud.noroff.no email address.
           </span>
         )}
       </div>
-      <div className="flex flex-col w-full">
-        <label htmlFor="password">Password:</label>
-        <input
-          className="bg-transparent border-2 border-primary p-1"
-          type="password"
-          id="password"
-          {...register('password', { required: true, minLength: 8 })}
-        />
+      <div>
+        <div className="relative">
+          <input
+            className="floating-input peer"
+            type="password"
+            id="password"
+            placeholder=" "
+            {...register('password', { required: true, minLength: 8 })}
+          />
+          <label className="floating-label" htmlFor="password">
+            Password
+          </label>
+        </div>
         {errors.password && (
-          <span className="text-red-600 text-sm mt-1">
+          <span className="text-red-600 text-sm">
             This field is required and must be at least 8 characters long.
           </span>
         )}
       </div>
+
       <div>
         Do not have an account?{' '}
         <Link to={'/register'} className="text-blue-800 underline">

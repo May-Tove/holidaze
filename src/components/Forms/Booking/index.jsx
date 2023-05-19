@@ -165,23 +165,24 @@ export const CreateBooking = ({ bookings, id, isLoggedIn, price }) => {
           />
         </div>
 
-        <div className="flex flex-col">
-          <label htmlFor="guests">Guests</label>
+        <div className="relative">
           <input
-            className="bg-transparent border-2 border-primary p-1"
+            className="floating-input peer"
             type="number"
             id="guests"
             min={1}
+            placeholder=" "
             {...register('guests', {
               required: true,
             })}
           />
-          {errors.guests && (
-            <span className="text-red-600 text-sm mt-1">
-              This field is required
-            </span>
-          )}
+          <label className="floating-label" htmlFor="guests">
+            Guests
+          </label>
         </div>
+        {errors.guests && (
+          <span className="text-red-600 text-sm">This field is required</span>
+        )}
         <div>Price per night: {price}</div>
         {isLoggedIn ? (
           <button className="btn" type="submit" disabled={isLoading}>

@@ -124,93 +124,125 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                 <CgClose size={20} />
               </button>
             </div>
-            <div className="flex flex-col w-full">
-              <label htmlFor="name">Name</label>
-              <input
-                className="bg-transparent border rounded border-primary p-1"
-                type="text"
-                id="name"
-                {...register('name', {
-                  required: true,
-                })}
-                defaultValue={isUpdateMode ? name : ''}
-              />
-              {errors.venueName && (
+            <div>
+              <div className="relative">
+                <input
+                  className="floating-input peer"
+                  type="text"
+                  id="name"
+                  placeholder=" "
+                  {...register('name', {
+                    required: true,
+                  })}
+                  defaultValue={isUpdateMode ? name : ''}
+                />
+                <label className="floating-label" htmlFor="name">
+                  Name
+                </label>
+              </div>
+              {errors.name && (
                 <span className="text-red-600 text-sm mt-1">
                   This field is required
                 </span>
               )}
             </div>
-            <div className="flex flex-col w-full">
-              <label htmlFor="description">Description</label>
-              <textarea
-                className="bg-transparent min-h-[100px] border rounded border-primary p-1"
-                type="text"
-                id="description"
-                {...register('description', { required: true })}
-                defaultValue={isUpdateMode ? description : ''}
-              />
+            <div>
+              <div className="relative">
+                <textarea
+                  className="floating-textarea peer h-[120px]"
+                  type="text"
+                  id="description"
+                  placeholder=" "
+                  {...register('description', { required: true })}
+                  defaultValue={isUpdateMode ? description : ''}
+                />
+                <label className="floating-label" htmlFor="description">
+                  Description
+                </label>
+              </div>
               {errors.description && (
                 <span className="text-red-600 text-sm mt-1">
                   This field is required
                 </span>
               )}
             </div>
-            <div className="flex flex-col w-full">
-              <label htmlFor="address">Address</label>
-              <input
-                className="bg-transparent border rounded border-primary p-1"
-                type="text"
-                id="address"
-                {...register('address', { required: true })}
-                defaultValue={isUpdateMode ? location.address : ''}
-              />
+            <div>
+              <div className="relative">
+                <input
+                  className="floating-input peer"
+                  type="text"
+                  id="address"
+                  placeholder=" "
+                  {...register('address', { required: true })}
+                  defaultValue={isUpdateMode ? location.address : ''}
+                />
+                <label className="floating-label" htmlFor="address">
+                  Address
+                </label>
+              </div>
               {errors.address && (
                 <span className="text-red-600 text-sm mt-1">
                   This field is required
                 </span>
               )}
             </div>
+
             <div className="flex flex-col md:flex-row gap-5">
-              <div className="flex flex-col w-full">
-                <label htmlFor="city">City</label>
-                <input
-                  className="bg-transparent border rounded border-primary p-1"
-                  type="text"
-                  id="city"
-                  {...register('city', { required: true })}
-                  defaultValue={isUpdateMode ? location.city : ''}
-                />
+              <div>
+                <div className="relative">
+                  <input
+                    className="floating-input peer"
+                    type="text"
+                    id="city"
+                    placeholder=" "
+                    {...register('city', { required: true })}
+                    defaultValue={isUpdateMode ? location.city : ''}
+                  />
+                  <label className="floating-label" htmlFor="city">
+                    City
+                  </label>
+                </div>
                 {errors.city && (
                   <span className="text-red-600 text-sm mt-1">
                     This field is required
                   </span>
                 )}
               </div>
-              <div className="flex flex-col w-full">
-                <label htmlFor="zip">Zip</label>
-                <input
-                  className="bg-transparent border rounded border-primary p-1"
-                  type="text"
-                  id="zip"
-                  {...register('zip', { required: true })}
-                  defaultValue={isUpdateMode ? location.zip : ''}
-                />
+              <div>
+                <div className="relative">
+                  <input
+                    className="floating-input peer"
+                    type="text"
+                    id="zip"
+                    placeholder=" "
+                    {...register('zip', { required: true })}
+                    defaultValue={isUpdateMode ? location.zip : ''}
+                  />
+                  <label className="floating-label" htmlFor="zip">
+                    Zip
+                  </label>
+                </div>
                 {errors.zip && (
                   <span className="text-red-600 text-sm mt-1">
                     This field is required
                   </span>
                 )}
               </div>
-              <div className="flex flex-col w-full">
-                <label htmlFor="country">Country</label>
-                <input
-                  className="bg-transparent border rounded border-primary p-1"
-                  type="text"
-                  id="country"
-                  {...register('country', { required: true })}
-                  defaultValue={isUpdateMode ? location.country : ''}
-                />
+
+              <div>
+                <div className="relative">
+                  <input
+                    className="floating-input peer"
+                    type="text"
+                    id="country"
+                    placeholder=" "
+                    {...register('country', { required: true })}
+                    defaultValue={isUpdateMode ? location.country : ''}
+                  />
+                  <label className="floating-label" htmlFor="country">
+                    Country
+                  </label>
+                </div>
                 {errors.country && (
                   <span className="text-red-600 text-sm mt-1">
                     This field is required
@@ -260,35 +292,45 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                 <label htmlFor="parking">Parking</label>
               </div>
             </div>
-            <div className="flex flex-col md:flex-row  gap-5">
-              <div className="flex flex-col w-full">
-                <label htmlFor="price">Price</label>
-                <input
-                  className="bg-transparent border rounded border-primary p-1"
-                  type="number"
-                  id="price"
-                  {...register('price', {
-                    required: true,
-                  })}
-                  defaultValue={isUpdateMode ? price : ''}
-                />
+            <div className="flex flex-col md:flex-row gap-5">
+              <div>
+                <div className="relative w-full">
+                  <input
+                    className="floating-input peer"
+                    type="number"
+                    id="price"
+                    placeholder=" "
+                    {...register('price', {
+                      required: true,
+                    })}
+                    defaultValue={isUpdateMode ? price : ''}
+                  />
+                  <label className="floating-label" htmlFor="price">
+                    Price
+                  </label>
+                </div>
                 {errors.price && (
                   <span className="text-red-600 text-sm mt-1">
                     This field is required
                   </span>
                 )}
               </div>
-              <div className="flex flex-col w-full">
-                <label htmlFor="maxGuests">Max Guests</label>
-                <input
-                  className="bg-transparent border rounded border-primary p-1"
-                  type="number"
-                  id="maxGuests"
-                  {...register('maxGuests', {
-                    required: true,
-                  })}
-                  defaultValue={isUpdateMode ? maxGuests : ''}
-                />
+              <div>
+                <div className="relative w-full">
+                  <input
+                    className="floating-input peer"
+                    type="number"
+                    id="maxGuests"
+                    placeholder=" "
+                    {...register('maxGuests', {
+                      required: true,
+                    })}
+                    defaultValue={isUpdateMode ? maxGuests : ''}
+                  />
+                  <label className="floating-label" htmlFor="maxGuests">
+                    Max Guests
+                  </label>
+                </div>
                 {errors.maxGuests && (
                   <span className="text-red-600 text-sm mt-1">
                     This field is required
@@ -297,7 +339,6 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
               </div>
             </div>
             <div className="w-full">
-              <label htmlFor="media">Images</label>
               <div className="flex flex-wrap gap-8 items-center">
                 {imageUrls.map((url, index) => (
                   <div
@@ -312,13 +353,19 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                       >
                         <CgTrash size={20} />
                       </button>
-                      <input
-                        className="bg-transparent border rounded border-primary p-1 w-full"
-                        type="text"
-                        id="media"
-                        value={url}
-                        onChange={(e) => handleImageUrlChange(e, index)}
-                      />
+                      <div className="relative">
+                        <input
+                          className="floating-input peer"
+                          type="url"
+                          id="media"
+                          value={url}
+                          placeholder=" "
+                          onChange={(e) => handleImageUrlChange(e, index)}
+                        />
+                        <label className="floating-label" htmlFor="media">
+                          Image
+                        </label>
+                      </div>
                     </div>
 
                     <img

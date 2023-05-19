@@ -59,18 +59,24 @@ const UpdateAvatar = ({ profile, handleClose }) => {
               </button>
             </div>
             <div className="flex flex-col w-full">
-              <label htmlFor="avatar">Avatar url</label>
               <div className="flex gap-3">
-                <input
-                  className="bg-transparent border rounded border-primary p-1 w-full"
-                  type="url"
-                  id="avatar"
-                  {...register('avatar', {
-                    required: true,
-                  })}
-                  defaultValue={avatar}
-                  onChange={handleInputChange}
-                />
+                <div className="relative w-full">
+                  <input
+                    className="floating-input peer"
+                    type="url"
+                    id="avatar"
+                    placeholder=" "
+                    {...register('avatar', {
+                      required: true,
+                    })}
+                    defaultValue={avatar}
+                    onChange={handleInputChange}
+                  />
+                  <label className="floating-label" htmlFor="avatar">
+                    Avatar url
+                  </label>
+                </div>
+
                 <button
                   className="iconBtn flex items-center gap-1"
                   onClick={handleClearInputField}
