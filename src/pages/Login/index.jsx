@@ -3,7 +3,8 @@ import LoginForm from '../../components/Forms/Login';
 
 export const Login = () => {
   return (
-    <main className="w-5/6 m-auto lg:w-4/5 py-40 ">
+    <main className="main-layout">
+      <h1>Login</h1>
       <LoginForm />
     </main>
   );

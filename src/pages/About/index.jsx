@@ -2,7 +2,7 @@ import React from 'react';
 
 export const About = () => {
   return (
-    <main>
+    <main className="main-layout">
       <h1>About</h1>
     </main>
   );

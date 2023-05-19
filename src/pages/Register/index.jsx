@@ -3,7 +3,7 @@ import RegisterForm from '../../components/Forms/Register';
 
 export const Register = () => {
   return (
-    <main className="w-5/6 m-auto lg:w-4/5 py-40 ">
+    <main className="main-layout">
       <h1 className="text-2xl font-serif font-bold mb-5">Register</h1>
       <div className="flex flex-col lg:flex-row gap-20 lg:gap-40">
         <div className="flex flex-col gap-3 lg:w-1/2">
