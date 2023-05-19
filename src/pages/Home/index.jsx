@@ -15,7 +15,7 @@ export const Home = () => {
           backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)),url(${BackgroundHero})`,
         }}
       >
-        <h1 className="text-white pt-20 text-center text-4xl lg:text-7xl font-serif w-3/4 m-auto">
+        <h1 className="text-white pt-20 text-center text-4xl lg:text-7xl w-3/4 m-auto">
           Time for a getaway? Find the ideal place to stay
         </h1>
         <SearchBar />
@@ -31,7 +31,7 @@ export const Home = () => {
           <p className="uppercase text-xs font-bold text-secondary">
             Who are we?
           </p>
-          <h2 className="text-2xl lg:text-4xl mb-4 font-serif">
+          <h2 className="text-2xl lg:text-4xl mb-4">
             Your ultimate destination for booking and renting out accommodations
             worldwide
           </h2>
@@ -55,7 +55,7 @@ export const Home = () => {
         <p className="uppercase text-center text-xs font-bold text-secondary">
           Popular categories
         </p>
-        <h2 className="text-2xl lg:text-4xl text-center font-serif mb-4 w-full lg:w-3/4 m-auto">
+        <h2 className="text-2xl lg:text-4xl text-center mb-4 w-full lg:w-3/4 m-auto">
           Looking for some travel inspiration? Check out our most popular
           categories
         </h2>
@@ -116,7 +116,7 @@ export const Home = () => {
           <p className="uppercase text-xs font-bold text-secondary">
             Register an account
           </p>
-          <h2 className="text-2xl lg:text-4xl mb-4 font-serif">
+          <h2 className="text-2xl lg:text-4xl mb-4">
             Book your next stay or rent out your accommodation to the world?
             Register at Holidaze today!
           </h2>
@@ -160,7 +160,7 @@ export const Home = () => {
           <p className="uppercase text-xs font-bold text-secondary">
             We got you!
           </p>
-          <h2 className="text-2xl lg:text-4xl mb-4 font-serif">
+          <h2 className="text-2xl lg:text-4xl mb-4">
             Let us help make your travel planning stress-free
           </h2>
           <p>

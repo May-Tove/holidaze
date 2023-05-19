@@ -5,36 +5,36 @@ import VenueCard from '../../VenueCard';
 import { VenueForm } from '../../Forms';
 import { TbHomePlus } from 'react-icons/tb';
 
-export const ProfileVenues = ({ venues }) => {
+export const ProfileVenues = ({ venues, isOwnProfile }) => {
   const [isCreateVenueOpen, toggleCreateVenue] = useToggle();
 
   return (
     <>
       <div className="flex justify-between items-center mb-3">
-        <h2 className="font-serif font-bold text-xl">
-          Active Venues ({venues && venues.length})
-        </h2>
-        <button
-          className="btn flex items-center gap-2"
-          onClick={toggleCreateVenue}
-        >
-          <TbHomePlus size={20} />
-          New venue
-        </button>
+        <h2>Active Venues ({venues && venues.length})</h2>
+        {isOwnProfile && (
+          <button
+            className="btn flex items-center gap-2"
+            onClick={toggleCreateVenue}
+          >
+            <TbHomePlus size={20} />
+            New venue
+          </button>
+        )}
       </div>
       {isCreateVenueOpen && (
         <VenueForm mode={'create'} venue={{}} handleClose={toggleCreateVenue} />
       )}
       {venues && venues.length > 0 ? (
         <div>
-          <div className="grid grid-cols-5 gap-5">
+          <div className="grid grid-cols-3 gap-5 ">
             {venues.map((venue) => (
               <VenueCard key={venue.id} venue={venue} />
             ))}
           </div>
         </div>
       ) : (
-        <div>You have no active venues</div>
+        <p className="text-lightGrey">You have no active venues</p>
       )}
     </>
   );
@@ -46,5 +46,5 @@ ProfileVenues.propTypes = {
       id: PropTypes.string.isRequired,
     })
   ),
-  venueManager: PropTypes.bool,
+  isOwnProfile: PropTypes.bool,
 };

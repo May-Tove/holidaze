@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import useImageSlider from '../../../hooks/useImageSlider';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import { handleErrorImage } from '../../../shared';
+import placeholderImg from '../../../assets/placeholderImg@2x.jpg';
 
 const ImageSlider = ({ media }) => {
   const slides = media.map((image) => ({ url: image }));
@@ -11,19 +12,29 @@ const ImageSlider = ({ media }) => {
 
   const hasMultipleImages = slides.length > 1;
 
+  if (slides.length === 0) {
+    return (
+      <img
+        className="w-full h-72 rounded-2xl"
+        src={placeholderImg}
+        alt="No image for this venue, placeholder image is displayed"
+      />
+    );
+  }
+
   return (
-    <div className="overflow-hidden relative w-full h-full">
+    <div className="overflow-hidden relative w-full h-full rounded-2xl">
       {slides.length > 0 && (
         <>
           <div
-            className="flex w-full h-full transition-transform ease-out duration-500"
+            className="flex w-full h-full transition-transform ease-out duration-500 "
             style={{ transform: `translateX(-${slideNumber * 100}%)` }}
           >
             {slides.map((slide, index) => (
               <img
                 key={index}
                 src={slide.url}
-                className="w-full object-cover flex-shrink-0 "
+                className="w-full flex-shrink-0"
                 alt="Image of venue"
                 onError={handleErrorImage}
               />
@@ -33,14 +44,14 @@ const ImageSlider = ({ media }) => {
             <div className="absolute inset-0 flex items-center justify-between p-4">
               <button
                 onClick={prevSlide}
-                className="p-1 rounded-full shadow bg-white/80 text-gray-800 hover:bg-white"
+                className="slideBtn"
                 aria-label="Previous image"
               >
                 <HiChevronLeft size={25} />
               </button>
               <button
                 onClick={nextSlide}
-                className="p-1 rounded-full shadow bg-white/80 text-gray-800 hover:bg-white"
+                className="slideBtn"
                 aria-label="Next image"
               >
                 <HiChevronRight size={25} />
@@ -55,7 +66,7 @@ const ImageSlider = ({ media }) => {
                   <div
                     key={i}
                     className={`
-              transition-all w-2 h-2  bg-white rounded-full shadow
+              transition-all w-2 h-2 bg-white rounded-full shadow
               ${slideNumber === i ? '' : 'bg-opacity-50'}
             `}
                   />

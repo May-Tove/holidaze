@@ -1,3 +1,3 @@
 export * from './Bookings';
-export * from './Venues';
+export * from './ProfileVenues';
 export * from './Reservations';

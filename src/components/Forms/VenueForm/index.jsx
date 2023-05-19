@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import useAxiosFetch from '../../../hooks/useAxiosFetch';
-import { CgTrash, CgClose, CgCheckO } from 'react-icons/cg';
+import { CgTrash, CgClose } from 'react-icons/cg';
 import { TbPhotoPlus } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 import { API_VENUE_URL, handleErrorImage } from '../../../shared';
 import ErrorMessage from '../../../shared/errorMessage';
+import SuccessMessage from '../../../shared/successMessage';
 
 export const VenueForm = ({ mode, venue, handleClose }) => {
   const {
@@ -23,7 +24,10 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
   const { id, name, description, location, meta, price, maxGuests, media } =
     venue;
 
-  const [imageUrls, setImageUrls] = useState(mode === 'update' ? media : ['']);
+  const isCreateMode = mode === 'create';
+  const isUpdateMode = mode === 'update';
+
+  const [imageUrls, setImageUrls] = useState(isUpdateMode ? media : ['']);
 
   const handleImageUrlChange = (onChangeValue, index) => {
     const newUrls = [...imageUrls];
@@ -43,67 +47,72 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
     setImageUrls(deleteUrl);
   };
 
-  const onSubmit = async (formData) => {
-    formData.price = Number(formData.price);
-    formData.maxGuests = Number(formData.maxGuests);
-
+  const onSubmit = async ({
+    name,
+    description,
+    address,
+    city,
+    zip,
+    country,
+    wifi,
+    parking,
+    breakfast,
+    pets,
+    price,
+    maxGuests,
+  }) => {
     const meta = {
-      wifi: formData.wifi || false,
-      parking: formData.parking || false,
-      breakfast: formData.breakfast || false,
-      pets: formData.pets || false,
+      wifi: wifi || false,
+      parking: parking || false,
+      breakfast: breakfast || false,
+      pets: pets || false,
     };
 
     const location = {
-      address: formData.address || 'Unknown',
-      city: formData.city || 'Unknown',
-      zip: formData.zip || 'Unknown',
-      country: formData.country || 'Unknown',
+      address: address || 'Unknown',
+      city: city || 'Unknown',
+      zip: zip || 'Unknown',
+      country: country || 'Unknown',
     };
 
     const requestData = {
-      name: formData.name,
-      description: formData.description,
+      name,
+      description,
       media: imageUrls,
-      price: formData.price,
-      maxGuests: formData.maxGuests,
+      price: Number(price),
+      maxGuests: Number(maxGuests),
       rating: 0,
-      meta: meta,
-      location: location,
+      meta,
+      location,
     };
 
-    if (mode === 'create') {
+    if (isCreateMode) {
       const response = await submit(API_VENUE_URL, 'post', requestData);
-
-      const data = response.data;
 
       reset();
       setTimeout(() => {
-        navigate(`/venue/${data.id}`);
+        navigate(`/venue/${response.data.id}`);
       }, 1000);
-    } else if (mode === 'update') {
-      const response = await submit(
-        `${API_VENUE_URL}/${id}`,
-        'put',
-        requestData
-      );
-      const data = response.data;
+    } else if (isUpdateMode) {
+      await submit(`${API_VENUE_URL}/${id}`, 'put', requestData);
+
       setTimeout(() => {
-        navigate(`/venue/${data.id}`);
+        handleClose();
+        window.location.reload();
       }, 1000);
     }
   };
 
   return (
     <>
-      <div className="fixed top-0 right-0 left-0 bg-black/50 h-full z-50 overflow-y-auto">
-        <div className="flex justify-center my-20 m-auto bg-white rounded-lg w-[90vw] xl:w-2/4 p-5 h-fit">
+      <div className="modal overflow-y-auto">
+        <div className="modalBody">
           <form
-            className="w-full h-full space-y-5"
+            className="w-full h-full space-y-7"
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex items-center justify-between border-b pb-5">
-              {mode == 'create' ? (
+              {isCreateMode ? (
                 <h2 className="text-xl font-bold font-serif">Create Venue</h2>
               ) : (
                 <h2 className="text-xl font-bold font-serif">Update Venue</h2>
@@ -124,7 +133,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                 {...register('name', {
                   required: true,
                 })}
-                defaultValue={mode === 'update' ? name : ''}
+                defaultValue={isUpdateMode ? name : ''}
               />
               {errors.venueName && (
                 <span className="text-red-600 text-sm mt-1">
@@ -139,7 +148,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                 type="text"
                 id="description"
                 {...register('description', { required: true })}
-                defaultValue={mode === 'update' ? description : ''}
+                defaultValue={isUpdateMode ? description : ''}
               />
               {errors.description && (
                 <span className="text-red-600 text-sm mt-1">
@@ -147,9 +156,6 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                 </span>
               )}
             </div>
-
-            <h3 className="font-bold">Location</h3>
-
             <div className="flex flex-col w-full">
               <label htmlFor="address">Address</label>
               <input
@@ -157,7 +163,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                 type="text"
                 id="address"
                 {...register('address', { required: true })}
-                defaultValue={mode === 'update' ? location.address : ''}
+                defaultValue={isUpdateMode ? location.address : ''}
               />
               {errors.address && (
                 <span className="text-red-600 text-sm mt-1">
@@ -173,7 +179,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                   type="text"
                   id="city"
                   {...register('city', { required: true })}
-                  defaultValue={mode === 'update' ? location.city : ''}
+                  defaultValue={isUpdateMode ? location.city : ''}
                 />
                 {errors.city && (
                   <span className="text-red-600 text-sm mt-1">
@@ -188,7 +194,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                   type="text"
                   id="zip"
                   {...register('zip', { required: true })}
-                  defaultValue={mode === 'update' ? location.zip : ''}
+                  defaultValue={isUpdateMode ? location.zip : ''}
                 />
                 {errors.zip && (
                   <span className="text-red-600 text-sm mt-1">
@@ -203,7 +209,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                   type="text"
                   id="country"
                   {...register('country', { required: true })}
-                  defaultValue={mode === 'update' ? location.country : ''}
+                  defaultValue={isUpdateMode ? location.country : ''}
                 />
                 {errors.country && (
                   <span className="text-red-600 text-sm mt-1">
@@ -212,16 +218,14 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                 )}
               </div>
             </div>
-
-            <h3 className="font-bold">Facilities</h3>
-            <div className="flex items-center flex-wrap lg:flex-nowrap  gap-5">
+            <div className="flex items-center flex-wrap lg:flex-nowrap gap-5">
               <div className="flex gap-2">
                 <input
                   className="bg-transparent border rounded border-primary p-1"
                   type="checkbox"
                   id="breakfast"
                   {...register('breakfast')}
-                  defaultChecked={mode === 'update' ? meta.breakfast : ''}
+                  defaultChecked={isUpdateMode ? meta.breakfast : ''}
                 />
                 <label htmlFor="breakfast">Breakfast</label>
               </div>
@@ -231,7 +235,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                   type="checkbox"
                   id="wifi"
                   {...register('wifi')}
-                  defaultChecked={mode === 'update' ? meta.wifi : ''}
+                  defaultChecked={isUpdateMode ? meta.wifi : ''}
                 />
                 <label htmlFor="wifi">Wifi</label>
               </div>
@@ -241,7 +245,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                   type="checkbox"
                   id="pets"
                   {...register('pets')}
-                  defaultChecked={mode === 'update' ? meta.pets : ''}
+                  defaultChecked={isUpdateMode ? meta.pets : ''}
                 />
                 <label htmlFor="pets">Pets allowed</label>
               </div>
@@ -251,12 +255,11 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                   type="checkbox"
                   id="parking"
                   {...register('parking')}
-                  defaultChecked={mode === 'update' ? meta.parking : ''}
+                  defaultChecked={isUpdateMode ? meta.parking : ''}
                 />
                 <label htmlFor="parking">Parking</label>
               </div>
             </div>
-            <h3 className="font-bold">Price and Capacity</h3>
             <div className="flex flex-col md:flex-row  gap-5">
               <div className="flex flex-col w-full">
                 <label htmlFor="price">Price</label>
@@ -267,7 +270,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                   {...register('price', {
                     required: true,
                   })}
-                  defaultValue={mode === 'update' ? price : ''}
+                  defaultValue={isUpdateMode ? price : ''}
                 />
                 {errors.price && (
                   <span className="text-red-600 text-sm mt-1">
@@ -284,7 +287,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                   {...register('maxGuests', {
                     required: true,
                   })}
-                  defaultValue={mode === 'update' ? maxGuests : ''}
+                  defaultValue={isUpdateMode ? maxGuests : ''}
                 />
                 {errors.maxGuests && (
                   <span className="text-red-600 text-sm mt-1">
@@ -304,10 +307,10 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                   >
                     <div className="w-full flex items-center gap-2">
                       <button
-                        className="rounded-full bg-gray-200 p-2 hover:bg-gray-300"
+                        className="iconBtn"
                         onClick={(e) => handleDeleteImageUrl(e, index)}
                       >
-                        <CgTrash />
+                        <CgTrash size={20} />
                       </button>
                       <input
                         className="bg-transparent border rounded border-primary p-1 w-full"
@@ -319,18 +322,15 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                     </div>
 
                     <img
-                      className="w-5/6 h-[130px] rounded object-cover"
+                      className="w-5/6 h-[130px] rounded"
                       src={url}
                       alt="Venue image"
                       onError={handleErrorImage}
                     />
                   </div>
                 ))}
-                <button
-                  className="rounded-full bg-gray-200 p-3  w-fit h-fit mt-3 hover:bg-gray-300"
-                  onClick={addImageUrlField}
-                >
-                  <TbPhotoPlus size={20} />
+                <button className="iconBtn" onClick={addImageUrlField}>
+                  <TbPhotoPlus size={30} />
                 </button>
               </div>
 
@@ -341,14 +341,14 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
               )}
             </div>
             <div>
-              <div className="flex gap-3 justify-end">
-                {mode === 'create' ? (
+              <div className="flex gap-3 justify-end border-t pt-5">
+                {isUpdateMode ? (
                   <button className="btn" type="submit" disabled={isLoading}>
-                    {isLoading ? 'Creating...' : 'Create venue'}
+                    {isLoading ? 'Updating...' : 'Update'}
                   </button>
                 ) : (
                   <button className="btn" type="submit" disabled={isLoading}>
-                    {isLoading ? 'Updating...' : 'Update'}
+                    {isLoading ? 'Creating...' : 'Create venue'}
                   </button>
                 )}
 
@@ -362,18 +362,13 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
 
               {isError && <ErrorMessage message={fetchError} />}
               {success && (
-                <div
-                  className="p-2 mt-5 w-full bg-green-600 items-center gap-2 text-green-100 leading-none rounded flex lg:inline-flex"
-                  role="alert"
-                >
-                  <CgCheckO size={20} />
-
-                  <span className="font-semibold mr-2 text-left flex-auto">
-                    {mode === 'create'
-                      ? 'Venue was successfully created!'
-                      : 'Venue was successfully updated!'}
-                  </span>
-                </div>
+                <SuccessMessage
+                  message={
+                    isUpdateMode
+                      ? 'Venue was successfully updated!'
+                      : 'Venue was successfully created!'
+                  }
+                />
               )}
             </div>
           </form>

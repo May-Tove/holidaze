@@ -4,16 +4,17 @@ import PropTypes from 'prop-types';
 import { HiOutlineLocationMarker, HiOutlineHeart } from 'react-icons/hi';
 import ImageSlider from '../VenueImages/ImageSlider';
 import formatCurrency from '../../shared/formatCurrency';
+import Location from '../Venue/Location';
+import Rating from '../Venue/Rating';
 
 const VenueCard = ({ venue: { name, id, price, media, rating, location } }) => {
   const venuePrice = formatCurrency(price);
 
   return (
-    <Link to={`/venue/${id}`}>
-      <article className="flex flex-col items-center bg-gray-100  drop-shadow">
+    <Link to={`/venue/${id}`} aria-label={`Link to ${name}`}>
+      <article className="flex flex-col items-center bg-gray-100 rounded-2xl">
         <div className="w-full h-72 relative">
           <ImageSlider media={media} />
-
           <button
             className="absolute top-1 right-1 rounded-full shadow bg-white/80 hover:bg-white p-1 z-10"
             aria-label="Add to favourites"
@@ -21,24 +22,25 @@ const VenueCard = ({ venue: { name, id, price, media, rating, location } }) => {
             <HiOutlineHeart size={20} />
           </button>
         </div>
-
-        <div className="w-full flex flex-col gap-2 justify-between p-4">
-          <h5 className="text-xl capitalize font-bold font-serif text-gray-900">
-            {name}
-          </h5>
-          <div className="flex items-center gap-2">
-            <HiOutlineLocationMarker />
-            <p className="text-sm">
-              {location.city === 'Unknown' || location.city === ''
-                ? 'Location unknown'
-                : `${location.city}, `}
-              {location.country === 'Unknown' || location.city === ''
-                ? ' '
-                : location.country}
-            </p>
+        <div className="w-full space-y-2 p-4">
+          <div className="flex justify-between gap-2">
+            <h3 className="capitalize">{name}</h3>
+            <Rating rating={rating} />
           </div>
-          <div className="flex gap-2 mb-2">{rating}</div>
-          <p className="pt-4 font-bold border-t">{venuePrice} / Night</p>
+          <div className="flex items-center gap-1 pb-3">
+            <HiOutlineLocationMarker />
+            <Location
+              address={location.address}
+              city={location.city}
+              country={location.country}
+            />
+          </div>
+          <p className="pt-4 border-t text-lightGrey text-sm">
+            <span className="text-lg text-primaryDark font-bold">
+              {venuePrice}
+            </span>{' '}
+            / Night
+          </p>
         </div>
       </article>
     </Link>
@@ -53,6 +55,7 @@ VenueCard.propTypes = {
     media: PropTypes.array.isRequired,
     rating: PropTypes.number.isRequired,
     location: PropTypes.shape({
+      address: PropTypes.string.isRequired,
       city: PropTypes.string.isRequired,
       country: PropTypes.string.isRequired,
     }).isRequired,

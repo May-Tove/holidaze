@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { useLogin } from '../../../context/LoginProvider';
 import useAxiosFetch from '../../../hooks/useAxiosFetch';
-import { CgClose, CgCheckO } from 'react-icons/cg';
-import { IoIosCloseCircleOutline } from 'react-icons/io';
-import { API_PROFILE_URL } from '../../../shared';
-import avatarPlaceholder from '../../../assets/avatar-placeholder.png';
+import { CgClose } from 'react-icons/cg';
+import { API_PROFILE_URL, handleErrorImage } from '../../../shared';
 
 import ErrorMessage from '../../../shared/errorMessage';
+import SuccessMessage from '../../../shared/successMessage';
 
 const UpdateAvatar = ({ profile, handleClose }) => {
   const { setAvatar, avatar } = useLogin();
@@ -29,6 +28,10 @@ const UpdateAvatar = ({ profile, handleClose }) => {
     };
     await submit(`${API_PROFILE_URL}/${name}/media`, 'put', payload);
     setAvatar(formData.avatar);
+
+    setTimeout(() => {
+      handleClose();
+    }, 1000);
   };
 
   const handleClearInputField = (e) => {
@@ -43,18 +46,15 @@ const UpdateAvatar = ({ profile, handleClose }) => {
 
   return (
     <>
-      <div className="fixed top-0 right-0 left-0 bg-black/50 h-full z-50 overflow-y-auto">
-        <div className="flex justify-center my-20 m-auto bg-white rounded-lg w-[90vw] md:w-[600px] p-5 h-fit">
+      <div className="modal">
+        <div className="modalBody">
           <form
             className="w-full h-full space-y-5"
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex items-center justify-between border-b pb-5">
-              <h2 className="text-xl font-bold font-serif">Change avatar</h2>
-              <button
-                className="bg-gray-200 p-1 rounded-lg hover:bg-gray-300"
-                onClick={handleClose}
-              >
+              <h2>Edit avatar</h2>
+              <button className="iconBtn" onClick={handleClose}>
                 <CgClose size={20} />
               </button>
             </div>
@@ -63,7 +63,7 @@ const UpdateAvatar = ({ profile, handleClose }) => {
               <div className="flex gap-3">
                 <input
                   className="bg-transparent border rounded border-primary p-1 w-full"
-                  type="text"
+                  type="url"
                   id="avatar"
                   {...register('avatar', {
                     required: true,
@@ -72,25 +72,23 @@ const UpdateAvatar = ({ profile, handleClose }) => {
                   onChange={handleInputChange}
                 />
                 <button
-                  className="bg-gray-200 rounded-full p-1 hover:bg-gray-300"
+                  className="iconBtn flex items-center gap-1"
                   onClick={handleClearInputField}
                 >
-                  <IoIosCloseCircleOutline size={25} />
+                  <CgClose size={15} /> Clear
                 </button>
               </div>
 
               {errors.avatar && (
                 <span className="text-red-600 text-sm mt-1">
-                  This field is required
+                  This field is required and must be a valid URL
                 </span>
               )}
               <img
-                className="h-[200px] w-[200px] object-cover rounded-full mt-5 m-auto"
+                className="h-[200px] w-[200px] rounded-full mt-5 m-auto"
                 src={inputValue}
                 alt="Avatar"
-                onError={(e) => {
-                  e.target.src = avatarPlaceholder;
-                }}
+                onError={handleErrorImage}
               />
             </div>
             <div>
@@ -108,15 +106,7 @@ const UpdateAvatar = ({ profile, handleClose }) => {
 
               {isError && <ErrorMessage message={fetchError} />}
               {success && (
-                <div
-                  className="p-2 mt-5 w-full bg-green-600 items-center gap-2 text-green-100 leading-none rounded flex lg:inline-flex"
-                  role="alert"
-                >
-                  <CgCheckO size={20} />
-                  <span className="font-semibold mr-2 text-left flex-auto">
-                    Avatar is now updated
-                  </span>
-                </div>
+                <SuccessMessage message="Successfully changed avatar" />
               )}
             </div>
           </form>

@@ -5,13 +5,13 @@ import { DateRange } from 'react-date-range';
 import { eachDayOfInterval, format, parseISO } from 'date-fns';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
-import { AiOutlineCloseCircle } from 'react-icons/Ai';
+import { CgClose } from 'react-icons/cg';
 import useAxiosFetch from '../../../hooks/useAxiosFetch';
 import useToggle from '../../../hooks/useToggle';
 import { API_BOOKINGS_URL } from '../../../shared';
 import ErrorMessage from '../../../shared/errorMessage';
 
-export const CreateBooking = ({ bookings, id, isLoggedIn }) => {
+export const CreateBooking = ({ bookings, id, isLoggedIn, price }) => {
   const [disabledDates, setDisabledDates] = useState([]);
   const [responseData, setResponseData] = useState(null);
   const [showConfirmation, setShowConfirmation] = useToggle();
@@ -104,48 +104,40 @@ export const CreateBooking = ({ bookings, id, isLoggedIn }) => {
     const { dateFrom, dateTo, guests } = responseData;
 
     return (
-      <div
-        tabIndex="-1"
-        aria-hidden="true"
-        className="fixed inset-0 z-50 bg-black/50 w-full p-4 overflow-x-hidden overflow-y-auto h-full max-h-full"
-      >
-        <div className="relative flex justify-center m-auto top-20 lg:top-56 w-full max-w-xl max-h-full">
-          <div className="relative w-full  bg-white shadow ">
-            <button
-              className="absolute top-2 right-2 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg p-1.5"
-              onClick={handleCloseBookingConfirmation}
-            >
-              <AiOutlineCloseCircle size={30} />
-              <span className="sr-only">Close modal</span>
-            </button>
-            <div className="p-6 space-y-6 text-center">
-              <div className="border-b pb-6">
-                <h3 className="text-2xl font-bold font-serif text-gray-900 mt-10 mb-1">
-                  Your booking is confirmed
-                </h3>
-                <p>Thank you for booking with Holidaze!</p>
-              </div>
+      <div className="modal">
+        <div className="relative modalBody">
+          <button
+            className="absolute top-2 right-2 iconBtn"
+            onClick={handleCloseBookingConfirmation}
+          >
+            <CgClose size={20} />
+            <span className="sr-only">Close modal</span>
+          </button>
+          <div className="space-y-5 text-center py-5">
+            <div className="border-b pb-5">
+              <h3>Your booking is confirmed</h3>
+              <p>Thank you for booking with Holidaze!</p>
+            </div>
 
-              <div className="flex flex-col gap-1">
-                <p>Arrival</p>
-                <p className=" text-gray-500">
-                  {format(new Date(dateFrom), 'dd/MM/yyyy')}
-                </p>
-              </div>
-              <div className="flex flex-col gap-1">
-                <p>Departure</p>
-                <p className=" text-gray-500">
-                  {format(new Date(dateTo), 'dd/MM/yyyy')}
-                </p>
-              </div>
-              <div className="flex flex-col gap-1">
-                <p>Guests</p>
-                <p className="text-gray-500">{guests}</p>
-              </div>
-              <p className="text-gray-500 border-t pt-6">
-                More details about your reservation can be found in your profile
+            <div className="flex flex-col gap-1">
+              <p>Arrival</p>
+              <p className=" text-gray-500">
+                {format(new Date(dateFrom), 'dd/MM/yyyy')}
               </p>
             </div>
+            <div className="flex flex-col gap-1">
+              <p>Departure</p>
+              <p className=" text-gray-500">
+                {format(new Date(dateTo), 'dd/MM/yyyy')}
+              </p>
+            </div>
+            <div className="flex flex-col gap-1">
+              <p>Guests</p>
+              <p className="text-gray-500">{guests}</p>
+            </div>
+            <p className="text-gray-500 border-t pt-6">
+              More details about your reservation can be found in your profile
+            </p>
           </div>
         </div>
       </div>
@@ -169,7 +161,7 @@ export const CreateBooking = ({ bookings, id, isLoggedIn }) => {
             className="calendarElement w-full"
             disabledDates={disabledDates}
             minDate={new Date()}
-            rangeColors={['#32746D']}
+            rangeColors={['#4C8185']}
           />
         </div>
 
@@ -190,7 +182,7 @@ export const CreateBooking = ({ bookings, id, isLoggedIn }) => {
             </span>
           )}
         </div>
-
+        <div>Price per night: {price}</div>
         {isLoggedIn ? (
           <button className="btn" type="submit" disabled={isLoading}>
             {isLoading ? 'Booking...' : 'Book'}
@@ -221,6 +213,7 @@ CreateBooking.propTypes = {
       updated: PropTypes.string.isRequired,
     })
   ).isRequired,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   isLoggedIn: PropTypes.bool.isRequired,
+  price: PropTypes.string.isRequired,
 };

@@ -1,31 +1,31 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLogin } from '../../context/LoginProvider';
+import useToggle from '../../hooks/useToggle';
 import useAxiosFetch from '../../hooks/useAxiosFetch';
 import {
   ProfileVenues,
   Bookings,
   Reservations,
 } from '../../components/Profile';
-import avatarPlaceholder from '../../assets/avatar-placeholder.png';
 import UpdateAvatar from '../../components/Forms/UpdateAvatar';
-import { API_PROFILE_URL } from '../../shared';
+import { API_PROFILE_URL, handleErrorImage } from '../../shared';
+import { TbDiscountCheckFilled, TbPhotoEdit } from 'react-icons/tb';
+import ProfileLoader from '../../components/Loaders/ProfileLoader';
 
 export const Profile = () => {
   const { name } = useParams();
   const [selectedTab, setSelectedTab] = useState('venues');
-  const [showUpdateAvatarModal, setShowUpdateAvatarModal] = useState(false);
+  const [isUpdateAvatarOpen, toggleUpdateAvatar] = useToggle();
 
-  const { isLoggedIn, token, avatar } = useLogin();
+  const { isLoggedIn, token, avatar, profile } = useLogin();
 
   const { data, isLoading, isError } = useAxiosFetch(
     `${API_PROFILE_URL}/${name}?_bookings=true&_venues=true`
   );
 
-  console.log(data);
-
   if (isLoading) {
-    return <div>Loading</div>;
+    return <ProfileLoader />;
   }
 
   if (isError) {
@@ -33,22 +33,17 @@ export const Profile = () => {
   }
 
   const { bookings, email, venueManager, venues } = data;
+  const isLoggedInVenueManager = profile.name === name;
 
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
   };
 
-  const handleUpdateAvatarButtonClick = () => {
-    setShowUpdateAvatarModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowUpdateAvatarModal(false);
-  };
-
   const renderContent = () => {
     if (selectedTab === 'venues') {
-      return <ProfileVenues venues={venues} />;
+      return (
+        <ProfileVenues venues={venues} isOwnProfile={isLoggedInVenueManager} />
+      );
     } else if (selectedTab === 'reservation') {
       return <Reservations name={name} />;
     } else if (selectedTab === 'bookings') {
@@ -56,32 +51,46 @@ export const Profile = () => {
     }
   };
   return (
-    <main className="w-5/6 m-auto lg:w-4/5 py-40">
+    <main className="main-layout">
       <div>
         {isLoggedIn && (
           <>
-            <div className="flex flex-col text-center items-center gap-5 m-auto mb-10">
-              <img
-                className="w-[200px] h-[200px] object-cover rounded-full"
-                src={avatar}
-                alt={`Profile avatar of ${name}`}
-                onError={(e) => {
-                  e.target.src = avatarPlaceholder;
-                }}
-              />
+            <div className="flex flex-col text-center items-center gap-3 m-auto mb-10">
+              <div className="relative">
+                <img
+                  className="w-[200px] h-[200px] rounded-full shadow shadow-primaryLight"
+                  src={isLoggedInVenueManager ? avatar : data.avatar}
+                  alt={`Profile avatar of ${name}`}
+                  onError={handleErrorImage}
+                />
+                {isLoggedInVenueManager && (
+                  <button
+                    className="p-2 rounded-full bg-primaryLight text-primaryDark absolute bottom-2 right-2 shadow"
+                    onClick={toggleUpdateAvatar}
+                  >
+                    <TbPhotoEdit size={25} />
+                  </button>
+                )}
+              </div>
 
-              <div className="flex flex-col gap-1">
-                <h1 className="text-2xl font-bold font-serif">{name}</h1>
-                <p>{email}</p>
-                <button className="btn" onClick={handleUpdateAvatarButtonClick}>
-                  Change avatar
-                </button>
+              <div className="flex flex-col items-center gap-1">
+                <h1>{name}</h1>
+                {venueManager && (
+                  <div className="flex items-center gap-1">
+                    <TbDiscountCheckFilled
+                      className="text-blue-400"
+                      size={20}
+                    />
+                    <p>Venue Manager</p>
+                  </div>
+                )}
+                <p className="text-sm text-lightGrey">{email}</p>
               </div>
             </div>
-            {showUpdateAvatarModal && (
+            {isUpdateAvatarOpen && (
               <UpdateAvatar
                 profile={data}
-                handleClose={handleCloseModal}
+                handleClose={toggleUpdateAvatar}
                 token={token}
               />
             )}
@@ -94,36 +103,39 @@ export const Profile = () => {
                 <div className="border-b border-gray-300">
                   <button
                     onClick={() => handleTabClick('venues')}
-                    className={`inline-flex p-4 border-b-2 ${
+                    className={`p-4 border-b-2 ${
                       selectedTab === 'venues'
-                        ? 'border-secondary text-secondary '
+                        ? 'border-primaryDark text-primaryDark '
                         : 'border-transparent hover:text-gray-600 hover:border-gray-300 '
                     }  `}
                   >
                     Venues
                   </button>
+                  {isLoggedInVenueManager && (
+                    <>
+                      <button
+                        onClick={() => handleTabClick('reservation')}
+                        className={`p-4 border-b-2 ${
+                          selectedTab === 'reservation'
+                            ? 'border-primaryDark text-primaryDark '
+                            : 'border-transparent hover:text-gray-600 hover:border-gray-300 '
+                        } `}
+                      >
+                        Reservations
+                      </button>
 
-                  <button
-                    onClick={() => handleTabClick('reservation')}
-                    className={`inline-flex p-4 border-b-2 ${
-                      selectedTab === 'reservation'
-                        ? 'border-secondary text-secondary '
-                        : 'border-transparent hover:text-gray-600 hover:border-gray-300 '
-                    } `}
-                  >
-                    Reservations
-                  </button>
-
-                  <button
-                    onClick={() => handleTabClick('bookings')}
-                    className={`inline-flex p-4 border-b-2 ${
-                      selectedTab === 'bookings'
-                        ? 'border-secondary text-secondary '
-                        : 'border-transparent hover:text-gray-600 hover:border-gray-300 '
-                    } `}
-                  >
-                    Bookings
-                  </button>
+                      <button
+                        onClick={() => handleTabClick('bookings')}
+                        className={`p-4 border-b-2 ${
+                          selectedTab === 'bookings'
+                            ? 'border-primaryDark text-primaryDark '
+                            : 'border-transparent hover:text-gray-600 hover:border-gray-300 '
+                        } `}
+                      >
+                        Bookings
+                      </button>
+                    </>
+                  )}
                 </div>
                 <section className="my-10">{renderContent()}</section>
               </div>
