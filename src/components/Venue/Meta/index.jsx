@@ -9,26 +9,27 @@ const VenueMeta = ({ meta }) => {
 
   return (
     <>
+      {wifi && (
+        <div className="infoBadge">
+          <FiWifi size={20} />
+          <p>Free Wi-Fi</p>
+        </div>
+      )}
       {breakfast && (
-        <div className="flex gap-2 items-center text-sm">
+        <div className="infoBadge">
           <FiCoffee size={20} />
-          <p>Free breakfast included</p>
+          <p>Breakfast included</p>
         </div>
       )}
       {pets && (
-        <div className="flex gap-2 items-center text-sm">
+        <div className="infoBadge">
           <MdOutlinePets size={20} />
           <p>Pets allowed</p>
         </div>
       )}
-      {wifi && (
-        <div className="flex gap-2 items-center text-sm">
-          <FiWifi size={20} />
-          <p>Free access to wifi connection</p>
-        </div>
-      )}
+
       {parking && (
-        <div className="flex gap-2 items-center text-sm">
+        <div className="infoBadge">
           <IoCarSportOutline size={20} />
           <p>Free parking on site</p>
         </div>
