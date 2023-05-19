@@ -4,29 +4,35 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#104F55',
-        secondary: '#32746D',
+        primary: '#9FC3C4',
+        primaryLight: '#DEEDED',
+        primaryDark: '#4C8185',
+        secondary: '#9FC3C4',
+        light: '#f0f0f0',
+        lightGrey: '#838383',
         white: '#fff',
         black: '#000',
+        focus: '#018F93',
       },
       fontFamily: {
-        sans: [
-          'kumbh-sans-variable, sans-serif',
-          {
-            fontVariationSettings: '"wght" 400',
-          },
-        ],
         serif: ['quiche-flare, sans-serif'],
       },
-      fontWeight: {
-        bold: '900',
-      },
       gridTemplateColumns: {
-        2: 'repeat(auto-fit, minmax(300px, 1fr))',
+        3: 'repeat(auto-fit, minmax(300px, 1fr))',
         4: 'repeat(auto-fit, minmax(400px, 1fr))',
-        5: 'repeat(auto-fit, minmax(300px, 1fr))',
+      },
+      boxShadow: {
+        lg: 'rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;',
       },
     },
   },
   plugins: [],
 };
+
+/*
+       sans: [
+          'kumbh-sans-variable, sans-serif',
+          {
+            fontVariationSettings: '"wght" 400',
+          },
+        ],*/
