@@ -12,95 +12,95 @@ const Header = () => {
   const { isLoggedIn } = useLogin();
 
   return (
-    <>
-      <header className="bg-primary fixed w-screen transition-colors duration-300 ease-in-out z-50">
-        <nav className="py-5 px-3 lg:px-6 ">
-          <div className="flex flex-wrap items-center justify-between mx-auto max-w-screen-xl">
-            <Link to={'/'} className="text-white">
-              Holidaze
-            </Link>
-            <div className="flex items-center lg:order-2 gap-x-7 text-white">
-              {isLoggedIn ? (
-                <UserNavigation toggle={toggleUserNav} isOpen={isOpenUserNav} />
-              ) : (
-                <NavLink
+    <header className="bg-primaryLight fixed w-screen transition-colors duration-300 z-50">
+      <nav className="flex items-center justify-between py-5 m-auto w-[90vw] max-w-screen-2xl">
+        <Link
+          to={'/'}
+          className="font-serif font-bold text-xl uppercase tracking-wider text-primaryDark"
+        >
+          Holidaze
+        </Link>
+
+        <ul
+          className={`gap-7 items-center  ${
+            isOpenMainMenu
+              ? 'fixed top-16 left-0 h-screen w-screen flex flex-col pt-16 bg-primaryLight'
+              : 'hidden'
+          }   lg:flex`}
+        >
+          <li>
+            <NavLink
+              to={'/'}
+              className={({ isActive }) => (isActive ? 'active' : ' nav-link')}
+              onClick={isOpenMainMenu && toggleMainMenu}
+            >
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={'/venues'}
+              className={({ isActive }) => (isActive ? 'active' : ' nav-link')}
+              onClick={isOpenMainMenu && toggleMainMenu}
+            >
+              Venues
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={'/contact'}
+              className={({ isActive }) => (isActive ? 'active' : ' nav-link')}
+              onClick={isOpenMainMenu && toggleMainMenu}
+            >
+              Contact
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={'/about'}
+              className={({ isActive }) => (isActive ? 'active' : ' nav-link')}
+              onClick={isOpenMainMenu && toggleMainMenu}
+            >
+              About
+            </NavLink>
+          </li>
+        </ul>
+        <div className="flex items-center gap-5">
+          <div className="flex items-center gap-3">
+            {isLoggedIn ? (
+              <UserNavigation toggle={toggleUserNav} isOpen={isOpenUserNav} />
+            ) : (
+              <>
+                <Link
                   to={'/login'}
-                  className={({ isActive }) =>
-                    isActive ? 'active' : ' nav-link'
-                  }
+                  className="text-sm px-2 py-1 rounded-lg bg-primaryDark text-primaryLight hover:bg-primary transition-colors duration-300"
                 >
                   Login
-                </NavLink>
-              )}
-
-              <button
-                className="block lg:hidden text-xl"
-                aria-label="Menu button"
-                onClick={toggleMainMenu}
-              >
-                {isOpenMainMenu ? <HiOutlineXMark /> : <HiBars2 />}
-              </button>
-            </div>
-            <ul
-              className={`w-screen flex flex-col gap-7 items-center overflow-hidden ${
-                isOpenMainMenu ? 'opacity-100 mt-40 h-screen' : 'opacity-0 h-0'
-              } transition-all duration-500 ease-in-out lg:flex lg:w-auto lg:opacity-100 lg:mt-0 lg:h-auto lg:flex-row lg:items-center lg:gap-x-7`}
-            >
-              <li>
-                <NavLink
-                  to={'/'}
-                  className={({ isActive }) =>
-                    isActive ? 'active' : ' nav-link'
-                  }
-                  onClick={toggleMainMenu}
+                </Link>
+                <Link
+                  to={'/register'}
+                  className="text-sm px-2 py-1 rounded-lg bg-blue-200 text-blue-600 hover:bg-blue-300 transition-colors duration-300"
                 >
-                  Home
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to={'/venues'}
-                  className={({ isActive }) =>
-                    isActive ? 'active' : ' nav-link'
-                  }
-                  onClick={toggleMainMenu}
-                >
-                  Venues
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to={'/contact'}
-                  className={({ isActive }) =>
-                    isActive ? 'active' : ' nav-link'
-                  }
-                  onClick={toggleMainMenu}
-                >
-                  Contact
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to={'/about'}
-                  className={({ isActive }) =>
-                    isActive ? 'active' : ' nav-link'
-                  }
-                  onClick={toggleMainMenu}
-                >
-                  About
-                </NavLink>
-              </li>
-            </ul>
+                  Register
+                </Link>
+              </>
+            )}
           </div>
-        </nav>
-      </header>
-    </>
+          <button
+            className="block lg:hidden text-xl text-primaryDark"
+            aria-label="Menu button"
+            onClick={toggleMainMenu}
+          >
+            {isOpenMainMenu ? (
+              <HiOutlineXMark size={25} />
+            ) : (
+              <HiBars2 size={25} />
+            )}
+          </button>
+        </div>
+      </nav>
+    </header>
   );
 };
 
 export default Header;
-
-/*
-  <Link to={'/Register'} className="btn">
-                Get Started
-              </Link>*/
