@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import Breadcrumbs from '../../components/Breadcrumbs';
 
 export const About = () => {
   return (
@@ -12,6 +13,7 @@ export const About = () => {
         />
       </Helmet>
       <main className="main-layout">
+        <Breadcrumbs page={'About'} />
         <h1>About</h1>
       </main>
     </>

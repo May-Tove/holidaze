@@ -13,6 +13,7 @@ import UpdateAvatar from '../../components/Forms/UpdateAvatar';
 import { API_PROFILE_URL, handleErrorImage } from '../../shared';
 import { TbDiscountCheckFilled, TbPhotoEdit } from 'react-icons/tb';
 import ProfileLoader from '../../components/Loaders/ProfileLoader';
+import Breadcrumbs from '../../components/Breadcrumbs';
 
 export const Profile = () => {
   const { name } = useParams();
@@ -67,6 +68,7 @@ export const Profile = () => {
         />
       </Helmet>
       <main className="main-layout">
+        <Breadcrumbs page={name} />
         <div className="flex flex-col text-center items-center gap-3 m-auto mb-10">
           <div className="relative">
             <img

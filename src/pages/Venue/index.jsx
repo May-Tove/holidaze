@@ -5,6 +5,7 @@ import useAxiosFetch from '../../hooks/useAxiosFetch';
 import VenueDetailsLoader from '../../components/Loaders/VenueDetailsLoader';
 import VenueDetails from '../../components/Venue/VenueDetails';
 import { API_VENUE_URL } from '../../shared';
+import Breadcrumbs from '../../components/Breadcrumbs';
 
 export const Venue = () => {
   let { id } = useParams();
@@ -35,6 +36,7 @@ export const Venue = () => {
         />
       </Helmet>
       <main className="main-layout">
+        <Breadcrumbs page={'venue'} venueName={data.name} />
         <VenueDetails venue={data} />
       </main>
     </>

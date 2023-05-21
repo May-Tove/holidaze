@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import VenuesList from '../../components/Venues';
+import Breadcrumbs from '../../components/Breadcrumbs';
 
 export const Venues = () => {
   return (
@@ -13,6 +14,7 @@ export const Venues = () => {
         />
       </Helmet>
       <main className="main-layout">
+        <Breadcrumbs page={'Venues'} />
         <VenuesList />
       </main>
     </>
