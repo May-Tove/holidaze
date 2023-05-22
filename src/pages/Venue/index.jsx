@@ -1,10 +1,44 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
+import useAxiosFetch from '../../hooks/useAxiosFetch';
+import VenueDetailsLoader from '../../components/Loaders/VenueDetailsLoader';
 import VenueDetails from '../../components/Venue/VenueDetails';
+import { API_VENUE_URL } from '../../shared';
+import Breadcrumbs from '../../components/Breadcrumbs';
 
 export const Venue = () => {
+  let { id } = useParams();
+
+  const { data, isLoading, isError } = useAxiosFetch(
+    `${API_VENUE_URL}/${id}?_owner=true&_bookings=true`
+  );
+
+  if (isError || !data) {
+    return <div>Error</div>;
+  }
+
+  if (isLoading) {
+    return (
+      <main className="main-layout">
+        <VenueDetailsLoader />
+      </main>
+    );
+  }
+
   return (
-    <main className="py-40 w-5/6 m-auto lg:w-4/5 max-w-[1400px]">
-      <VenueDetails />
-    </main>
+    <>
+      <Helmet>
+        <title>{`${data.name} - Holidaze`}</title>
+        <meta
+          name="description"
+          content={`Discover ${data.name}, a venue located in ${data.location?.city}. Book with Holidaze today for an unforgettable travel experience!`}
+        />
+      </Helmet>
+      <main className="main-layout">
+        <Breadcrumbs page={'venue'} venueName={data.name} />
+        <VenueDetails venue={data} />
+      </main>
+    </>
   );
 };

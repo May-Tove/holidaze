@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
-import FormSubmitError from '../../Error/FormError';
-import { CgTrash, CgClose, CgCheckO } from 'react-icons/cg';
+import useAxiosFetch from '../../../hooks/useAxiosFetch';
+import { CgTrash, CgClose } from 'react-icons/cg';
 import { TbPhotoPlus } from 'react-icons/tb';
-import imgPlaceholder from '../../../assets/placeholderImg@2x.jpg';
 import { useNavigate } from 'react-router-dom';
-import { API_VENUE_URL } from '../../../shared';
-import useMethodApi from '../../../hooks/useMethodApi';
+import { API_VENUE_URL, handleErrorImage } from '../../../shared';
+import ErrorMessage from '../../../shared/errorMessage';
+import SuccessMessage from '../../../shared/successMessage';
 
 export const VenueForm = ({ mode, venue, handleClose }) => {
   const {
@@ -19,13 +19,15 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
 
   const navigate = useNavigate();
 
-  const { fetchWithMethod, isLoading, isError, errorMessage, success } =
-    useMethodApi();
+  const { submit, isLoading, isError, fetchError, success } = useAxiosFetch();
 
   const { id, name, description, location, meta, price, maxGuests, media } =
     venue;
 
-  const [imageUrls, setImageUrls] = useState(mode === 'update' ? media : ['']);
+  const isCreateMode = mode === 'create';
+  const isUpdateMode = mode === 'update';
+
+  const [imageUrls, setImageUrls] = useState(isUpdateMode ? media : ['']);
 
   const handleImageUrlChange = (onChangeValue, index) => {
     const newUrls = [...imageUrls];
@@ -45,71 +47,72 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
     setImageUrls(deleteUrl);
   };
 
-  const onSubmit = async (formData) => {
-    formData.price = Number(formData.price);
-    formData.maxGuests = Number(formData.maxGuests);
-
+  const onSubmit = async ({
+    name,
+    description,
+    address,
+    city,
+    zip,
+    country,
+    wifi,
+    parking,
+    breakfast,
+    pets,
+    price,
+    maxGuests,
+  }) => {
     const meta = {
-      wifi: formData.wifi || false,
-      parking: formData.parking || false,
-      breakfast: formData.breakfast || false,
-      pets: formData.pets || false,
+      wifi: wifi || false,
+      parking: parking || false,
+      breakfast: breakfast || false,
+      pets: pets || false,
     };
 
     const location = {
-      address: formData.address || 'Unknown',
-      city: formData.city || 'Unknown',
-      zip: formData.zip || 'Unknown',
-      country: formData.country || 'Unknown',
+      address: address || 'Unknown',
+      city: city || 'Unknown',
+      zip: zip || 'Unknown',
+      country: country || 'Unknown',
     };
 
     const requestData = {
-      name: formData.name,
-      description: formData.description,
+      name,
+      description,
       media: imageUrls,
-      price: formData.price,
-      maxGuests: formData.maxGuests,
+      price: Number(price),
+      maxGuests: Number(maxGuests),
       rating: 0,
-      meta: meta,
-      location: location,
+      meta,
+      location,
     };
 
-    if (mode === 'create') {
-      const response = await fetchWithMethod(
-        API_VENUE_URL,
-        'post',
-        requestData
-      );
-
-      const data = response.data;
+    if (isCreateMode) {
+      const response = await submit(API_VENUE_URL, 'post', requestData);
 
       reset();
       setTimeout(() => {
-        navigate(`/venue/${data.id}`);
+        navigate(`/venue/${response.data.id}`);
       }, 1000);
-    } else if (mode === 'update') {
-      const response = await fetchWithMethod(
-        `${API_VENUE_URL}/${id}`,
-        'put',
-        requestData
-      );
-      const data = response.data;
+    } else if (isUpdateMode) {
+      await submit(`${API_VENUE_URL}/${id}`, 'put', requestData);
+
       setTimeout(() => {
-        navigate(`/venue/${data.id}`);
+        handleClose();
+        window.location.reload();
       }, 1000);
     }
   };
 
   return (
     <>
-      <div className="fixed top-0 right-0 left-0 bg-black/50 h-full z-50 overflow-y-auto">
-        <div className="flex justify-center my-20 m-auto bg-white rounded-lg w-[90vw] xl:w-2/4 p-5 h-fit">
+      <div className="modal overflow-y-auto">
+        <div className="modalBody">
           <form
-            className="w-full h-full space-y-5"
+            className="w-full h-full space-y-7"
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex items-center justify-between border-b pb-5">
-              {mode == 'create' ? (
+              {isCreateMode ? (
                 <h2 className="text-xl font-bold font-serif">Create Venue</h2>
               ) : (
                 <h2 className="text-xl font-bold font-serif">Update Venue</h2>
@@ -121,96 +124,125 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                 <CgClose size={20} />
               </button>
             </div>
-            <div className="flex flex-col w-full">
-              <label htmlFor="name">Name</label>
-              <input
-                className="bg-transparent border rounded border-primary p-1"
-                type="text"
-                id="name"
-                {...register('name', {
-                  required: true,
-                })}
-                defaultValue={mode === 'update' ? name : ''}
-              />
-              {errors.venueName && (
+            <div>
+              <div className="relative">
+                <input
+                  className="floating-input peer"
+                  type="text"
+                  id="name"
+                  placeholder=" "
+                  {...register('name', {
+                    required: true,
+                  })}
+                  defaultValue={isUpdateMode ? name : ''}
+                />
+                <label className="floating-label" htmlFor="name">
+                  Name
+                </label>
+              </div>
+              {errors.name && (
                 <span className="text-red-600 text-sm mt-1">
                   This field is required
                 </span>
               )}
             </div>
-            <div className="flex flex-col w-full">
-              <label htmlFor="description">Description</label>
-              <textarea
-                className="bg-transparent min-h-[100px] border rounded border-primary p-1"
-                type="text"
-                id="description"
-                {...register('description', { required: true })}
-                defaultValue={mode === 'update' ? description : ''}
-              />
+            <div>
+              <div className="relative">
+                <textarea
+                  className="floating-textarea peer h-[120px]"
+                  type="text"
+                  id="description"
+                  placeholder=" "
+                  {...register('description', { required: true })}
+                  defaultValue={isUpdateMode ? description : ''}
+                />
+                <label className="floating-label" htmlFor="description">
+                  Description
+                </label>
+              </div>
               {errors.description && (
                 <span className="text-red-600 text-sm mt-1">
                   This field is required
                 </span>
               )}
             </div>
-
-            <h3 className="font-bold">Location</h3>
-
-            <div className="flex flex-col w-full">
-              <label htmlFor="address">Address</label>
-              <input
-                className="bg-transparent border rounded border-primary p-1"
-                type="text"
-                id="address"
-                {...register('address', { required: true })}
-                defaultValue={mode === 'update' ? location.address : ''}
-              />
+            <div>
+              <div className="relative">
+                <input
+                  className="floating-input peer"
+                  type="text"
+                  id="address"
+                  placeholder=" "
+                  {...register('address', { required: true })}
+                  defaultValue={isUpdateMode ? location.address : ''}
+                />
+                <label className="floating-label" htmlFor="address">
+                  Address
+                </label>
+              </div>
               {errors.address && (
                 <span className="text-red-600 text-sm mt-1">
                   This field is required
                 </span>
               )}
             </div>
+
             <div className="flex flex-col md:flex-row gap-5">
-              <div className="flex flex-col w-full">
-                <label htmlFor="city">City</label>
-                <input
-                  className="bg-transparent border rounded border-primary p-1"
-                  type="text"
-                  id="city"
-                  {...register('city', { required: true })}
-                  defaultValue={mode === 'update' ? location.city : ''}
-                />
+              <div>
+                <div className="relative">
+                  <input
+                    className="floating-input peer"
+                    type="text"
+                    id="city"
+                    placeholder=" "
+                    {...register('city', { required: true })}
+                    defaultValue={isUpdateMode ? location.city : ''}
+                  />
+                  <label className="floating-label" htmlFor="city">
+                    City
+                  </label>
+                </div>
                 {errors.city && (
                   <span className="text-red-600 text-sm mt-1">
                     This field is required
                   </span>
                 )}
               </div>
-              <div className="flex flex-col w-full">
-                <label htmlFor="zip">Zip</label>
-                <input
-                  className="bg-transparent border rounded border-primary p-1"
-                  type="text"
-                  id="zip"
-                  {...register('zip', { required: true })}
-                  defaultValue={mode === 'update' ? location.zip : ''}
-                />
+              <div>
+                <div className="relative">
+                  <input
+                    className="floating-input peer"
+                    type="text"
+                    id="zip"
+                    placeholder=" "
+                    {...register('zip', { required: true })}
+                    defaultValue={isUpdateMode ? location.zip : ''}
+                  />
+                  <label className="floating-label" htmlFor="zip">
+                    Zip
+                  </label>
+                </div>
                 {errors.zip && (
                   <span className="text-red-600 text-sm mt-1">
                     This field is required
                   </span>
                 )}
               </div>
-              <div className="flex flex-col w-full">
-                <label htmlFor="country">Country</label>
-                <input
-                  className="bg-transparent border rounded border-primary p-1"
-                  type="text"
-                  id="country"
-                  {...register('country', { required: true })}
-                  defaultValue={mode === 'update' ? location.country : ''}
-                />
+
+              <div>
+                <div className="relative">
+                  <input
+                    className="floating-input peer"
+                    type="text"
+                    id="country"
+                    placeholder=" "
+                    {...register('country', { required: true })}
+                    defaultValue={isUpdateMode ? location.country : ''}
+                  />
+                  <label className="floating-label" htmlFor="country">
+                    Country
+                  </label>
+                </div>
                 {errors.country && (
                   <span className="text-red-600 text-sm mt-1">
                     This field is required
@@ -218,16 +250,14 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                 )}
               </div>
             </div>
-
-            <h3 className="font-bold">Facilities</h3>
-            <div className="flex items-center flex-wrap lg:flex-nowrap  gap-5">
+            <div className="flex items-center flex-wrap lg:flex-nowrap gap-5">
               <div className="flex gap-2">
                 <input
                   className="bg-transparent border rounded border-primary p-1"
                   type="checkbox"
                   id="breakfast"
                   {...register('breakfast')}
-                  defaultChecked={mode === 'update' ? meta.breakfast : ''}
+                  defaultChecked={isUpdateMode ? meta.breakfast : ''}
                 />
                 <label htmlFor="breakfast">Breakfast</label>
               </div>
@@ -237,7 +267,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                   type="checkbox"
                   id="wifi"
                   {...register('wifi')}
-                  defaultChecked={mode === 'update' ? meta.wifi : ''}
+                  defaultChecked={isUpdateMode ? meta.wifi : ''}
                 />
                 <label htmlFor="wifi">Wifi</label>
               </div>
@@ -247,7 +277,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                   type="checkbox"
                   id="pets"
                   {...register('pets')}
-                  defaultChecked={mode === 'update' ? meta.pets : ''}
+                  defaultChecked={isUpdateMode ? meta.pets : ''}
                 />
                 <label htmlFor="pets">Pets allowed</label>
               </div>
@@ -257,41 +287,50 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                   type="checkbox"
                   id="parking"
                   {...register('parking')}
-                  defaultChecked={mode === 'update' ? meta.parking : ''}
+                  defaultChecked={isUpdateMode ? meta.parking : ''}
                 />
                 <label htmlFor="parking">Parking</label>
               </div>
             </div>
-            <h3 className="font-bold">Price and Capacity</h3>
-            <div className="flex flex-col md:flex-row  gap-5">
-              <div className="flex flex-col w-full">
-                <label htmlFor="price">Price</label>
-                <input
-                  className="bg-transparent border rounded border-primary p-1"
-                  type="number"
-                  id="price"
-                  {...register('price', {
-                    required: true,
-                  })}
-                  defaultValue={mode === 'update' ? price : ''}
-                />
+            <div className="flex flex-col md:flex-row gap-5">
+              <div>
+                <div className="relative w-full">
+                  <input
+                    className="floating-input peer"
+                    type="number"
+                    id="price"
+                    placeholder=" "
+                    {...register('price', {
+                      required: true,
+                    })}
+                    defaultValue={isUpdateMode ? price : ''}
+                  />
+                  <label className="floating-label" htmlFor="price">
+                    Price
+                  </label>
+                </div>
                 {errors.price && (
                   <span className="text-red-600 text-sm mt-1">
                     This field is required
                   </span>
                 )}
               </div>
-              <div className="flex flex-col w-full">
-                <label htmlFor="maxGuests">Max Guests</label>
-                <input
-                  className="bg-transparent border rounded border-primary p-1"
-                  type="number"
-                  id="maxGuests"
-                  {...register('maxGuests', {
-                    required: true,
-                  })}
-                  defaultValue={mode === 'update' ? maxGuests : ''}
-                />
+              <div>
+                <div className="relative w-full">
+                  <input
+                    className="floating-input peer"
+                    type="number"
+                    id="maxGuests"
+                    placeholder=" "
+                    {...register('maxGuests', {
+                      required: true,
+                    })}
+                    defaultValue={isUpdateMode ? maxGuests : ''}
+                  />
+                  <label className="floating-label" htmlFor="maxGuests">
+                    Max Guests
+                  </label>
+                </div>
                 {errors.maxGuests && (
                   <span className="text-red-600 text-sm mt-1">
                     This field is required
@@ -300,7 +339,6 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
               </div>
             </div>
             <div className="w-full">
-              <label htmlFor="media">Images</label>
               <div className="flex flex-wrap gap-8 items-center">
                 {imageUrls.map((url, index) => (
                   <div
@@ -310,35 +348,36 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                   >
                     <div className="w-full flex items-center gap-2">
                       <button
-                        className="rounded-full bg-gray-200 p-2 hover:bg-gray-300"
+                        className="iconBtn"
                         onClick={(e) => handleDeleteImageUrl(e, index)}
                       >
-                        <CgTrash />
+                        <CgTrash size={20} />
                       </button>
-                      <input
-                        className="bg-transparent border rounded border-primary p-1 w-full"
-                        type="text"
-                        id="media"
-                        value={url}
-                        onChange={(e) => handleImageUrlChange(e, index)}
-                      />
+                      <div className="relative">
+                        <input
+                          className="floating-input peer"
+                          type="url"
+                          id="media"
+                          value={url}
+                          placeholder=" "
+                          onChange={(e) => handleImageUrlChange(e, index)}
+                        />
+                        <label className="floating-label" htmlFor="media">
+                          Image
+                        </label>
+                      </div>
                     </div>
 
                     <img
-                      className="w-5/6 h-[130px] rounded object-cover"
+                      className="w-5/6 h-[130px] rounded"
                       src={url}
                       alt="Venue image"
-                      onError={(e) => {
-                        e.target.src = imgPlaceholder;
-                      }}
+                      onError={handleErrorImage}
                     />
                   </div>
                 ))}
-                <button
-                  className="rounded-full bg-gray-200 p-3  w-fit h-fit mt-3 hover:bg-gray-300"
-                  onClick={addImageUrlField}
-                >
-                  <TbPhotoPlus size={20} />
+                <button className="iconBtn" onClick={addImageUrlField}>
+                  <TbPhotoPlus size={30} />
                 </button>
               </div>
 
@@ -349,14 +388,14 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
               )}
             </div>
             <div>
-              <div className="flex gap-3 justify-end">
-                {mode === 'create' ? (
+              <div className="flex gap-3 justify-end border-t pt-5">
+                {isUpdateMode ? (
                   <button className="btn" type="submit" disabled={isLoading}>
-                    {isLoading ? 'Creating...' : 'Create venue'}
+                    {isLoading ? 'Updating...' : 'Update'}
                   </button>
                 ) : (
                   <button className="btn" type="submit" disabled={isLoading}>
-                    {isLoading ? 'Updating...' : 'Update'}
+                    {isLoading ? 'Creating...' : 'Create venue'}
                   </button>
                 )}
 
@@ -368,20 +407,15 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                 </button>
               </div>
 
-              {isError && <FormSubmitError message={errorMessage} />}
+              {isError && <ErrorMessage message={fetchError} />}
               {success && (
-                <div
-                  className="p-2 mt-5 w-full bg-green-600 items-center gap-2 text-green-100 leading-none rounded flex lg:inline-flex"
-                  role="alert"
-                >
-                  <CgCheckO size={20} />
-
-                  <span className="font-semibold mr-2 text-left flex-auto">
-                    {mode === 'create'
-                      ? 'Venue was successfully created!'
-                      : 'Venue was successfully updated!'}
-                  </span>
-                </div>
+                <SuccessMessage
+                  message={
+                    isUpdateMode
+                      ? 'Venue was successfully updated!'
+                      : 'Venue was successfully created!'
+                  }
+                />
               )}
             </div>
           </form>

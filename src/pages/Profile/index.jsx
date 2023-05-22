@@ -1,27 +1,33 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useLogin } from '../../context/LoginProvider';
+import useToggle from '../../hooks/useToggle';
 import useAxiosFetch from '../../hooks/useAxiosFetch';
-import { MyVenues, Bookings, Reservations } from '../../components/Profile';
-import avatarPlaceholder from '../../assets/avatar-placeholder.png';
-import UpdateAvatar from '../../components/Profile/Update';
-import { API_PROFILE_URL } from '../../shared';
+import {
+  ProfileVenues,
+  Bookings,
+  Reservations,
+} from '../../components/Profile';
+import UpdateAvatar from '../../components/Forms/UpdateAvatar';
+import { API_PROFILE_URL, handleErrorImage } from '../../shared';
+import { TbDiscountCheckFilled, TbPhotoEdit } from 'react-icons/tb';
+import ProfileLoader from '../../components/Loaders/ProfileLoader';
+import Breadcrumbs from '../../components/Breadcrumbs';
 
 export const Profile = () => {
   const { name } = useParams();
   const [selectedTab, setSelectedTab] = useState('venues');
-  const [showUpdateAvatarModal, setShowUpdateAvatarModal] = useState(false);
+  const [isUpdateAvatarOpen, toggleUpdateAvatar] = useToggle();
 
-  const { isLoggedIn, token, avatar } = useLogin();
+  const { token, avatar, profile } = useLogin();
 
   const { data, isLoading, isError } = useAxiosFetch(
     `${API_PROFILE_URL}/${name}?_bookings=true&_venues=true`
   );
 
-  console.log(data);
-
   if (isLoading) {
-    return <div>Loading</div>;
+    return <ProfileLoader />;
   }
 
   if (isError) {
@@ -29,22 +35,15 @@ export const Profile = () => {
   }
 
   const { bookings, email, venueManager, venues } = data;
+  const isOwnProfile = profile.name === name;
 
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
   };
 
-  const handleUpdateAvatarButtonClick = () => {
-    setShowUpdateAvatarModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowUpdateAvatarModal(false);
-  };
-
   const renderContent = () => {
     if (selectedTab === 'venues') {
-      return <MyVenues venues={venues} />;
+      return <ProfileVenues venues={venues} isOwnProfile={isOwnProfile} />;
     } else if (selectedTab === 'reservation') {
       return <Reservations name={name} />;
     } else if (selectedTab === 'bookings') {
@@ -52,58 +51,84 @@ export const Profile = () => {
     }
   };
   return (
-    <main className="w-5/6 m-auto lg:w-4/5 py-40">
-      <div>
-        {isLoggedIn && (
-          <>
-            <div className="flex flex-col text-center items-center gap-5 m-auto mb-10">
-              <img
-                className="w-[200px] h-[200px] object-cover rounded-full"
-                src={avatar}
-                alt={`Profile avatar of ${name}`}
-                onError={(e) => {
-                  e.target.src = avatarPlaceholder;
-                }}
-              />
-
-              <div className="flex flex-col gap-1">
-                <h1 className="text-2xl font-bold font-serif">{name}</h1>
-                <p>{email}</p>
-                <button className="btn" onClick={handleUpdateAvatarButtonClick}>
-                  Change avatar
-                </button>
-              </div>
-            </div>
-            {showUpdateAvatarModal && (
-              <UpdateAvatar
-                profile={data}
-                handleClose={handleCloseModal}
-                token={token}
-              />
+    <>
+      <Helmet>
+        <title>{`${name}'s Profile | Holidaze`}</title>
+        <meta
+          name="description"
+          content={
+            isOwnProfile
+              ? `${
+                  venueManager
+                    ? 'Manage your venues, track venue reservations, and view your bookings on your Holidaze profile.'
+                    : 'Track your bookings on your Holidaze profile.'
+                }`
+              : `Explore ${name}'s Holidaze profile.`
+          }
+        />
+      </Helmet>
+      <main className="main-layout">
+        <Breadcrumbs page={name} />
+        <div className="flex flex-col text-center items-center gap-3 m-auto mb-10">
+          <div className="relative">
+            <img
+              className="w-[200px] h-[200px] rounded-full shadow shadow-primaryLight"
+              src={isOwnProfile ? avatar : data.avatar}
+              alt={`Profile avatar of ${name}`}
+              onError={handleErrorImage}
+            />
+            {isOwnProfile && (
+              <button
+                className="p-2 rounded-full bg-primaryLight text-primaryDark absolute bottom-2 right-2 shadow"
+                onClick={toggleUpdateAvatar}
+              >
+                <TbPhotoEdit size={25} />
+              </button>
             )}
-            {!venueManager && bookings ? (
-              <section className="my-20">
-                <Bookings bookings={bookings} />
-              </section>
-            ) : (
-              <div>
-                <div className="border-b border-gray-300">
-                  <button
-                    onClick={() => handleTabClick('venues')}
-                    className={`inline-flex p-4 border-b-2 ${
-                      selectedTab === 'venues'
-                        ? 'border-secondary text-secondary '
-                        : 'border-transparent hover:text-gray-600 hover:border-gray-300 '
-                    }  `}
-                  >
-                    Venues
-                  </button>
+          </div>
 
+          <div className="flex flex-col items-center gap-1">
+            <h1>{name}</h1>
+            {venueManager && (
+              <div className="flex items-center gap-1">
+                <TbDiscountCheckFilled className="text-blue-400" size={20} />
+                <p>Venue Manager</p>
+              </div>
+            )}
+            <p className="text-sm text-lightGrey">{email}</p>
+          </div>
+        </div>
+        {isUpdateAvatarOpen && (
+          <UpdateAvatar
+            profile={data}
+            handleClose={toggleUpdateAvatar}
+            token={token}
+          />
+        )}
+        {!venueManager && bookings ? (
+          <section className="my-20">
+            <Bookings bookings={bookings} />
+          </section>
+        ) : (
+          <div>
+            <div className="border-b border-gray-300">
+              <button
+                onClick={() => handleTabClick('venues')}
+                className={`p-4 border-b-2 ${
+                  selectedTab === 'venues'
+                    ? 'border-primaryDark text-primaryDark '
+                    : 'border-transparent hover:text-gray-600 hover:border-gray-300 '
+                }  `}
+              >
+                Venues
+              </button>
+              {isOwnProfile && (
+                <>
                   <button
                     onClick={() => handleTabClick('reservation')}
-                    className={`inline-flex p-4 border-b-2 ${
+                    className={`p-4 border-b-2 ${
                       selectedTab === 'reservation'
-                        ? 'border-secondary text-secondary '
+                        ? 'border-primaryDark text-primaryDark '
                         : 'border-transparent hover:text-gray-600 hover:border-gray-300 '
                     } `}
                   >
@@ -112,21 +137,21 @@ export const Profile = () => {
 
                   <button
                     onClick={() => handleTabClick('bookings')}
-                    className={`inline-flex p-4 border-b-2 ${
+                    className={`p-4 border-b-2 ${
                       selectedTab === 'bookings'
-                        ? 'border-secondary text-secondary '
+                        ? 'border-primaryDark text-primaryDark '
                         : 'border-transparent hover:text-gray-600 hover:border-gray-300 '
                     } `}
                   >
                     Bookings
                   </button>
-                </div>
-                <section className="my-10">{renderContent()}</section>
-              </div>
-            )}
-          </>
+                </>
+              )}
+            </div>
+            <section className="my-10">{renderContent()}</section>
+          </div>
         )}
-      </div>
-    </main>
+      </main>
+    </>
   );
 };

@@ -2,15 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background-color: #f0f0f0;
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: theme('fontFamily.serif');
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+
+  h1 {
+    font-size: xx-large;
+  }
+
+  h2 {
+    font-size: larger;
+  }
+
+  h3 {
+    font-size: large;
+  }
+
+  img {
+    object-fit: cover;
+  }
+
+  body {
+    background-color: #f9f9f9;
+    color: rgb(49, 49, 49);
+  }
 }
 
 @layer components {
   .btn {
-    background-color: theme('colors.primary');
+    background-color: theme('colors.primaryDark');
+    border-radius: 10px;
     padding: 0.5rem 1rem;
-    color: white;
+    color: theme('colors.primaryLight');
     letter-spacing: 1.5px;
     transition: all 0.3s ease-in-out;
   }
@@ -18,24 +46,113 @@ body {
   .btn:hover,
   .btn:focus,
   .btn:focus-visible {
-    background-color: theme('colors.secondary');
+    background-color: theme('colors.primary');
+  }
+
+  .iconBtn {
+    background-color: rgb(243, 243, 243);
+    padding: 7px;
+    border-radius: 10px;
+    color: rgb(83, 83, 83);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .iconBtn:hover,
+  .iconBtn:focus,
+  .iconBtn:focus-visible {
+    background-color: #e7e7e7;
+  }
+
+  .dangerBtn {
+    background-color: rgb(255, 200, 208);
+    color: rgb(255, 0, 0);
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .btnSecondary {
+    background-color: theme('colors.primaryLight');
+    color: theme('colors.primaryDark');
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .slideBtn {
+    @apply p-1 rounded-full shadow bg-white/80 text-gray-800 hover:bg-white;
   }
 }
 
 @layer utilities {
+  .main-layout {
+    width: 90vw;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 7rem 0;
+  }
+
+  .decor-img {
+    @apply rounded-full h-full w-full shadow-lg;
+  }
+
+  .modal {
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+  }
+
+  .modalBody {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    width: 90vw;
+    max-width: fit-content;
+  }
+
+  .infoBadge {
+    @apply flex items-center gap-2 text-sm rounded-xl bg-primaryLight text-primaryDark px-3 py-2 shadow;
+  }
+
   .nav-link {
-    color: rgb(185, 185, 185);
+    color: theme('colors.primary');
     transition: all 0.3s ease-in-out;
   }
   .nav-link:hover,
   .nav-link:focus,
   .nav-link:focus-visible,
   .active {
-    color: white;
+    color: theme('colors.primaryDark');
   }
 
   .category-card-container {
     overflow: hidden;
+  }
+
+  .bookingCard {
+    @apply relative flex flex-col md:flex-row gap-3 bg-white shadow-lg rounded-2xl min-h-[200px] md:max-h-[250px] lg:max-h-[220px];
+  }
+
+  .bookingCard img {
+    height: 100%;
+    width: 100%;
+    transition: all 0.5s ease;
+  }
+
+  .bookingCard:hover img {
+    transform: scale(1.2);
   }
 
   .category-card {
@@ -58,7 +175,7 @@ body {
   .image-gallery {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
     grid-gap: 10px;
   }
 
@@ -69,7 +186,6 @@ body {
 
   .calendarWrap .rdrDateDisplayWrapper {
     all: unset;
-    padding: 10px;
     background-color: #f8f8f8;
   }
 
@@ -79,12 +195,34 @@ body {
     justify-content: space-between;
     gap: 1rem;
   }
+
   .calendarWrap .rdrDateInput {
     all: unset;
-    border: 2px solid theme('colors.primary');
+  }
+
+  .floating-input,
+  .floating-textarea,
+  .calendarWrap .rdrDateInput input {
+    display: block;
+    padding: 12px 9px;
     width: 100%;
-    padding-left: 10px;
-    font-size: 13px;
+    font-size: small;
+    background-color: transparent;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 0.5rem;
+  }
+
+  .floating-input:focus,
+  .floating-textarea:focus {
+    outline: none;
+    border: 1px solid blue;
+  }
+
+  .floating-label {
+    position: absolute;
+    font-size: small;
+    color: theme('colors.lightGrey');
+    @apply duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1;
   }
 }
 

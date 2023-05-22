@@ -1,66 +1,109 @@
-import React, { useState } from 'react';
-import { CgSearch } from 'react-icons/cg';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { BsSliders } from 'react-icons/bs';
 
-const SearchBar = () => {
-  const today = new Date().toISOString().slice(0, 10);
-  const [guests, setGuests] = useState(1);
+/**
+ * SearchBar Component
+ *
+ * A search bar component for searching venues and setting guest filters.
+ *
+ * @component
+ * @param {Object[]} venues - The array of venues available to search
+ * @param {function} setSearchResults - Function to set the search results
+ * @param {function} setFilters - Function to set the number of guests
+ * @param {number} guestNumber - The number of guests
+ * @param {function} toggleFilters - Function to toggle the filter display
+ */
+const SearchBar = ({
+  venues,
+  setSearchResults,
+  setFilters,
+  guestNumber,
+  toggleFilters,
+}) => {
+  const handleSubmit = (e) => e.preventDefault();
 
-  const handleGuestsChange = (event) => {
-    const selectedGuests = event.target.value;
-    setGuests(selectedGuests);
+  const handleSearchChange = (e) => {
+    const query = e.target.value.toLowerCase();
+    const resultsArray = venues.filter(
+      (venue) =>
+        venue.name.toLowerCase().includes(query) ||
+        venue.location.city.toLowerCase().includes(query) ||
+        venue.location.country.toLowerCase().includes(query)
+    );
+    setSearchResults(resultsArray);
   };
 
-  const guestOptions = [];
-  for (let i = 1; i <= 15; i++) {
-    guestOptions.push(
-      <option key={i} value={i}>
-        {i}
-      </option>
-    );
-  }
+  const handleGuestsChange = (e) => {
+    const { value } = e.target;
+    setFilters((prevState) => ({
+      ...prevState,
+      guests: parseInt(value) || 1,
+    }));
+  };
 
   return (
-    <div className="p-5 bg-white rounded w-4/5 m-auto">
-      <form
-        action=""
-        className="flex flex-col lg:flex-row gap-5 justify-between items-end"
-      >
-        <div className="flex flex-col w-full">
-          <label htmlFor="">Where to?</label>
-          <input
-            className="border p-2"
-            type="text"
-            placeholder="Search for location"
-            required
-          />
-        </div>
-        <div className="flex w-full gap-5">
-          <div className="flex flex-col w-full">
-            <label htmlFor="">Check in</label>
-            <input className="border p-2" type="date" min={today} />
-          </div>
-          <div className="flex flex-col w-full">
-            <label htmlFor="">Check out</label>
-            <input className="border p-2" type="date" />
-          </div>
-        </div>
+    <section className="w-full mb-5 m-auto">
+      <h1 className="mb-5">Where would you like to go?</h1>
 
-        <div className="flex flex-col w-full">
-          <label htmlFor="">Guests</label>
-          <select
-            className="border p-2"
-            value={guests}
-            onChange={handleGuestsChange}
-          >
-            {guestOptions}
-          </select>
+      <form
+        className="bg-white rounded-2xl p-5 flex flex-col items-center gap-3 w-full md:flex-row"
+        onSubmit={handleSubmit}
+      >
+        <div className="relative w-full">
+          <input
+            id="search"
+            className="floating-input peer"
+            type="search"
+            placeholder=" "
+            onChange={handleSearchChange}
+          />
+          <label className="floating-label" htmlFor="search">
+            Search for city, country or venue name
+          </label>
         </div>
-        <button className="btn flex items-center gap-3 h-fit">
-          <CgSearch /> Search
-        </button>
+        <div className="flex items-center gap-3 w-full">
+          <div className="relative w-full">
+            <input
+              className="floating-input peer"
+              type="number"
+              name="guests"
+              value={guestNumber}
+              min={1}
+              onChange={handleGuestsChange}
+              placeholder=" "
+            />
+            <label className="floating-label" htmlFor={'guests'}>
+              Number of Guests
+            </label>
+          </div>
+
+          <button
+            className="btn flex items-center gap-3"
+            onClick={toggleFilters}
+            type="button"
+          >
+            <BsSliders size={20} /> Filters
+          </button>
+        </div>
       </form>
-    </div>
+    </section>
   );
+};
+
+SearchBar.propTypes = {
+  venues: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      location: PropTypes.shape({
+        city: PropTypes.string,
+      }).isRequired,
+    })
+  ).isRequired,
+  setSearchResults: PropTypes.func,
+  setFilters: PropTypes.func,
+  guestNumber: PropTypes.number,
+  toggleFilters: PropTypes.func,
 };
 
 export default SearchBar;

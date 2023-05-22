@@ -1,7 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { eachDayOfInterval, parseISO } from 'date-fns';
+import { eachDayOfInterval, parseISO, format } from 'date-fns';
+import Location from '../../Venue/Location';
+import formatCurrency from '../../../shared/formatCurrency';
+import { TbCalendar, TbTags } from 'react-icons/tb';
+import { HiOutlineLocationMarker } from 'react-icons/hi';
+import { BsPeople, BsMoonStars } from 'react-icons/bs';
+import Rating from '../../Venue/Rating';
 
 export const Bookings = ({ bookings }) => {
   const currentDate = new Date();
@@ -35,79 +41,87 @@ export const Bookings = ({ bookings }) => {
       booking.dateTo
     );
     const totalPrice = pricePerNight * numberOfNights;
-    return totalPrice;
+    const formatTotalPrice = formatCurrency(totalPrice);
+    return formatTotalPrice;
   };
 
   return (
     <>
-      <h2 className="text-xl font-serif font-bold mb-4">
-        Confirmed bookings ({sortedBookings.length})
-      </h2>
+      <h2 className="mb-4">Your upcoming stays ({sortedBookings.length})</h2>
       {sortedBookings.length > 0 ? (
         <div className="grid grid-cols-1 gap-5">
-          {sortedBookings.map((booking, index) => (
-            <Link
-              to={`/venue/${booking.venue.id}`}
-              key={index}
-              className="flex  flex-col md:flex-row gap-3 bg-gray-100  drop-shadow rounded-lg min-h-[200px] md:max-h-[290px]"
-            >
-              <div className="max-h-[290px] md:min-w-[300px] md:max-w-[300px] ">
-                <img
-                  className="w-full h-full object-cover rounded-lg"
-                  src={booking.venue.media[0]}
-                  alt={booking.venue.name}
-                />
-              </div>
-              <div className="p-4 w-full">
-                <div className="flex w-full items-center justify-between mb-5">
-                  <h3 className="font-serif font-bold capitalize text-xl ">
-                    {booking.venue.name}
-                  </h3>
-                  <button className="bg-pink-100 text-red-500 p-2 rounded text-sm">
-                    Cancel Booking
-                  </button>
+          {sortedBookings.map(
+            ({ venue, dateFrom, dateTo, guests, created }, i) => (
+              <Link to={`/venue/${venue.id}`} key={i} className="bookingCard">
+                <div className="min-h-[200px] max-h-full md:w-[400px] overflow-hidden rounded-2xl">
+                  <img src={venue.media[0]} alt={venue.name} />
+                  <div className="absolute top-2 left-2">
+                    <Rating rating={venue.rating} />
+                  </div>
                 </div>
+                <div className="p-4 w-full">
+                  <div className="space-y-2">
+                    <div className="flex w-full items-start justify-between gap-4 border-b">
+                      <div className="pb-3">
+                        <h3 className="capitalize ">{venue.name}</h3>
+                        <p className="text-xs text-lightGrey">
+                          {' '}
+                          Booked on{' '}
+                          {format(new Date(created), 'EEE MMM dd, yyyy')}
+                        </p>
+                      </div>
 
-                <div className="flex gap-10">
-                  <div className="flex flex-col gap-1">
-                    <span>Arrival</span>
-                    <span>Nights</span>
-                    <span>Departure</span>
-                    <span>Guests</span>
-                    <span>Price</span>
-                    <span>Address</span>
-                    <span>Booking number</span>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <span>
-                      {new Date(booking.dateFrom).toLocaleDateString()}
-                    </span>
-                    <span>
-                      {calculateNumberOfNights(
-                        booking.dateFrom,
-                        booking.dateTo
-                      )}
-                    </span>
-                    <span>{new Date(booking.dateTo).toLocaleDateString()}</span>
-                    <span>{booking.guests} Adults</span>
-                    <span>
-                      NOK {booking.venue.price} / Night | Total NOK
-                      {calculateTotalPrice(booking)}
-                    </span>
-                    <span>
-                      {booking.venue.location.address},{' '}
-                      {booking.venue.location.city},{' '}
-                      {booking.venue.location.country}
-                    </span>
-                    <span>{booking.id}</span>
+                      <button className="bg-pink-100 text-red-500 p-1 rounded text-sm whitespace-nowrap">
+                        Cancel
+                      </button>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <TbCalendar className="min-w-[20px]" size={20} />
+                      <p>
+                        {format(new Date(dateFrom), 'EEE MMM dd, yyyy')} -{' '}
+                        {format(new Date(dateTo), 'EEE MMM dd, yyyy')}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <BsMoonStars size={20} />
+                      <p>
+                        {calculateNumberOfNights(dateFrom, dateTo)}
+                        <span> Nights</span>
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <BsPeople size={20} />
+                      <p>
+                        {guests} {guests === 1 ? 'Adult' : 'Adults'}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <HiOutlineLocationMarker size={20} />
+                      <Location
+                        address={venue.location.address}
+                        city={venue.location.city}
+                        country={venue.location.country}
+                      />
+                    </div>
+                    <div className="lg:absolute lg:bottom-4 lg:right-4">
+                      <div className="flex items-center gap-3">
+                        <TbTags size={20} />
+                        <p>
+                          Total price{' '}
+                          <span className="font-bold text-primaryDark">
+                            {calculateTotalPrice(sortedBookings[i])}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            )
+          )}
         </div>
       ) : (
-        <p>You have no upcoming bookings</p>
+        <p className="text-lightGrey">You have no upcoming bookings</p>
       )}
     </>
   );

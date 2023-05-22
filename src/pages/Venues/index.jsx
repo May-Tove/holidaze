@@ -1,10 +1,22 @@
 import React from 'react';
-import VenuesList from '../../components/VenuesList';
+import { Helmet } from 'react-helmet-async';
+import VenuesList from '../../components/Venues';
+import Breadcrumbs from '../../components/Breadcrumbs';
 
 export const Venues = () => {
   return (
-    <main className="w-5/6 m-auto lg:w-4/5 flex flex-col lg:flex-row gap-5">
-      <VenuesList />
-    </main>
+    <>
+      <Helmet>
+        <title>Venues | Holidaze</title>
+        <meta
+          name="description"
+          content="Explore a diverse selection of unique accommodations available worldwide on Holidaze. From beachside retreats to city escapes, find the perfect place for your next adventure!"
+        />
+      </Helmet>
+      <main className="main-layout min-h-screen">
+        <Breadcrumbs page={'Venues'} />
+        <VenuesList />
+      </main>
+    </>
   );
 };
