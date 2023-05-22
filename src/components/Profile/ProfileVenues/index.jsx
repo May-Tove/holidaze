@@ -27,7 +27,7 @@ export const ProfileVenues = ({ venues, isOwnProfile }) => {
       )}
       {venues && venues.length > 0 ? (
         <div>
-          <div className="grid grid-cols-3 gap-5 ">
+          <div className="grid grid-cols-3 gap-5">
             {venues.map((venue) => (
               <VenueCard key={venue.id} venue={venue} />
             ))}

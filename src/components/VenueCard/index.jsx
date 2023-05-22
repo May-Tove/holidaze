@@ -12,7 +12,7 @@ const VenueCard = ({ venue: { name, id, price, media, rating, location } }) => {
 
   return (
     <Link to={`/venue/${id}`} aria-label={`Link to ${name}`}>
-      <article className="flex flex-col items-center bg-gray-100 rounded-2xl">
+      <article className="flex flex-col items-center bg-gray-100 rounded-2xl shadow-xl">
         <div className="w-full h-72 relative">
           <ImageSlider media={media} />
           <button
@@ -24,7 +24,7 @@ const VenueCard = ({ venue: { name, id, price, media, rating, location } }) => {
         </div>
         <div className="w-full space-y-2 p-4">
           <div className="flex justify-between gap-2">
-            <h3 className="capitalize">{name}</h3>
+            <h2 className="capitalize">{name}</h2>
             <Rating rating={rating} />
           </div>
           <div className="flex items-center gap-1 pb-3">

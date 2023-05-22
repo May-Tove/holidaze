@@ -13,7 +13,7 @@ export const Venues = () => {
           content="Explore a diverse selection of unique accommodations available worldwide on Holidaze. From beachside retreats to city escapes, find the perfect place for your next adventure!"
         />
       </Helmet>
-      <main className="main-layout h-screen">
+      <main className="main-layout min-h-screen">
         <Breadcrumbs page={'Venues'} />
         <VenuesList />
       </main>

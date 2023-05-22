@@ -8,10 +8,11 @@
   h3 {
     font-family: theme('fontFamily.serif');
     font-weight: bold;
+    text-transform: capitalize;
   }
 
   h1 {
-    font-size: x-large;
+    font-size: xx-large;
   }
 
   h2 {
@@ -90,8 +91,13 @@
     width: 90vw;
     max-width: 1100px;
     margin: 0 auto;
-    padding: 10rem 0;
+    padding: 7rem 0;
   }
+
+  .decor-img {
+    @apply rounded-full h-full w-full shadow-lg;
+  }
+
   .modal {
     background-color: rgba(0, 0, 0, 0.8);
     position: fixed;

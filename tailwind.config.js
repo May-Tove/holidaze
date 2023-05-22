@@ -18,8 +18,8 @@ export default {
         serif: ['quiche-flare, sans-serif'],
       },
       gridTemplateColumns: {
-        3: 'repeat(auto-fit, minmax(300px, 1fr))',
-        4: 'repeat(auto-fit, minmax(400px, 1fr))',
+        3: 'repeat(auto-fill, minmax(300px, 1fr))',
+        4: 'repeat(auto-fill, minmax(300px, 1fr))',
       },
       boxShadow: {
         lg: 'rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;',

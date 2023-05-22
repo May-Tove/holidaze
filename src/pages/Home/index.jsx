@@ -5,7 +5,6 @@ import BackgroundHero from '../../assets/bg-hero.jpg';
 import AboutImage from '../../assets/about-section.jpg';
 import ContactImage from '../../assets/contact-section.jpg';
 import RegisterImage from '../../assets/register-section.jpg';
-import SearchBar from '../../components/SearchBar';
 
 export const Home = () => {
   return (
@@ -19,19 +18,21 @@ export const Home = () => {
       </Helmet>
       <main>
         <section
-          className="bg-cover bg-center h-screen flex flex-col mb-20"
+          className="bg-cover bg-center h-screen flex flex-col gap-20 justify-center items-center mb-20"
           style={{
             backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)),url(${BackgroundHero})`,
           }}
         >
-          <h1 className="text-white pt-20 text-center text-4xl lg:text-7xl w-3/4 m-auto">
+          <h1 className="text-white pt-20 text-center text-4xl lg:text-7xl w-3/4">
             Time for a getaway? Find the ideal place to stay
           </h1>
-          <SearchBar />
+          <Link className="btn" to={'/venues'}>
+            See all venues
+          </Link>
         </section>
         <section className="w-3/4 flex flex-col-reverse lg:flex-row gap-12 items-center m-auto mb-32">
           <div
-            className="w-screen lg:w-2/5 bg-cover bg-center h-48 lg:h-[550px] 2xl:h-[700px]"
+            className="w-screen lg:w-2/5 bg-cover bg-center h-48 lg:h-[650px] 2xl:h-[700px] rounded-full"
             style={{
               backgroundImage: `url(${AboutImage})`,
             }}
@@ -77,7 +78,7 @@ export const Home = () => {
             <div className="category-card-container">
               <Link
                 to={'/venues'}
-                className="category-card"
+                className="category-card rounded-full"
                 style={{
                   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.73)),url(${BackgroundHero})`,
                 }}
@@ -88,7 +89,7 @@ export const Home = () => {
             <div className="category-card-container">
               <Link
                 to={'/venues'}
-                className="category-card"
+                className="category-card rounded-full"
                 style={{
                   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.73)),url(${BackgroundHero})`,
                 }}
@@ -99,7 +100,7 @@ export const Home = () => {
             <div className="category-card-container">
               <Link
                 to={'/venues'}
-                className="category-card"
+                className="category-card rounded-full"
                 style={{
                   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.73)),url(${BackgroundHero})`,
                 }}
@@ -110,7 +111,7 @@ export const Home = () => {
             <div className="category-card-container">
               <Link
                 to={'/venues'}
-                className="category-card"
+                className="category-card rounded-full"
                 style={{
                   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.73)),url(${BackgroundHero})`,
                 }}
@@ -152,7 +153,7 @@ export const Home = () => {
             </Link>
           </div>
           <div
-            className="w-screen lg:w-2/5 bg-cover bg-center h-48 lg:h-[550px] 2xl:h-[700px]"
+            className="w-screen lg:w-2/5 bg-cover bg-center h-48 lg:h-[650px] 2xl:h-[700px] rounded-full"
             style={{
               backgroundImage: `url(${RegisterImage})`,
             }}
@@ -160,7 +161,7 @@ export const Home = () => {
         </section>
         <section className="w-3/4 flex flex-col-reverse lg:flex-row gap-12 items-center m-auto mb-12">
           <div
-            className="w-screen lg:w-2/5 bg-cover bg-center h-48 lg:h-[550px] 2xl:h-[700px]"
+            className="w-screen lg:w-2/5 bg-cover bg-center h-48 lg:h-[650px] 2xl:h-[700px] rounded-full"
             style={{
               backgroundImage: `url(${ContactImage})`,
             }}
