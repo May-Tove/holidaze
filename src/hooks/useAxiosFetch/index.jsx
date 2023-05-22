@@ -8,6 +8,7 @@ const useAxiosFetch = (dataUrl, method) => {
   const [fetchError, setFetchError] = useState(null);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
 
   const { token } = useLogin();
 
@@ -25,6 +26,7 @@ const useAxiosFetch = (dataUrl, method) => {
 
   const handleSuccessFetch = (response) => {
     setData(response.data);
+    setSearchResults(response.data);
     setSuccess(true);
     setIsError(false);
     setFetchError(null);
@@ -87,7 +89,16 @@ const useAxiosFetch = (dataUrl, method) => {
     return cleanup;
   }, [dataUrl, method]);
 
-  return { data, success, fetchError, isError, isLoading, submit };
+  return {
+    data,
+    searchResults,
+    setSearchResults,
+    success,
+    fetchError,
+    isError,
+    isLoading,
+    submit,
+  };
 };
 
 export default useAxiosFetch;
