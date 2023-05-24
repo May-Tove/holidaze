@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
-import useAxiosFetch from '../../../hooks/useAxiosFetch';
-import { CgTrash, CgClose } from 'react-icons/cg';
-import { TbPhotoPlus } from 'react-icons/tb';
+import { CgClose } from 'react-icons/cg';
 import { useNavigate } from 'react-router-dom';
-import { API_VENUE_URL, handleErrorImage } from '../../../shared';
+import { API_VENUE_URL } from '../../../shared';
+import ImageInput from './ImageInput';
 import ErrorMessage from '../../../shared/errorMessage';
 import SuccessMessage from '../../../shared/successMessage';
+import useMethodApi from '../../../hooks/useMethodApi';
 
 export const VenueForm = ({ mode, venue, handleClose }) => {
   const {
@@ -19,11 +19,11 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
 
   const navigate = useNavigate();
 
-  const { submit, isLoading, isError, fetchError, success } = useAxiosFetch();
+  const { fetchWithMethod, isLoading, isError, errorMessage, success } =
+    useMethodApi();
 
   const { id, name, description, location, meta, price, maxGuests, media } =
     venue;
-
   const isCreateMode = mode === 'create';
   const isUpdateMode = mode === 'update';
 
@@ -33,18 +33,6 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
     const newUrls = [...imageUrls];
     newUrls[index] = String(onChangeValue.target.value);
     setImageUrls(newUrls);
-  };
-
-  const addImageUrlField = (e) => {
-    e.preventDefault();
-    setImageUrls([...imageUrls, []]);
-  };
-
-  const handleDeleteImageUrl = (e, index) => {
-    e.preventDefault();
-    const deleteUrl = [...imageUrls];
-    deleteUrl.splice(index, 1);
-    setImageUrls(deleteUrl);
   };
 
   const onSubmit = async ({
@@ -87,14 +75,18 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
     };
 
     if (isCreateMode) {
-      const response = await submit(API_VENUE_URL, 'post', requestData);
+      const response = await fetchWithMethod(
+        API_VENUE_URL,
+        'post',
+        requestData
+      );
 
       reset();
       setTimeout(() => {
         navigate(`/venue/${response.data.id}`);
       }, 1000);
     } else if (isUpdateMode) {
-      await submit(`${API_VENUE_URL}/${id}`, 'put', requestData);
+      await fetchWithMethod(`${API_VENUE_URL}/${id}`, 'put', requestData);
 
       setTimeout(() => {
         handleClose();
@@ -338,55 +330,13 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                 )}
               </div>
             </div>
-            <div className="w-full">
-              <div className="flex flex-wrap gap-8 items-center">
-                {imageUrls.map((url, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col items-end gap-2"
-                    {...register(`media[${index}].url`)}
-                  >
-                    <div className="w-full flex items-center gap-2">
-                      <button
-                        className="iconBtn"
-                        onClick={(e) => handleDeleteImageUrl(e, index)}
-                      >
-                        <CgTrash size={20} />
-                      </button>
-                      <div className="relative">
-                        <input
-                          className="floating-input peer"
-                          type="url"
-                          id="media"
-                          value={url}
-                          placeholder=" "
-                          onChange={(e) => handleImageUrlChange(e, index)}
-                        />
-                        <label className="floating-label" htmlFor="media">
-                          Image
-                        </label>
-                      </div>
-                    </div>
-
-                    <img
-                      className="w-5/6 h-[130px] rounded"
-                      src={url}
-                      alt="Venue image"
-                      onError={handleErrorImage}
-                    />
-                  </div>
-                ))}
-                <button className="iconBtn" onClick={addImageUrlField}>
-                  <TbPhotoPlus size={30} />
-                </button>
-              </div>
-
-              {errors.media && (
-                <span className="text-red-600 text-sm mt-1">
-                  This field is required and must be a valid image URL
-                </span>
-              )}
-            </div>
+            <ImageInput
+              errors={errors}
+              register={register}
+              imageUrls={imageUrls}
+              setImageUrls={setImageUrls}
+              handleImageUrlChange={handleImageUrlChange}
+            />
             <div>
               <div className="flex gap-3 justify-end border-t pt-5">
                 {isUpdateMode ? (
@@ -407,7 +357,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
                 </button>
               </div>
 
-              {isError && <ErrorMessage message={fetchError} />}
+              {isError && <ErrorMessage message={errorMessage} />}
               {success && (
                 <SuccessMessage
                   message={
