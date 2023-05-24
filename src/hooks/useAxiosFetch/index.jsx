@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLogin } from '../../context/LoginProvider';
+import { useNavigate } from 'react-router-dom';
 
 const useAxiosFetch = (dataUrl, method) => {
   const [data, setData] = useState([]);
@@ -17,41 +18,7 @@ const useAxiosFetch = (dataUrl, method) => {
     Authorization: `Bearer ${token}`,
   };
 
-  const handleFetchError = (error) => {
-    setIsError(true);
-    setFetchError(error.message);
-    setData([]);
-    setSuccess(null);
-  };
-
-  const handleSuccessFetch = (response) => {
-    setData(response.data);
-    setSearchResults(response.data);
-    setSuccess(true);
-    setIsError(false);
-    setFetchError(null);
-  };
-
-  const submit = async (url, method, formData) => {
-    setIsLoading(true);
-
-    try {
-      const response = await axios({
-        url: url,
-        method: method,
-        headers: headers,
-        data: formData,
-      });
-
-      handleSuccessFetch(response);
-
-      return response;
-    } catch (error) {
-      handleFetchError(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
     let isMounted = true;
@@ -69,11 +36,25 @@ const useAxiosFetch = (dataUrl, method) => {
         });
 
         if (isMounted) {
-          handleSuccessFetch(response);
+          setData(response.data);
+          setSearchResults(response.data);
+          setSuccess(true);
+          setIsError(false);
+          setFetchError(null);
         }
       } catch (error) {
         if (isMounted) {
-          handleFetchError(error);
+          setIsError(true);
+          setFetchError(
+            `${error.message}, ${error.response.data.errors[0].message} `
+          );
+          setData(null);
+          setSuccess(null);
+          setSearchResults(null);
+        }
+        // if request status is 404(not found), redirect user to 404 page
+        if (error.response && error.response.status === 404) {
+          navigate('*');
         }
       } finally {
         isMounted && setIsLoading(false);
@@ -97,7 +78,6 @@ const useAxiosFetch = (dataUrl, method) => {
     fetchError,
     isError,
     isLoading,
-    submit,
   };
 };
 

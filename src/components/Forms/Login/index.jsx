@@ -2,9 +2,10 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useLogin } from '../../../context/LoginProvider';
-import useAxiosFetch from '../../../hooks/useAxiosFetch';
+
 import { API_AUTH_URL, EMAIL_REGEX } from '../../../shared';
 import ErrorMessage from '../../../shared/errorMessage';
+import useMethodApi from '../../../hooks/useMethodApi';
 
 const LoginForm = () => {
   const {
@@ -17,10 +18,14 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const { setIsLoggedIn, setProfile, setToken, setAvatar } = useLogin();
-  const { isLoading, isError, fetchError, submit } = useAxiosFetch();
+  const { fetchWithMethod, isLoading, isError, errorMessage } = useMethodApi();
 
   const onSubmit = async (formData) => {
-    const response = await submit(`${API_AUTH_URL}/login`, 'post', formData);
+    const response = await fetchWithMethod(
+      `${API_AUTH_URL}/login`,
+      'post',
+      formData
+    );
 
     setIsLoggedIn(true);
     setProfile(response.data);
@@ -31,7 +36,11 @@ const LoginForm = () => {
   };
 
   return (
-    <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="flex flex-col gap-5"
+      onSubmit={handleSubmit(onSubmit)}
+      data-testid="login-form"
+    >
       <div>
         <div className="relative">
           <input
@@ -49,7 +58,7 @@ const LoginForm = () => {
           </label>
         </div>
         {errors.email && (
-          <span className="text-red-600 text-sm">
+          <span className="text-red-600 text-sm" id="inputError">
             This field is required and must be a valid noroff.no or
             stud.noroff.no email address.
           </span>
@@ -69,7 +78,7 @@ const LoginForm = () => {
           </label>
         </div>
         {errors.password && (
-          <span className="text-red-600 text-sm">
+          <span className="text-red-600 text-sm" id="inputError">
             This field is required and must be at least 8 characters long.
           </span>
         )}
@@ -84,7 +93,7 @@ const LoginForm = () => {
       <button className="btn" type="submit" disabled={isLoading}>
         {isLoading ? 'Logging in...' : 'Login'}
       </button>
-      {isError && <ErrorMessage message={fetchError} />}
+      {isError && <ErrorMessage message={errorMessage} />}
     </form>
   );
 };

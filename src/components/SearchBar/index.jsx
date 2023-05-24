@@ -55,6 +55,7 @@ const SearchBar = ({
             id="search"
             className="floating-input peer"
             type="search"
+            name="search"
             placeholder=" "
             onChange={handleSearchChange}
           />
@@ -97,6 +98,7 @@ SearchBar.propTypes = {
       name: PropTypes.string,
       location: PropTypes.shape({
         city: PropTypes.string,
+        country: PropTypes.string,
       }).isRequired,
     })
   ).isRequired,

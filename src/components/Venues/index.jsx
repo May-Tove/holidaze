@@ -6,7 +6,6 @@ import VenueCard from '../VenueCard';
 import SearchBar from '../SearchBar';
 import Filters from '../Filters/VenueFilters';
 import AllVenuesLoader from '../Loaders/AllVenuesLoader';
-import ErrorMessage from '../../shared/errorMessage';
 import { API_VENUE_URL } from '../../shared';
 
 /**
@@ -41,7 +40,7 @@ const VenuesList = () => {
   );
 
   if (isError) {
-    return <ErrorMessage message={fetchError} />;
+    return <div className="py-40">{fetchError}</div>;
   }
 
   if (isLoading) {
@@ -59,6 +58,7 @@ const VenuesList = () => {
           toggleFilters={toggleFilters}
         />
       )}
+
       <SearchBar
         venues={data}
         setSearchResults={setSearchResults}
@@ -66,6 +66,7 @@ const VenuesList = () => {
         guestNumber={filters.guests}
         toggleFilters={toggleFilters}
       />
+
       <p className="my-2 text-sm">
         Showing <span className="font-bold">{filteredData.length}</span> of{' '}
         <span className="font-bold">{data.length}</span> venues

@@ -27,18 +27,27 @@ const useMethodApi = () => {
       });
       setData(response.data);
       setSuccess(true);
+
       return response;
     } catch (error) {
       setIsError(true);
-      setErrorMessage(error.message);
+      setErrorMessage(error.response.data.errors[0].message);
+
       setSuccess(false);
-      setData([]);
+      setData(null);
     } finally {
       setIsLoading(false);
     }
   };
 
-  return { fetchWithMethod, data, isLoading, isError, errorMessage, success };
+  return {
+    fetchWithMethod,
+    data,
+    isLoading,
+    isError,
+    errorMessage,
+    success,
+  };
 };
 
 export default useMethodApi;

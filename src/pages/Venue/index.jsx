@@ -10,20 +10,20 @@ import Breadcrumbs from '../../components/Breadcrumbs';
 export const Venue = () => {
   let { id } = useParams();
 
-  const { data, isLoading, isError } = useAxiosFetch(
+  const { data, isLoading, isError, fetchError } = useAxiosFetch(
     `${API_VENUE_URL}/${id}?_owner=true&_bookings=true`
   );
 
-  if (isError || !data) {
-    return <div>Error</div>;
-  }
-
-  if (isLoading) {
+  if ((isLoading && !data) || Array.isArray(data)) {
     return (
       <main className="main-layout">
         <VenueDetailsLoader />
       </main>
     );
+  }
+
+  if (isError) {
+    return <div className="py-40">{fetchError}</div>;
   }
 
   return (

@@ -81,6 +81,7 @@ export const Profile = () => {
               <button
                 className="p-2 rounded-full bg-primaryLight text-primaryDark absolute bottom-2 right-2 shadow"
                 onClick={toggleUpdateAvatar}
+                aria-label="Update avatar button"
               >
                 <TbPhotoEdit size={25} />
               </button>

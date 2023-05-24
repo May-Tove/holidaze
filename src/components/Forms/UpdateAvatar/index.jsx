@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { useLogin } from '../../../context/LoginProvider';
-import useAxiosFetch from '../../../hooks/useAxiosFetch';
 import { CgClose } from 'react-icons/cg';
 import { API_PROFILE_URL, handleErrorImage } from '../../../shared';
 
 import ErrorMessage from '../../../shared/errorMessage';
 import SuccessMessage from '../../../shared/successMessage';
+import useMethodApi from '../../../hooks/useMethodApi';
 
 const UpdateAvatar = ({ profile, handleClose }) => {
   const { setAvatar, avatar } = useLogin();
@@ -19,14 +19,15 @@ const UpdateAvatar = ({ profile, handleClose }) => {
     formState: { errors },
   } = useForm();
 
-  const { submit, isError, isLoading, fetchError, success } = useAxiosFetch();
+  const { fetchWithMethod, isError, isLoading, errorMessage, success } =
+    useMethodApi();
   const { name } = profile;
 
   const onSubmit = async (formData) => {
     const payload = {
       avatar: formData.avatar,
     };
-    await submit(`${API_PROFILE_URL}/${name}/media`, 'put', payload);
+    await fetchWithMethod(`${API_PROFILE_URL}/${name}/media`, 'put', payload);
     setAvatar(formData.avatar);
 
     setTimeout(() => {
@@ -110,7 +111,7 @@ const UpdateAvatar = ({ profile, handleClose }) => {
                 </button>
               </div>
 
-              {isError && <ErrorMessage message={fetchError} />}
+              {isError && <ErrorMessage message={errorMessage} />}
               {success && (
                 <SuccessMessage message="Successfully changed avatar" />
               )}

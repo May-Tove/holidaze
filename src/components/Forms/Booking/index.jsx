@@ -6,10 +6,10 @@ import { eachDayOfInterval, format, parseISO } from 'date-fns';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { CgClose } from 'react-icons/cg';
-import useAxiosFetch from '../../../hooks/useAxiosFetch';
 import useToggle from '../../../hooks/useToggle';
 import { API_BOOKINGS_URL } from '../../../shared';
 import ErrorMessage from '../../../shared/errorMessage';
+import useMethodApi from '../../../hooks/useMethodApi';
 
 export const CreateBooking = ({ bookings, id, isLoggedIn, price }) => {
   const [disabledDates, setDisabledDates] = useState([]);
@@ -52,7 +52,7 @@ export const CreateBooking = ({ bookings, id, isLoggedIn, price }) => {
     setDisabledDates(disabledDatesArray);
   }, [bookings]);
 
-  const { submit, isLoading, isError, fetchError } = useAxiosFetch();
+  const { fetchWithMethod, isLoading, isError, errorMessage } = useMethodApi();
 
   const onSubmit = async (formData) => {
     range.map((value) => {
@@ -66,7 +66,7 @@ export const CreateBooking = ({ bookings, id, isLoggedIn, price }) => {
 
     const parsedGuests = parseInt(formData.guests);
 
-    const response = await submit(API_BOOKINGS_URL, 'post', {
+    const response = await fetchWithMethod(API_BOOKINGS_URL, 'post', {
       dateFrom: formData.dateFrom,
       dateTo: formData.dateTo,
       guests: parsedGuests,
@@ -150,7 +150,7 @@ export const CreateBooking = ({ bookings, id, isLoggedIn, price }) => {
         className="flex flex-col gap-3 mt-3 "
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="calendarWrap">
+        <div className="calendarWrap" data-testid="venue-calendar">
           <DateRange
             onChange={(item) => setRange([item.selection])}
             editableDateInputs={true}
@@ -193,7 +193,7 @@ export const CreateBooking = ({ bookings, id, isLoggedIn, price }) => {
             Log in to book
           </button>
         )}
-        {isError && <ErrorMessage message={fetchError} />}
+        {isError && <ErrorMessage message={errorMessage} />}
       </form>
     </section>
   );

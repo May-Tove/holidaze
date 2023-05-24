@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import useAxiosFetch from '../../../hooks/useAxiosFetch';
 import { API_VENUE_URL } from '../../../shared';
 import ErrorMessage from '../../../shared/errorMessage';
 import { CgCheckO } from 'react-icons/cg';
+import useMethodApi from '../../../hooks/useMethodApi';
 
 const RemoveVenue = ({ id, handleClose }) => {
-  const { submit, success, isError, isLoading } = useAxiosFetch();
+  const { fetchWithMethod, success, isError, isLoading } = useMethodApi();
   const navigate = useNavigate();
 
   const handleDeleteVenue = async () => {
-    await submit(`${API_VENUE_URL}/${id}`, 'delete');
+    await fetchWithMethod(`${API_VENUE_URL}/${id}`, 'delete');
 
     setTimeout(() => {
       navigate('/venues');
@@ -38,7 +38,7 @@ const RemoveVenue = ({ id, handleClose }) => {
                 onClick={handleDeleteVenue}
                 disabled={isLoading}
               >
-                {isLoading ? 'Deleting...' : 'Delete'}
+                {isLoading ? 'Deleting...' : 'Yes, delete this venue'}
               </button>
               <button className="btnSecondary" onClick={handleClose}>
                 Cancel
