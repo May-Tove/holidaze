@@ -1,7 +1,7 @@
 describe('A logged in user', () => {
   beforeEach(() => {
     cy.clearLocalStorage();
-    cy.visit('http://localhost:5173/');
+    cy.visit('/');
     cy.wait(1000);
     // Login
     cy.get('a').contains('Login').should('be.visible').click();

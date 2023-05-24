@@ -1,7 +1,7 @@
 describe('A user', () => {
   beforeEach(() => {
     cy.clearLocalStorage();
-    cy.visit('http://localhost:5173/');
+    cy.visit('/');
     cy.get('a').contains('See all venues').should('be.visible').click();
   });
 
