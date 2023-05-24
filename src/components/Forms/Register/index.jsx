@@ -1,14 +1,16 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import useAxiosFetch from '../../../hooks/useAxiosFetch';
+
 import ErrorMessage from '../../../shared/errorMessage';
+import SuccessMessage from '../../../shared/successMessage';
 import {
   API_AUTH_URL,
   AVATAR_REGEX,
   EMAIL_REGEX,
   NAME_REGEX,
 } from '../../../shared';
+import useMethodApi from '../../../hooks/useMethodApi';
 
 const RegisterForm = () => {
   const {
@@ -20,13 +22,16 @@ const RegisterForm = () => {
 
   const navigate = useNavigate();
 
-  const { submit, isLoading, isError, fetchError } = useAxiosFetch();
+  const { fetchWithMethod, isLoading, isError, errorMessage, success } =
+    useMethodApi();
 
   const onSubmit = async (formData) => {
-    await submit(`${API_AUTH_URL}/register`, 'post', formData);
+    await fetchWithMethod(`${API_AUTH_URL}/register`, 'post', formData);
 
-    navigate('/login');
     reset();
+    setTimeout(() => {
+      navigate('/login');
+    }, 2000);
   };
 
   return (
@@ -45,7 +50,7 @@ const RegisterForm = () => {
           </label>
         </div>
         {errors.name && (
-          <span className="text-red-900 text-sm">
+          <span className="text-red-900 text-sm" id="inputError">
             This field is required and can only contain letters, numbers, and
             underscores.
           </span>
@@ -68,7 +73,7 @@ const RegisterForm = () => {
           </label>
         </div>
         {errors.email && (
-          <span className="text-red-900 text-sm">
+          <span className="text-red-900 text-sm" id="inputError">
             This field is required and must be a valid noroff.no or
             stud.noroff.no email address.
           </span>
@@ -88,7 +93,7 @@ const RegisterForm = () => {
           </label>
         </div>
         {errors.password && (
-          <span className="text-red-900 text-sm">
+          <span className="text-red-900 text-sm" id="inputError">
             This field is required and must be at least 8 characters long.
           </span>
         )}
@@ -110,7 +115,7 @@ const RegisterForm = () => {
           </label>
         </div>
         {errors.avatar && (
-          <span className="text-red-900 text-sm">
+          <span className="text-red-900 text-sm" id="inputError">
             This field is required and must be a valid URL.
           </span>
         )}
@@ -133,7 +138,10 @@ const RegisterForm = () => {
       <button className="btn" type="submit" disabled={isLoading}>
         {isLoading ? 'Registering...' : 'Register'}
       </button>
-      {isError && <ErrorMessage message={fetchError} />}
+      {isError && <ErrorMessage message={errorMessage} />}
+      {success && (
+        <SuccessMessage message="Registration successful, you can now log in to your account" />
+      )}
     </form>
   );
 };

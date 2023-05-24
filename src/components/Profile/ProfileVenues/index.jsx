@@ -16,6 +16,7 @@ export const ProfileVenues = ({ venues, isOwnProfile }) => {
           <button
             className="btn flex items-center gap-2"
             onClick={toggleCreateVenue}
+            aria-label="Create new venue button"
           >
             <TbHomePlus size={20} />
             New venue

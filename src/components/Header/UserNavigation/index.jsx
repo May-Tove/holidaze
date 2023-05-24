@@ -20,6 +20,7 @@ const UserNavigation = ({ toggle, isOpen }) => {
         className="flex items-center text-primaryDark"
         id="dropdownAvatarNameButton"
         onClick={toggle}
+        aria-label="Profile menu button"
       >
         <span className="sr-only">Open Menu</span>
         <img

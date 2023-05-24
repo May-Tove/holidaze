@@ -7,6 +7,7 @@ const SuccessMessage = ({ message }) => {
     <div
       className="flex items-center gap-2 p-2 mt-5 w-full bg-green-100 text-green-600 rounded-xl"
       role="alert"
+      data-testid="success-message"
     >
       <CgCheckO size={20} />
       <p>{message}</p>

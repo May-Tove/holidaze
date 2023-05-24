@@ -47,9 +47,11 @@ export const Bookings = ({ bookings }) => {
 
   return (
     <>
-      <h2 className="mb-4">Your upcoming stays ({sortedBookings.length})</h2>
+      <h2 className="mb-4" data-testid="upcoming-bookings-heading">
+        Your upcoming stays ({sortedBookings.length})
+      </h2>
       {sortedBookings.length > 0 ? (
-        <div className="grid grid-cols-1 gap-5">
+        <div className="grid grid-cols-1 gap-5" data-testid="upcoming-bookings">
           {sortedBookings.map(
             ({ venue, dateFrom, dateTo, guests, created }, i) => (
               <Link to={`/venue/${venue.id}`} key={i} className="bookingCard">

@@ -13,7 +13,10 @@ const Header = () => {
 
   return (
     <header className="bg-primaryLight fixed w-screen transition-colors duration-300 z-50">
-      <nav className="flex items-center justify-between py-5 m-auto w-[90vw] max-w-screen-2xl">
+      <nav
+        className="flex items-center justify-between py-5 m-auto w-[90vw] max-w-screen-2xl"
+        id="navBar"
+      >
         <Link
           to={'/'}
           className="font-serif font-bold text-xl uppercase tracking-wider text-primaryDark"
@@ -74,6 +77,7 @@ const Header = () => {
                 <Link
                   to={'/login'}
                   className="text-sm px-2 py-1 rounded-lg bg-primaryDark text-primaryLight hover:bg-primary transition-colors duration-300"
+                  id="loginButton"
                 >
                   Login
                 </Link>
