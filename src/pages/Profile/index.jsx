@@ -7,7 +7,7 @@ import useApi from '../../hooks/useApi';
 import {
   ProfileVenues,
   Bookings,
-  Reservations,
+  VenueReservations,
 } from '../../components/Profile';
 import UpdateAvatar from '../../components/Forms/UpdateAvatar';
 import { API_PROFILE_URL, handleErrorImage } from '../../shared';
@@ -50,8 +50,8 @@ export const Profile = () => {
   const renderContent = () => {
     if (selectedTab === 'venues') {
       return <ProfileVenues venues={venues} isOwnProfile={isOwnProfile} />;
-    } else if (selectedTab === 'reservation') {
-      return <Reservations name={name} />;
+    } else if (selectedTab === 'reservations') {
+      return <VenueReservations name={name} />;
     } else if (selectedTab === 'bookings') {
       return <Bookings bookings={bookings} />;
     }
@@ -132,14 +132,14 @@ export const Profile = () => {
               {isOwnProfile && (
                 <>
                   <button
-                    onClick={() => handleTabClick('reservation')}
+                    onClick={() => handleTabClick('reservations')}
                     className={`p-4 border-b-2 ${
-                      selectedTab === 'reservation'
+                      selectedTab === 'reservations'
                         ? 'border-primaryDark text-primaryDark '
                         : 'border-transparent hover:text-gray-600 hover:border-gray-300 '
                     } `}
                   >
-                    Reservations
+                    Venue Reservations
                   </button>
 
                   <button
@@ -150,7 +150,7 @@ export const Profile = () => {
                         : 'border-transparent hover:text-gray-600 hover:border-gray-300 '
                     } `}
                   >
-                    Bookings
+                    My Bookings
                   </button>
                 </>
               )}
