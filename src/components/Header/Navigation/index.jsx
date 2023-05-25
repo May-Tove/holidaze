@@ -19,13 +19,13 @@ const Header = () => {
       >
         <Link
           to={'/'}
-          className="font-serif font-bold text-xl uppercase tracking-wider text-primaryDark"
+          className="font-serif font-black text-xl tracking-wider text-primaryDark"
         >
           Holidaze
         </Link>
 
         <ul
-          className={`gap-7 items-center  ${
+          className={`gap-7 items-center ${
             isOpenMainMenu
               ? 'fixed top-16 left-0 h-screen w-screen flex flex-col pt-16 bg-primaryLight'
               : 'hidden'
