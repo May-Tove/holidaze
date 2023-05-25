@@ -1,7 +1,7 @@
 describe('Register', () => {
   beforeEach(() => {
     cy.clearLocalStorage();
-    cy.visit('/');
+    cy.visit('http://127.0.0.1:5173/holidaze/');
     cy.wait(1000);
     cy.get('a').contains('Register').should('be.visible').click();
     cy.wait(500);
