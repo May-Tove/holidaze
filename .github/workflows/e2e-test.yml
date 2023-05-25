@@ -20,3 +20,12 @@ jobs:
          start: npm run dev -- --host 0.0.0.0
          wait-on: "http://127.0.0.1:5173/holidaze/"
          browser: electron
+         
+      - name: Archive test artifacts
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: e2e-artifacts
+          path: |
+            cypress/screenshots
+            cypress/videos
