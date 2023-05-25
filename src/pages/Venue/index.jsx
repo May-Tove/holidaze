@@ -6,6 +6,7 @@ import VenueDetailsLoader from '../../components/Loaders/VenueDetailsLoader';
 import VenueDetails from '../../components/Venue/VenueDetails';
 import { API_VENUE_URL } from '../../shared';
 import Breadcrumbs from '../../components/Breadcrumbs';
+import ErrorMessage from '../../shared/errorMessage';
 
 export const Venue = () => {
   let { id } = useParams();
@@ -29,7 +30,7 @@ export const Venue = () => {
   }
 
   if (isError) {
-    return <div className="py-40">{errorMessage}</div>;
+    return <ErrorMessage message={errorMessage} />;
   }
 
   return (
