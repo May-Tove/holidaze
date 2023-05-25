@@ -55,8 +55,8 @@ describe('Register', () => {
   });
 
   it('Can register successfully as a customer', () => {
-    cy.get('input[name="name"]').type('registerCypress97');
-    cy.get('input[name="email"]').type('registerCypress97@noroff.no');
+    cy.get('input[name="name"]').type('registerCypress99');
+    cy.get('input[name="email"]').type('registerCypress99@noroff.no');
     cy.get('input[name="password"]').type('password');
     cy.get('input[name="avatar"]').type(
       'https://images.unsplash.com/photo-1541779408-c355f91b42c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80'
@@ -70,8 +70,8 @@ describe('Register', () => {
   });
 
   it('Can register successfully as a venue manager', () => {
-    cy.get('input[name="name"]').type('VenueManagerCypress97');
-    cy.get('input[name="email"]').type('VenueManagerCypress97@noroff.no');
+    cy.get('input[name="name"]').type('VenueManagerCypress99');
+    cy.get('input[name="email"]').type('VenueManagerCypress99@noroff.no');
     cy.get('input[name="password"]').type('password');
     cy.get('input[name="avatar"]').type(
       'https://images.unsplash.com/photo-1541779408-c355f91b42c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80'
