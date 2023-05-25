@@ -1,25 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { format, parseISO, eachDayOfInterval } from 'date-fns';
-import useAxiosFetch from '../../../hooks/useAxiosFetch';
+import useApi from '../../../hooks/useApi';
 import { API_PROFILE_URL } from '../../../shared';
 import formatCurrency from '../../../shared/formatCurrency';
+import ErrorMessage from '../../../shared/errorMessage';
 
 export const Reservations = ({ name }) => {
   const [statusFilter, setStatusFilter] = useState('confirmed');
   const [activeAccordion, setActiveAccordion] = useState(null);
-  const { data, isLoading, isError } = useAxiosFetch(
-    `${API_PROFILE_URL}/${name}/venues?_bookings=true`
-  );
+  const { fetchApi, data, isLoading, isError, errorMessage } = useApi();
 
-  console.log(data);
+  const fetchData = useCallback(async () => {
+    await fetchApi(`${API_PROFILE_URL}/${name}/venues?_bookings=true`);
+  }, [name]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   if (isLoading) {
     return <div>Loading</div>;
   }
 
   if (isError) {
-    return <div>Error</div>;
+    return <ErrorMessage message={errorMessage} />;
   }
 
   const currentDate = new Date();
@@ -357,7 +362,7 @@ Reservations.propTypes = {
   const [statusFilter, setStatusFilter] = useState('all');
   const [activeIndex, setActiveIndex] = useState(-1);
 
-  const { data, isLoading, isError } = useAxiosFetch(
+  const { data, isLoading, isError } = useApi(
     `${API_PROFILE_URL}/${name}/venues?_bookings=true`
   );
 

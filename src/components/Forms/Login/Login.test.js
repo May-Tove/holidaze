@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import LoginForm from './index.jsx';
-import useMethodApi from '../../../hooks/useMethodApi';
+import useApi from '../../../hooks/useApi';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 
 jest.mock('../../../context/LoginProvider', () => ({
@@ -13,9 +13,9 @@ jest.mock('../../../context/LoginProvider', () => ({
   }),
 }));
 
-jest.mock('../../../hooks/useMethodApi', () => {
+jest.mock('../../../hooks/useApi', () => {
   return jest.fn().mockReturnValue({
-    fetchWithMethod: jest.fn(),
+    fetchApi: jest.fn(),
     isLoading: false,
     isError: false,
     errorMessage: null,
@@ -35,7 +35,7 @@ describe('LoginForm', () => {
   });
 
   test('Can log in successfully with valid credentials', async () => {
-    const mockFetchWithMethod = jest.fn().mockResolvedValue({
+    const mockFetchApi = jest.fn().mockResolvedValue({
       data: {
         name: 'mth',
         email: 'mth@noroff.no',
@@ -44,8 +44,8 @@ describe('LoginForm', () => {
       },
     });
 
-    useMethodApi.mockReturnValue({
-      fetchWithMethod: mockFetchWithMethod,
+    useApi.mockReturnValue({
+      fetchApi: mockFetchApi,
       isLoading: false,
       isError: false,
       errorMessage: null,

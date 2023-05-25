@@ -2,11 +2,11 @@ import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import RegisterForm from './index.jsx';
-import useMethodApi from '../../../hooks/useMethodApi';
+import useApi from '../../../hooks/useApi';
 import { useNavigate } from 'react-router-dom';
 import '@testing-library/jest-dom/extend-expect';
 
-jest.mock('../../../hooks/useMethodApi');
+jest.mock('../../../hooks/useApi');
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -30,8 +30,8 @@ describe('Register', () => {
       },
     };
 
-    useMethodApi.mockReturnValue({
-      fetchWithMethod: jest.fn().mockResolvedValue(mockResponse),
+    useApi.mockReturnValue({
+      fetchApi: jest.fn().mockResolvedValue(mockResponse),
       isLoading: false,
       isError: false,
       errorMessage: null,
@@ -74,7 +74,7 @@ describe('Register', () => {
   });
 
   test('user can register as a venue manager', async () => {
-    const mockFetchWithMethod = jest.fn().mockResolvedValue({
+    const mockFetchApi = jest.fn().mockResolvedValue({
       data: {
         name: 'Test User',
         email: 'testuser@noroff.no',
@@ -84,8 +84,8 @@ describe('Register', () => {
       },
     });
 
-    useMethodApi.mockReturnValue({
-      fetchWithMethod: mockFetchWithMethod,
+    useApi.mockReturnValue({
+      fetchApi: mockFetchApi,
       isLoading: false,
       isError: false,
       errorMessage: null,
@@ -145,8 +145,8 @@ describe('Register', () => {
   });
 
   test('displays error messages when form is submitted empty', async () => {
-    useMethodApi.mockReturnValue({
-      fetchWithMethod: jest.fn(),
+    useApi.mockReturnValue({
+      fetchApi: jest.fn(),
       isLoading: false,
       isError: false,
       errorMessage: null,
@@ -201,7 +201,7 @@ describe('Register', () => {
   });
 
   test('displays error message when a user tries to register with credentials that already exists', async () => {
-    const mockFetchWithMethod = jest.fn().mockRejectedValue({
+    const mockFetchApi = jest.fn().mockRejectedValue({
       response: {
         data: {
           message: 'Profile already exists',
@@ -209,8 +209,8 @@ describe('Register', () => {
       },
     });
 
-    useMethodApi.mockReturnValue({
-      fetchWithMethod: mockFetchWithMethod,
+    useApi.mockReturnValue({
+      fetchApi: mockFetchApi,
       isLoading: false,
       isError: true,
       errorMessage: 'Profile already exists',

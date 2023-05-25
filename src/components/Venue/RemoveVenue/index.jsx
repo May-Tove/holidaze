@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import useApi from '../../../hooks/useApi';
 import { API_VENUE_URL } from '../../../shared';
 import ErrorMessage from '../../../shared/errorMessage';
 import { CgCheckO } from 'react-icons/cg';
-import useMethodApi from '../../../hooks/useMethodApi';
 
 const RemoveVenue = ({ id, handleClose }) => {
-  const { fetchWithMethod, success, isError, isLoading } = useMethodApi();
+  const { fetchApi, success, isError, isLoading } = useApi();
   const navigate = useNavigate();
 
   const handleDeleteVenue = async () => {
-    await fetchWithMethod(`${API_VENUE_URL}/${id}`, 'delete');
+    await fetchApi(`${API_VENUE_URL}/${id}`, 'delete');
 
     setTimeout(() => {
       navigate('/venues');

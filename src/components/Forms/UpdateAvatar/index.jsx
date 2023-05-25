@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { useLogin } from '../../../context/LoginProvider';
-import { CgClose } from 'react-icons/cg';
-import { API_PROFILE_URL, handleErrorImage } from '../../../shared';
-
+import useApi from '../../../hooks/useApi';
 import ErrorMessage from '../../../shared/errorMessage';
 import SuccessMessage from '../../../shared/successMessage';
-import useMethodApi from '../../../hooks/useMethodApi';
+import { CgClose } from 'react-icons/cg';
+import { API_PROFILE_URL, handleErrorImage } from '../../../shared';
 
 const UpdateAvatar = ({ profile, handleClose }) => {
   const { setAvatar, avatar } = useLogin();
@@ -19,15 +18,14 @@ const UpdateAvatar = ({ profile, handleClose }) => {
     formState: { errors },
   } = useForm();
 
-  const { fetchWithMethod, isError, isLoading, errorMessage, success } =
-    useMethodApi();
+  const { fetchApi, isError, isLoading, errorMessage, success } = useApi();
   const { name } = profile;
 
   const onSubmit = async (formData) => {
     const payload = {
       avatar: formData.avatar,
     };
-    await fetchWithMethod(`${API_PROFILE_URL}/${name}/media`, 'put', payload);
+    await fetchApi(`${API_PROFILE_URL}/${name}/media`, 'put', payload);
     setAvatar(formData.avatar);
 
     setTimeout(() => {
