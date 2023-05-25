@@ -2,10 +2,10 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { render, waitFor, screen } from '@testing-library/react';
 import VenuesList from './index.jsx';
-import useAxiosFetch from '../../hooks/useAxiosFetch';
+import useApi from '../../hooks/useApi';
 import useFilters from '../../hooks/useFilters';
 
-jest.mock('../../hooks/useAxiosFetch', () => jest.fn());
+jest.mock('../../hooks/useApi', () => jest.fn());
 jest.mock('../../hooks/useFilters', () => jest.fn());
 
 const mockVenueData = [
@@ -42,7 +42,7 @@ const mockVenueData = [
 
 describe('VenuesList', () => {
   beforeEach(() => {
-    useAxiosFetch.mockReturnValue({
+    useApi.mockReturnValue({
       data: [...mockVenueData], // Use the actual test data here
       searchResults: [...mockVenueData],
       setSearchResults: jest.fn(),

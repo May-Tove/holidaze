@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useLogin } from '../../context/LoginProvider';
 import useToggle from '../../hooks/useToggle';
-import useAxiosFetch from '../../hooks/useAxiosFetch';
+import useApi from '../../hooks/useApi';
 import {
   ProfileVenues,
   Bookings,
@@ -22,16 +22,22 @@ export const Profile = () => {
 
   const { token, avatar, profile } = useLogin();
 
-  const { data, isLoading, isError } = useAxiosFetch(
-    `${API_PROFILE_URL}/${name}?_bookings=true&_venues=true`
-  );
+  const { fetchApi, isLoading, isError, errorMessage, data } = useApi();
+
+  const fetchData = useCallback(async () => {
+    await fetchApi(`${API_PROFILE_URL}/${name}?_bookings=true&_venues=true`);
+  }, [name]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   if (isLoading) {
     return <ProfileLoader />;
   }
 
   if (isError) {
-    return <div>Error</div>;
+    return <div>{errorMessage}</div>;
   }
 
   const { bookings, email, venueManager, venues } = data;

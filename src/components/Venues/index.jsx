@@ -1,11 +1,12 @@
-import React from 'react';
-import useAxiosFetch from '../../hooks/useAxiosFetch';
+import React, { useEffect, useCallback } from 'react';
+import useApi from '../../hooks/useApi';
 import useFilters from '../../hooks/useFilters';
 import useToggle from '../../hooks/useToggle';
 import VenueCard from '../VenueCard';
 import SearchBar from '../SearchBar';
 import Filters from '../Filters/VenueFilters';
 import AllVenuesLoader from '../Loaders/AllVenuesLoader';
+import ErrorMessage from '../../shared/errorMessage';
 import { API_VENUE_URL } from '../../shared';
 
 /**
@@ -17,30 +18,37 @@ import { API_VENUE_URL } from '../../shared';
  * If the data is still loading, `AllVenuesLoader` is displayed.
  * If there is an error during fetching, an error message is displayed.
  *
- * It makes use of the `useAxiosFetch`, `useFilters`, and `useToggle` custom hooks.
+ * It makes use of the `useApi`, `useFilters`, and `useToggle` custom hooks.
  *
  * @returns {React.Element} The rendered VenuesList component.
  */
 const VenuesList = () => {
   const [isFiltersOpen, toggleFilters] = useToggle();
   const {
+    fetchApi,
     data,
     searchResults,
     setSearchResults,
     isLoading,
     isError,
-    fetchError,
-  } = useAxiosFetch(
-    `${API_VENUE_URL}?_owner=true&sort=created&sortOrder=desc`,
-    'get'
-  );
+    errorMessage,
+  } = useApi();
+
   const { filters, setFilters, filteredData, minPrice, maxPrice } = useFilters(
     data,
     searchResults
   );
 
+  const fetchData = useCallback(async () => {
+    await fetchApi(`${API_VENUE_URL}?_owner=true&sort=created&sortOrder=desc`);
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
   if (isError) {
-    return <div className="py-40">{fetchError}</div>;
+    return <ErrorMessage message={errorMessage} />;
   }
 
   if (isLoading) {

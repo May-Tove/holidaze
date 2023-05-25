@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-
+import useApi from '../../../hooks/useApi';
 import ErrorMessage from '../../../shared/errorMessage';
 import SuccessMessage from '../../../shared/successMessage';
 import {
@@ -10,7 +10,6 @@ import {
   EMAIL_REGEX,
   NAME_REGEX,
 } from '../../../shared';
-import useMethodApi from '../../../hooks/useMethodApi';
 
 const RegisterForm = () => {
   const {
@@ -22,11 +21,10 @@ const RegisterForm = () => {
 
   const navigate = useNavigate();
 
-  const { fetchWithMethod, isLoading, isError, errorMessage, success } =
-    useMethodApi();
+  const { fetchApi, isLoading, isError, errorMessage, success } = useApi();
 
   const onSubmit = async (formData) => {
-    await fetchWithMethod(`${API_AUTH_URL}/register`, 'post', formData);
+    await fetchApi(`${API_AUTH_URL}/register`, 'post', formData);
 
     reset();
     setTimeout(() => {

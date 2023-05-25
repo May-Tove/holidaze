@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import useAxiosFetch from '../../hooks/useAxiosFetch';
+import useApi from '../../hooks/useApi';
 import VenueDetailsLoader from '../../components/Loaders/VenueDetailsLoader';
 import VenueDetails from '../../components/Venue/VenueDetails';
 import { API_VENUE_URL } from '../../shared';
@@ -10,9 +10,15 @@ import Breadcrumbs from '../../components/Breadcrumbs';
 export const Venue = () => {
   let { id } = useParams();
 
-  const { data, isLoading, isError, fetchError } = useAxiosFetch(
-    `${API_VENUE_URL}/${id}?_owner=true&_bookings=true`
-  );
+  const { fetchApi, isLoading, isError, errorMessage, data } = useApi();
+
+  const fetchData = useCallback(async () => {
+    await fetchApi(`${API_VENUE_URL}/${id}?_owner=true&_bookings=true`);
+  }, [id]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   if ((isLoading && !data) || Array.isArray(data)) {
     return (
@@ -23,7 +29,7 @@ export const Venue = () => {
   }
 
   if (isError) {
-    return <div className="py-40">{fetchError}</div>;
+    return <div className="py-40">{errorMessage}</div>;
   }
 
   return (

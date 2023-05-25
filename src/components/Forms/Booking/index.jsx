@@ -5,11 +5,11 @@ import { DateRange } from 'react-date-range';
 import { eachDayOfInterval, format, parseISO } from 'date-fns';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
-import { CgClose } from 'react-icons/cg';
+import useApi from '../../../hooks/useApi';
 import useToggle from '../../../hooks/useToggle';
+import { CgClose } from 'react-icons/cg';
 import { API_BOOKINGS_URL } from '../../../shared';
 import ErrorMessage from '../../../shared/errorMessage';
-import useMethodApi from '../../../hooks/useMethodApi';
 
 export const CreateBooking = ({ bookings, id, isLoggedIn, price }) => {
   const [disabledDates, setDisabledDates] = useState([]);
@@ -52,7 +52,7 @@ export const CreateBooking = ({ bookings, id, isLoggedIn, price }) => {
     setDisabledDates(disabledDatesArray);
   }, [bookings]);
 
-  const { fetchWithMethod, isLoading, isError, errorMessage } = useMethodApi();
+  const { fetchApi, isLoading, isError, errorMessage } = useApi();
 
   const onSubmit = async (formData) => {
     range.map((value) => {
@@ -66,7 +66,7 @@ export const CreateBooking = ({ bookings, id, isLoggedIn, price }) => {
 
     const parsedGuests = parseInt(formData.guests);
 
-    const response = await fetchWithMethod(API_BOOKINGS_URL, 'post', {
+    const response = await fetchApi(API_BOOKINGS_URL, 'post', {
       dateFrom: formData.dateFrom,
       dateTo: formData.dateTo,
       guests: parsedGuests,

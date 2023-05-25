@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
-import { CgClose } from 'react-icons/cg';
+import useApi from '../../../hooks/useApi';
 import { useNavigate } from 'react-router-dom';
 import { API_VENUE_URL } from '../../../shared';
+import { CgClose } from 'react-icons/cg';
 import ImageInput from './ImageInput';
 import ErrorMessage from '../../../shared/errorMessage';
 import SuccessMessage from '../../../shared/successMessage';
-import useMethodApi from '../../../hooks/useMethodApi';
 
 export const VenueForm = ({ mode, venue, handleClose }) => {
   const {
@@ -19,8 +19,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
 
   const navigate = useNavigate();
 
-  const { fetchWithMethod, isLoading, isError, errorMessage, success } =
-    useMethodApi();
+  const { fetchApi, isLoading, isError, errorMessage, success } = useApi();
 
   const { id, name, description, location, meta, price, maxGuests, media } =
     venue;
@@ -75,18 +74,14 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
     };
 
     if (isCreateMode) {
-      const response = await fetchWithMethod(
-        API_VENUE_URL,
-        'post',
-        requestData
-      );
+      const response = await fetchApi(API_VENUE_URL, 'post', requestData);
 
       reset();
       setTimeout(() => {
         navigate(`/venue/${response.data.id}`);
       }, 1000);
     } else if (isUpdateMode) {
-      await fetchWithMethod(`${API_VENUE_URL}/${id}`, 'put', requestData);
+      await fetchApi(`${API_VENUE_URL}/${id}`, 'put', requestData);
 
       setTimeout(() => {
         handleClose();

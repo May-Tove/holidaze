@@ -2,16 +2,16 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { VenueForm } from './index.jsx';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
-import useMethodApi from '../../../hooks/useMethodApi';
+import useApi from '../../../hooks/useApi';
 import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('../../../context/LoginProvider', () => ({
   useLogin: () => ({ token: 'venueManagerToken' }),
 }));
 
-jest.mock('../../../hooks/useMethodApi', () => {
+jest.mock('../../../hooks/useApi', () => {
   return jest.fn().mockReturnValue({
-    fetchWithMethod: jest.fn(),
+    fetchApi: jest.fn(),
     isLoading: false,
     isError: false,
     errorMessage: null,
@@ -33,14 +33,14 @@ describe('VenueForm', () => {
   const mockHandleClose = jest.fn();
 
   test('allows a venue manager to create a new venue', async () => {
-    const mockFetchWithMethod = jest.fn().mockResolvedValue({
+    const mockFetchApi = jest.fn().mockResolvedValue({
       data: {
         id: 'newVenueId',
       },
     });
 
-    useMethodApi.mockReturnValue({
-      fetchWithMethod: mockFetchWithMethod,
+    useApi.mockReturnValue({
+      fetchApi: mockFetchApi,
       isLoading: false,
       isError: false,
       errorMessage: null,
