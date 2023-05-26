@@ -4,9 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#9FC3C4',
-        primaryLight: '#DEEDED',
-        primaryDark: '#4C8185',
+        primary: '#404B69',
+        primaryLight: '#DBEDF3',
+        primaryDark: '#283149',
         secondary: '#9FC3C4',
         light: '#f0f0f0',
         lightGrey: '#838383',
@@ -16,6 +16,7 @@ export default {
       },
       fontFamily: {
         serif: ['quiche-flare, sans-serif'],
+        sans: ['Montserrat, sans-serif'],
       },
       gridTemplateColumns: {
         3: 'repeat(auto-fill, minmax(300px, 1fr))',
@@ -28,11 +29,3 @@ export default {
   },
   plugins: [],
 };
-
-/*
-       sans: [
-          'kumbh-sans-variable, sans-serif',
-          {
-            fontVariationSettings: '"wght" 400',
-          },
-        ],*/

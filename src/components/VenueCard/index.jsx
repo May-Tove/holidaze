@@ -38,7 +38,7 @@ const VenueCard = ({ venue: { name, id, price, media, rating, location } }) => {
             </p>
           </div>
           <p className="pt-4 border-t text-lightGrey text-sm">
-            <span className="text-lg text-primaryDark font-bold">
+            <span className="text-lg text-blue-500 font-bold font-serif">
               {venuePrice}
             </span>{' '}
             / Night

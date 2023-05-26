@@ -35,10 +35,10 @@
 
 @layer components {
   .btn {
-    background-color: theme('colors.primaryDark');
+    background-color: black;
     border-radius: 10px;
     padding: 0.5rem 1rem;
-    color: theme('colors.primaryLight');
+    color: white;
     letter-spacing: 1.5px;
     transition: all 0.3s ease-in-out;
   }
@@ -64,21 +64,24 @@
   }
 
   .dangerBtn {
-    background-color: rgb(255, 200, 208);
-    color: rgb(255, 0, 0);
+    background-color: rgb(206, 0, 0);
+
+    color: white;
     border-radius: 10px;
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 0.7rem;
     letter-spacing: 1.5px;
     transition: all 0.3s ease-in-out;
+    font-size: small;
   }
 
   .btnSecondary {
     background-color: theme('colors.primaryLight');
     color: theme('colors.primaryDark');
     border-radius: 10px;
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 0.7rem;
     letter-spacing: 1.5px;
     transition: all 0.3s ease-in-out;
+    font-size: small;
   }
 
   .slideBtn {
@@ -89,7 +92,7 @@
 @layer utilities {
   .main-layout {
     width: 90vw;
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 7rem 0;
   }
@@ -115,7 +118,7 @@
     margin: 0 auto;
     background-color: white;
     border-radius: 1rem;
-    padding: 1rem;
+    padding: 2rem;
     margin-top: 3rem;
     margin-bottom: 3rem;
     width: 90vw;
@@ -123,7 +126,7 @@
   }
 
   .infoBadge {
-    @apply flex items-center gap-2 text-sm rounded-xl bg-primaryLight text-primaryDark px-3 py-2 shadow;
+    @apply flex items-center gap-2 text-sm rounded-xl bg-white border border-slate-300 text-slate-500 px-3 py-2 shadow-lg;
   }
 
   .nav-link {
@@ -146,13 +149,17 @@
   }
 
   .bookingCard img {
-    height: 100%;
     width: 100%;
+    height: 100%;
     transition: all 0.5s ease;
   }
 
   .bookingCard:hover img {
     transform: scale(1.2);
+  }
+
+  .bookingCard #bookingCardPrice {
+    @apply lg:absolute lg:bottom-4 lg:right-4;
   }
 
   .category-card {
@@ -176,7 +183,7 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(2, minmax(0, 1fr));
-    grid-gap: 10px;
+    grid-gap: 5px;
   }
 
   .image-gallery img:first-child {
@@ -185,24 +192,11 @@
   }
 
   .calendarWrap .rdrDateDisplayWrapper {
-    all: unset;
-    background-color: #f8f8f8;
-  }
-
-  .calendarWrap .rdrDateDisplay {
-    all: unset;
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-
-  .calendarWrap .rdrDateInput {
-    all: unset;
+    display: none;
   }
 
   .floating-input,
-  .floating-textarea,
-  .calendarWrap .rdrDateInput input {
+  .floating-textarea {
     display: block;
     padding: 12px 9px;
     width: 100%;
@@ -223,6 +217,14 @@
     font-size: small;
     color: theme('colors.lightGrey');
     @apply duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1;
+  }
+
+  .table-heading {
+    @apply px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider;
+  }
+
+  .table-content {
+    @apply px-6 py-4 whitespace-nowrap text-sm;
   }
 }
 

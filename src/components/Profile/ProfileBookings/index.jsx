@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { eachDayOfInterval, parseISO, format } from 'date-fns';
+import { format } from 'date-fns';
 import Location from '../../Venue/Location';
-import formatCurrency from '../../../shared/formatCurrency';
 import { TbCalendar, TbTags } from 'react-icons/tb';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { BsPeople, BsMoonStars } from 'react-icons/bs';
 import Rating from '../../Venue/Rating';
+import useBookingCalculations from '../../../hooks/useBookingCalculation';
+import sortBookingsByDate from '../../../utilities/sortBookingsByDate';
 
 export const Bookings = ({ bookings }) => {
   const currentDate = new Date();
@@ -18,32 +19,10 @@ export const Bookings = ({ bookings }) => {
   );
 
   // Sort the filtered bookings by the arrival date closest to today
-  const sortedBookings = filteredBookings.sort((a, b) => {
-    const dateA = new Date(a.dateFrom);
-    const dateB = new Date(b.dateFrom);
-    return Math.abs(dateA - currentDate) - Math.abs(dateB - currentDate);
-  });
+  const sortedBookings = sortBookingsByDate(filteredBookings);
 
-  const calculateNumberOfNights = (dateFrom, dateTo) => {
-    const startDate = parseISO(dateFrom);
-    const endDate = parseISO(dateTo);
-    const datesBetween = eachDayOfInterval({
-      start: startDate,
-      end: endDate,
-    });
-    return datesBetween.length - 1; // Exclude the arrival day
-  };
-
-  const calculateTotalPrice = (booking) => {
-    const pricePerNight = booking.venue.price;
-    const numberOfNights = calculateNumberOfNights(
-      booking.dateFrom,
-      booking.dateTo
-    );
-    const totalPrice = pricePerNight * numberOfNights;
-    const formatTotalPrice = formatCurrency(totalPrice);
-    return formatTotalPrice;
-  };
+  const { calculateNumberOfNights, calculateTotalPrice } =
+    useBookingCalculations();
 
   return (
     <>
@@ -111,7 +90,10 @@ export const Bookings = ({ bookings }) => {
                         <p>
                           Total price{' '}
                           <span className="font-bold text-primaryDark">
-                            {calculateTotalPrice(sortedBookings[i])}
+                            {calculateTotalPrice(
+                              sortedBookings[i],
+                              venue.price
+                            )}
                           </span>
                         </p>
                       </div>
