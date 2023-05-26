@@ -50,7 +50,7 @@ const useApi = () => {
             ? error.response.data.errors[0].message
             : 'Unknown server error';
 
-        setErrorMessage(`${error.message}, ${serverErrorMessage}`);
+        setErrorMessage(`${serverErrorMessage}`);
       }
     } finally {
       setIsLoading(false);
