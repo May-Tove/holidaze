@@ -81,7 +81,7 @@ export const Profile = () => {
               className="w-[200px] h-[200px] rounded-full shadow shadow-primaryLight"
               src={isOwnProfile ? avatar : data.avatar}
               alt={`Profile avatar of ${name}`}
-              onError={handleErrorImage}
+              onError={(e) => handleErrorImage({ e, mode: 'avatar' })}
             />
             {isOwnProfile && (
               <button

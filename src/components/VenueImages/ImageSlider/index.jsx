@@ -36,7 +36,7 @@ const ImageSlider = ({ media }) => {
                 src={slide.url}
                 className="w-full flex-shrink-0"
                 alt="Image of venue"
-                onError={handleErrorImage}
+                onError={(e) => handleErrorImage({ e, mode: 'image' })}
               />
             ))}
           </div>

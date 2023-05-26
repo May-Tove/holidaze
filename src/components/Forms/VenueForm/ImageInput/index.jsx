@@ -69,7 +69,7 @@ const ImageInput = ({
                 className="w-full h-[200px] rounded"
                 src={url}
                 alt="Venue image"
-                onError={handleErrorImage}
+                onError={(e) => handleErrorImage({ e, mode: 'image' })}
               />
             </div>
           </div>

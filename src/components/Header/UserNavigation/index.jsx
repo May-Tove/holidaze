@@ -27,7 +27,7 @@ const UserNavigation = ({ toggle, isOpen }) => {
           className="w-7 h-7 lg:w-10 lg:h-10 rounded-full"
           src={avatar}
           alt={`Profile image of ${profile.name}`}
-          onError={handleErrorImage}
+          onError={(e) => handleErrorImage({ e, mode: 'avatar' })}
         />
       </button>
 

@@ -61,7 +61,7 @@ const ImageGallery = ({ galleryImages }) => {
                     alt={`Image ${index + 1}`}
                     key={index}
                     onClick={() => handleOpenModal(index)}
-                    onError={handleErrorImage}
+                    onError={(e) => handleErrorImage({ e, mode: 'image' })}
                   />
                 );
               })}

@@ -8,6 +8,13 @@ import SuccessMessage from '../../../shared/successMessage';
 import { CgClose } from 'react-icons/cg';
 import { API_PROFILE_URL, handleErrorImage } from '../../../shared';
 
+/**
+ * A component that allows users to update their avatar.
+ * @param {Object} props - The props object.
+ * @param {Object} props.profile - An object representing the user's profile.
+ * @param {Function} props.handleClose - A function to close the modal.
+ * @returns {JSX.Element} - A JSX element representing the UpdateAvatar component.
+ */
 const UpdateAvatar = ({ profile, handleClose }) => {
   const { setAvatar, avatar } = useLogin();
   const [inputValue, setInputValue] = useState(avatar);
@@ -22,10 +29,7 @@ const UpdateAvatar = ({ profile, handleClose }) => {
   const { name } = profile;
 
   const onSubmit = async (formData) => {
-    const payload = {
-      avatar: formData.avatar,
-    };
-    await fetchApi(`${API_PROFILE_URL}/${name}/media`, 'put', payload);
+    await fetchApi(`${API_PROFILE_URL}/${name}/media`, 'put', formData);
     setAvatar(formData.avatar);
 
     setTimeout(() => {
@@ -46,7 +50,7 @@ const UpdateAvatar = ({ profile, handleClose }) => {
   return (
     <>
       <div className="modal">
-        <div className="modalBody">
+        <div className="modalBody min-w-[500px]">
           <form
             className="w-full h-full space-y-5"
             onSubmit={handleSubmit(onSubmit)}
@@ -90,10 +94,10 @@ const UpdateAvatar = ({ profile, handleClose }) => {
                 </span>
               )}
               <img
-                className="h-[200px] w-[200px] rounded-full mt-5 m-auto"
+                className="h-[150px] w-[150px] rounded-full mt-5 m-auto"
                 src={inputValue}
                 alt="Avatar"
-                onError={handleErrorImage}
+                onError={(e) => handleErrorImage({ e, mode: 'avatar' })}
               />
             </div>
             <div>
@@ -105,7 +109,7 @@ const UpdateAvatar = ({ profile, handleClose }) => {
                   className="py-2 px-3 bg-gray-200 rounded-lg"
                   onClick={handleClose}
                 >
-                  Close
+                  Cancel
                 </button>
               </div>
 
@@ -127,7 +131,6 @@ UpdateAvatar.propTypes = {
     name: PropTypes.string,
   }).isRequired,
   handleClose: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
 };
 
 export default UpdateAvatar;

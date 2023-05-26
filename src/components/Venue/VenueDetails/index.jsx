@@ -88,7 +88,7 @@ const VenueDetails = ({ venue }) => {
                     className="w-6 h-6 rounded-full"
                     src={owner.avatar}
                     alt={`Image of ${owner.name}`}
-                    onError={handleErrorImage}
+                    onError={(e) => handleErrorImage({ e, mode: 'avatar' })}
                   />
                   <div>
                     <h5 className="font-bold">{owner.name}</h5>

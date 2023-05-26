@@ -9,6 +9,7 @@ import ReservationOverviewLoader from '../../Loaders/ReservationOverviewLoader';
 import ErrorMessage from '../../../shared/errorMessage';
 import sortBookingsByDate from '../../../utilities/sortBookingsByDate';
 import getStatus from '../../../utilities/getStatus';
+import { handleErrorImage } from '../../../shared';
 
 /**
  * VenueReservations - A component for displaying reservations made at a logged in venue managers own venues. Reservations can be sorted by venue name or filtered by reservation status
@@ -203,6 +204,9 @@ export const VenueReservations = ({ name }) => {
                             className="w-10 h-10 rounded"
                             src={booking.venueMedia[0]}
                             alt={`Image of ${booking.venueName}`}
+                            onError={(e) =>
+                              handleErrorImage({ e, mode: 'image' })
+                            }
                           />
                           <span>{booking.venueName}</span>
                         </td>
