@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import PropTypes from 'prop-types';
 import { DateRange } from 'react-date-range';
 import { eachDayOfInterval, format, parseISO } from 'date-fns';
@@ -43,12 +45,18 @@ export const CreateBooking = ({ venue, bookings, id, isLoggedIn, price }) => {
     bookings,
   });
 
+  const schema = yup
+    .object({
+      guests: yup.string().required().min(1),
+    })
+    .required();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm();
+  } = useForm({ resolver: yupResolver(schema) });
 
   const { fetchApi, isLoading, isError, errorMessage } = useApi();
 
@@ -122,7 +130,7 @@ export const CreateBooking = ({ venue, bookings, id, isLoggedIn, price }) => {
   }
 
   return (
-    <section className="w-full">
+    <>
       <form
         className="flex flex-col gap-3 mt-3 "
         onSubmit={handleSubmit(onSubmit)}
@@ -169,26 +177,21 @@ export const CreateBooking = ({ venue, bookings, id, isLoggedIn, price }) => {
             </label>
           </div>
         </div>
-        <div className="relative">
-          <input
-            className="floating-input peer"
-            type="number"
-            id="guests"
-            min={1}
-            placeholder=" "
-            {...register('guests', {
-              required: true,
-            })}
-          />
-          <label className="floating-label" htmlFor="guests">
-            Guests
-          </label>
+        <div>
+          <div className="relative">
+            <input
+              className="floating-input peer"
+              type="number"
+              id="guests"
+              placeholder=" "
+              {...register('guests')}
+            />
+            <label className="floating-label" htmlFor="guests">
+              Guests
+            </label>
+          </div>
+          <p id="inputError">{errors.guests?.message}</p>
         </div>
-        {errors.guests && (
-          <span className="text-red-600 text-sm">
-            Please fill in how many guests you would like to book for
-          </span>
-        )}
 
         {isLoggedIn ? (
           <button className="btn" type="submit" disabled={isLoading}>
@@ -216,7 +219,7 @@ export const CreateBooking = ({ venue, bookings, id, isLoggedIn, price }) => {
           <span className="text-blue-400">{`$${totalPrice}`}</span>
         </div>
       </div>
-    </section>
+    </>
   );
 };
 

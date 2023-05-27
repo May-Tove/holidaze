@@ -1,6 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 import useApi from '../../../hooks/useApi';
 import ErrorMessage from '../../../shared/errorMessage';
 import SuccessMessage from '../../../shared/successMessage';
@@ -12,12 +14,36 @@ import {
 } from '../../../shared';
 
 const RegisterForm = () => {
+  const schema = yup
+    .object({
+      name: yup
+        .string()
+        .required()
+        .matches(
+          NAME_REGEX,
+          'Name can only contain letters, numbers and underscores.'
+        ),
+      email: yup
+        .string()
+        .required()
+        .matches(
+          EMAIL_REGEX,
+          'Email address must be a valid noroff.no or stud.noroff.no email address.'
+        ),
+      password: yup.string().required().min(8),
+      avatar: yup
+        .string()
+        .required()
+        .matches(AVATAR_REGEX, 'Avatar must be a valid URL.'),
+    })
+    .required();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm();
+  } = useForm({ resolver: yupResolver(schema) });
 
   const navigate = useNavigate();
 
@@ -33,7 +59,10 @@ const RegisterForm = () => {
   };
 
   return (
-    <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="flex flex-col gap-5 pt-5"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div>
         <div className="relative">
           <input
@@ -41,18 +70,13 @@ const RegisterForm = () => {
             type="text"
             id="name"
             placeholder=" "
-            {...register('name', { required: true, pattern: NAME_REGEX })}
+            {...register('name')}
           />
           <label className="floating-label" htmlFor="name">
             Name
           </label>
         </div>
-        {errors.name && (
-          <span className="text-red-900 text-sm" id="inputError">
-            This field is required and can only contain letters, numbers, and
-            underscores.
-          </span>
-        )}
+        <p id="inputError">{errors.name?.message}</p>
       </div>
       <div>
         <div className="relative">
@@ -61,21 +85,13 @@ const RegisterForm = () => {
             type="email"
             id="email"
             placeholder=" "
-            {...register('email', {
-              required: true,
-              pattern: EMAIL_REGEX,
-            })}
+            {...register('email')}
           />
           <label className="floating-label" htmlFor="email">
             Email
           </label>
         </div>
-        {errors.email && (
-          <span className="text-red-900 text-sm" id="inputError">
-            This field is required and must be a valid noroff.no or
-            stud.noroff.no email address.
-          </span>
-        )}
+        <p id="inputError">{errors.email?.message}</p>
       </div>
       <div>
         <div className="relative">
@@ -84,17 +100,13 @@ const RegisterForm = () => {
             type="password"
             id="password"
             placeholder=" "
-            {...register('password', { required: true, minLength: 8 })}
+            {...register('password')}
           />
           <label className="floating-label" htmlFor="password">
             Password
           </label>
         </div>
-        {errors.password && (
-          <span className="text-red-900 text-sm" id="inputError">
-            This field is required and must be at least 8 characters long.
-          </span>
-        )}
+        <p id="inputError">{errors.password?.message}</p>
       </div>
       <div>
         <div className="relative">
@@ -103,36 +115,25 @@ const RegisterForm = () => {
             type="url"
             id="avatar"
             placeholder=" "
-            {...register('avatar', {
-              required: true,
-              pattern: AVATAR_REGEX,
-            })}
+            {...register('avatar')}
           />
+
           <label className="floating-label" htmlFor="avatar">
-            Avatar
+            Avatar URL
           </label>
         </div>
-        {errors.avatar && (
-          <span className="text-red-900 text-sm" id="inputError">
-            This field is required and must be a valid URL.
-          </span>
-        )}
+        <p id="inputError">{errors.avatar?.message}</p>
       </div>
 
       <div className="flex items-center gap-2">
-        <label htmlFor="venueManager">Venue Manager</label>
         <input
           type="checkbox"
           id="venueManager"
           {...register('venueManager')}
         />
+        <label htmlFor="venueManager">Venue Manager</label>
       </div>
-      <div>
-        Already have an account?{' '}
-        <Link to={'/login'} className="text-blue-600 underline">
-          Login
-        </Link>
-      </div>
+
       <button className="btn" type="submit" disabled={isLoading}>
         {isLoading ? 'Registering...' : 'Register'}
       </button>

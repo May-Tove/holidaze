@@ -36,6 +36,7 @@ const useApi = () => {
     } catch (error) {
       setIsError(true);
       setSuccess(false);
+      setData([]);
 
       // error.response is undefined when the error is client-side
       if (!error.response) {
@@ -52,6 +53,7 @@ const useApi = () => {
 
         setErrorMessage(`${serverErrorMessage}`);
       }
+      return null;
     } finally {
       setIsLoading(false);
     }

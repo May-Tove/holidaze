@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import { useLogin } from '../../../context/LoginProvider';
 import useApi from '../../../hooks/useApi';
 import ErrorMessage from '../../../shared/errorMessage';
 import SuccessMessage from '../../../shared/successMessage';
 import { CgClose } from 'react-icons/cg';
-import { API_PROFILE_URL, handleErrorImage } from '../../../shared';
+import {
+  API_PROFILE_URL,
+  handleErrorImage,
+  AVATAR_REGEX,
+} from '../../../shared';
 
 /**
  * A component that allows users to update their avatar.
@@ -18,12 +24,22 @@ import { API_PROFILE_URL, handleErrorImage } from '../../../shared';
 const UpdateAvatar = ({ profile, handleClose }) => {
   const { setAvatar, avatar } = useLogin();
   const [inputValue, setInputValue] = useState(avatar);
+
+  const schema = yup
+    .object({
+      avatar: yup
+        .string()
+        .required()
+        .matches(AVATAR_REGEX, 'Avatar must be a valid URL.'),
+    })
+    .required();
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({ resolver: yupResolver(schema) });
 
   const { fetchApi, isError, isLoading, errorMessage, success } = useApi();
   const { name } = profile;
@@ -69,14 +85,12 @@ const UpdateAvatar = ({ profile, handleClose }) => {
                     type="url"
                     id="avatar"
                     placeholder=" "
-                    {...register('avatar', {
-                      required: true,
-                    })}
+                    {...register('avatar')}
                     defaultValue={avatar}
                     onChange={handleInputChange}
                   />
                   <label className="floating-label" htmlFor="avatar">
-                    Avatar url
+                    Avatar URL
                   </label>
                 </div>
 
@@ -87,12 +101,7 @@ const UpdateAvatar = ({ profile, handleClose }) => {
                   <CgClose size={15} /> Clear
                 </button>
               </div>
-
-              {errors.avatar && (
-                <span className="text-red-600 text-sm mt-1">
-                  This field is required and must be a valid URL
-                </span>
-              )}
+              <p id="inputError">{errors.avatar?.message}</p>
               <img
                 className="h-[150px] w-[150px] rounded-full mt-5 m-auto"
                 src={inputValue}

@@ -42,28 +42,24 @@ const ImageInput = ({
                   type="url"
                   id={`media-${index}`}
                   value={url}
-                  name="media"
+                  name={`imageUrls[${index}]`}
                   placeholder=" "
-                  {...register(`imageUrls[${index}]`, {
-                    required: 'Please upload at least one image URL',
-                    pattern: {
-                      value: /^(ftp|http|https):\/\/[^ "]+$/,
-                      message: 'Invalid URL format',
-                    },
-                  })}
+                  {...register(`imageUrls[${index}]`)}
                   onChange={(e) => handleImageUrlChange(e, index)}
                 />
 
-                <label className="floating-label" htmlFor="media">
+                <label className="floating-label" htmlFor={`media-${index}`}>
                   Image
                 </label>
               </div>
             </div>
             <div className="w-full">
-              {errors.imageUrls && errors.imageUrls[index] && (
-                <span className="text-red-600 text-sm mt-1">
-                  {errors.imageUrls[index].message}
-                </span>
+              {errors.imageUrls && (
+                <p id="inputError">
+                  {errors.imageUrls[index]
+                    ? errors.imageUrls[index].message
+                    : ''}
+                </p>
               )}
               <img
                 className="w-full h-[200px] rounded"

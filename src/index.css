@@ -226,6 +226,10 @@
   .table-content {
     @apply px-6 py-4 whitespace-nowrap text-sm;
   }
+
+  #inputError {
+    @apply text-red-600 text-sm mt-1;
+  }
 }
 
 /*:root {
