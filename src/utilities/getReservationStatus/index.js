@@ -5,14 +5,19 @@ import { STATUS_TYPES } from '../../shared/constants';
  * @param {Object} reservation - A reservation object.
  * @returns {string} The status of the reservation.
  */
-const getStatus = (reservation) => {
+export const getReservationStatus = (reservation) => {
   const now = new Date();
   const dateFrom = new Date(reservation.dateFrom);
   const dateTo = new Date(reservation.dateTo);
 
-  if (now < dateFrom) return STATUS_TYPES.CONFIRMED;
-  if (now >= dateFrom && now < dateTo) return STATUS_TYPES.IN_HOUSE;
-  if (now >= dateTo) return STATUS_TYPES.CHECKED_OUT;
+  switch (true) {
+    case now < dateFrom:
+      return STATUS_TYPES.CONFIRMED;
+    case now >= dateFrom && now < dateTo:
+      return STATUS_TYPES.IN_HOUSE;
+    case now >= dateTo:
+      return STATUS_TYPES.CHECKED_OUT;
+    default:
+      return null;
+  }
 };
-
-export default getStatus;

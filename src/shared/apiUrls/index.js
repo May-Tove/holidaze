@@ -1,3 +1,4 @@
+// API URLs
 export const API_URL = 'https://api.noroff.dev/api/v1/holidaze';
 export const API_AUTH_URL = `${API_URL}/auth`;
 export const API_VENUE_URL = `${API_URL}/venues`;
