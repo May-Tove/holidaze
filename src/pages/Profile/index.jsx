@@ -86,7 +86,7 @@ export const Profile = () => {
                 onClick={toggleUpdateAvatar}
                 aria-label="Update avatar button"
               >
-                <TbPhotoEdit size={25} />
+                <TbPhotoEdit size={25} aria-label="Edit photo icon" />
               </button>
             )}
           </div>
@@ -95,7 +95,11 @@ export const Profile = () => {
             <h1>{name}</h1>
             {venueManager && (
               <div className="flex items-center gap-1">
-                <TbDiscountCheckFilled className="text-blue-400" size={20} />
+                <TbDiscountCheckFilled
+                  className="text-blue-400"
+                  size={20}
+                  aria-label="Check icon"
+                />
                 <p>Venue Manager</p>
               </div>
             )}

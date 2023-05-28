@@ -56,7 +56,7 @@ export const Contact = () => {
         <section className="bg-gray-100 grid grid-cols-1 gap-16 m-auto px-5 py-16 mt-3 lg:py-20 lg:px-40 lg:mt-20 lg:grid-cols-2 lg:gap-28">
           <div className="flex gap-3 items-start">
             <div className="mt-2 rounded-full w-fit h-10 flex items-center bg-primaryLight text-primaryDark p-2 lg:h-16 lg:text-3xl">
-              <RiQuestionnaireLine />
+              <RiQuestionnaireLine aria-label="Icon of questionnaire line" />
             </div>
             <div>
               <h2>General Inquiries</h2>
@@ -70,7 +70,7 @@ export const Contact = () => {
           </div>
           <div className="flex gap-3">
             <div className="mt-2 rounded-full w-fit h-10 flex items-center bg-primaryLight text-primaryDark p-2 lg:h-16 lg:text-3xl">
-              <BiGroup />
+              <BiGroup aria-label="Group of people icon" />
             </div>
             <div>
               <h2>Collaborations and Partnerships</h2>
@@ -85,7 +85,7 @@ export const Contact = () => {
           </div>
           <div className="flex gap-3">
             <div className="mt-2 rounded-full w-fit h-10 flex items-center bg-primaryLight text-primaryDark p-2 lg:h-16 lg:text-3xl">
-              <RiCustomerService2Line />
+              <RiCustomerService2Line aria-label="Icon of person with headphones" />
             </div>
             <div>
               <h2>Customer Support</h2>
@@ -99,7 +99,7 @@ export const Contact = () => {
           </div>
           <div className="flex gap-3">
             <div className="mt-2 rounded-full w-fit h-10 flex items-center bg-primaryLight text-primaryDark p-2 lg:h-16 lg:text-3xl">
-              <TbHome />
+              <TbHome aria-label="House icon" />
             </div>
             <div>
               <h2>Venue Managers</h2>

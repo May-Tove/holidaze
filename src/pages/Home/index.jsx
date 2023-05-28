@@ -37,7 +37,7 @@ export const Home = () => {
             }}
           ></div>
           <div className="w-full lg:w-3/5 flex flex-col gap-4">
-            <p className="uppercase text-xs font-bold text-secondary">
+            <p className="uppercase text-xs font-bold text-primary tracking-widest">
               Who are we?
             </p>
             <h2 className="text-2xl lg:text-4xl mb-4">
@@ -61,7 +61,7 @@ export const Home = () => {
           </div>
         </section>
         <section className="w-3/4 gap-4 flex flex-col m-auto mb-32">
-          <p className="uppercase text-center text-xs font-bold text-secondary">
+          <p className="uppercase text-center text-xs font-bold text-primary tracking-widest">
             Popular categories
           </p>
           <h2 className="text-2xl lg:text-4xl text-center mb-4 w-full lg:w-3/4 m-auto">
@@ -76,7 +76,7 @@ export const Home = () => {
         </section>
         <section className="w-3/4 flex flex-col lg:flex-row gap-12  items-center m-auto mb-32">
           <div className="w-full lg:w-3/5  flex flex-col gap-4">
-            <p className="uppercase text-xs font-bold text-secondary">
+            <p className="uppercase text-xs font-bold text-primary tracking-widest">
               Register an account
             </p>
             <h2 className="text-2xl lg:text-4xl mb-4">
@@ -120,7 +120,7 @@ export const Home = () => {
             }}
           ></div>
           <div className="w-full lg:w-3/5  flex flex-col gap-4">
-            <p className="uppercase text-xs font-bold text-secondary">
+            <p className="uppercase text-xs font-bold text-primary tracking-widest">
               We got you!
             </p>
             <h2 className="text-2xl lg:text-4xl mb-4">
