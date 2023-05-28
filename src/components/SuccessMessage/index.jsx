@@ -2,6 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { CgCheckO } from 'react-icons/cg';
 
+/**
+ * A component that displays a success message with an icon.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} props.message - The success message to display.
+ * @returns {JSX.Element} A success message component.
+ */
 const SuccessMessage = ({ message }) => {
   return (
     <div

@@ -2,6 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { BiErrorCircle } from 'react-icons/bi';
 
+/**
+ * A component that displays an error message.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} props.message - The error message to display.
+ * @returns {JSX.Element} An error message component.
+ */
 const ErrorMessage = ({ message }) => {
   return (
     <div

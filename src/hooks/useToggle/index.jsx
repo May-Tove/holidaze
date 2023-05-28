@@ -1,8 +1,12 @@
 import { useCallback, useState } from 'react';
 
-// HOOK FROM https://usehooks.com/
-
-// Parameter is the boolean, with default "false" value
+/**
+ * Hook from https://usehooks.com/useToggle/
+ * Provides a boolean state and a function to toggle the state.
+ *
+ * @param {boolean} initialState - The initial state of the boolean value. Defaults to "false".
+ * @returns {Array} An array containing the boolean state and a function to toggle the state.
+ */
 const useToggle = (initialState = false) => {
   // Initialize the state
   const [state, setState] = useState(initialState);

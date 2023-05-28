@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import './Navigation.css';
 import { useLogin } from '../../../context/LoginProvider';
 import useToggle from '../../../hooks/useToggle';
 import UserNavigation from '../UserNavigation';
-import { HiBars2, HiOutlineXMark } from 'react-icons/hi2';
+import { HiBars2, HiOutlineXMark, HiOutlineSun } from 'react-icons/hi2';
 
 const Header = () => {
   const [isOpenUserNav, toggleUserNav] = useToggle(false);
@@ -12,22 +13,23 @@ const Header = () => {
   const { isLoggedIn } = useLogin();
 
   return (
-    <header className="bg-primaryLight fixed w-screen transition-colors duration-300 z-50">
+    <header className="bg-slate-100 shadow-lg fixed w-screen transition-colors duration-300 z-50">
       <nav
         className="flex items-center justify-between py-5 m-auto w-[90vw] max-w-screen-2xl"
         id="navBar"
       >
         <Link
           to={'/'}
-          className="font-serif font-black text-xl tracking-wider text-primaryDark"
+          className="font-serif font-black text-xl tracking-widest text-primaryDark flex items-center gap-2"
         >
+          <HiOutlineSun size={25} />
           Holidaze
         </Link>
 
         <ul
           className={`gap-7 items-center ${
             isOpenMainMenu
-              ? 'fixed top-16 left-0 h-screen w-screen flex flex-col pt-16 bg-primaryLight'
+              ? 'fixed top-16 left-0 h-screen w-screen flex flex-col pt-16 bg-slate-200'
               : 'hidden'
           }   lg:flex`}
         >

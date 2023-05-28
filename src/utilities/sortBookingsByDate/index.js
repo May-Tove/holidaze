@@ -4,7 +4,7 @@
  * @param {Array<Object>} bookings - An array of booking objects.
  * @returns {Array<Object>} Sorted array of bookings.
  */
-const sortBookingsByDate = (bookings) => {
+export const sortBookingsByDate = (bookings) => {
   const currentDate = new Date();
 
   return bookings.sort((a, b) => {
@@ -13,5 +13,3 @@ const sortBookingsByDate = (bookings) => {
     return Math.abs(dateA - currentDate) - Math.abs(dateB - currentDate);
   });
 };
-
-export default sortBookingsByDate;

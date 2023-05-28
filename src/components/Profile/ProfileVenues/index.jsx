@@ -5,13 +5,21 @@ import VenueCard from '../../VenueCard';
 import { VenueForm } from '../../Forms';
 import { TbHomePlus } from 'react-icons/tb';
 
+/**
+ * A component that renders a list of venues for a user's profile.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.venues - An array of venue objects.
+ * @param {boolean} props.isOwnProfile - A boolean indicating whether the profile belongs to the current user.
+ * @returns {JSX.Element} A list of venue cards, each containing information about the venue.
+ */
 export const ProfileVenues = ({ venues, isOwnProfile }) => {
   const [isCreateVenueOpen, toggleCreateVenue] = useToggle();
 
   return (
     <>
       <div className="flex justify-between items-center mb-3">
-        <h2>Active Venues ({venues && venues.length})</h2>
+        <h2>Venues ({venues && venues.length})</h2>
         {isOwnProfile && (
           <button
             className="btn flex items-center gap-2"
@@ -27,15 +35,13 @@ export const ProfileVenues = ({ venues, isOwnProfile }) => {
         <VenueForm mode={'create'} venue={{}} handleClose={toggleCreateVenue} />
       )}
       {venues && venues.length > 0 ? (
-        <div>
-          <div className="grid grid-cols-3 gap-5">
-            {venues.map((venue) => (
-              <VenueCard key={venue.id} venue={venue} />
-            ))}
-          </div>
+        <div className="grid grid-cols-3 gap-5">
+          {venues.map((venue) => (
+            <VenueCard key={venue.id} venue={venue} />
+          ))}
         </div>
       ) : (
-        <p className="text-lightGrey">You have no active venues</p>
+        <p className="no-results-message">You have no venues</p>
       )}
     </>
   );

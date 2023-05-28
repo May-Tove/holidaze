@@ -1,19 +1,43 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useLogin } from '../../../context/LoginProvider';
 import useToggle from '../../../hooks/useToggle';
 import { IoPeopleOutline } from 'react-icons/io5';
-import { HiOutlineLocationMarker } from 'react-icons/hi';
-import { handleErrorImage } from '../../../shared';
+import { TbHomeEdit } from 'react-icons/tb';
+import { CgTrash } from 'react-icons/cg';
+import { RxDividerVertical } from 'react-icons/rx';
 import { VenueForm, CreateBooking } from '../../Forms';
 import ImageGallery from '../../VenueImages/ImageGallery';
 import Location from '../Location';
-import VenueMeta from '../Meta';
-import formatCurrency from '../../../shared/formatCurrency';
+import Meta from '../Meta';
 import RemoveVenue from '../RemoveVenue';
 import Rating from '../Rating';
+import { formatCurrency } from '../../../utilities';
+import Owner from '../Owner';
 
+/**
+ * A component that renders the details of a venue, including its name, location, description, price, images, and booking form.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.venue - The venue object to display.
+ * @param {string} props.venue.id - The ID of the venue.
+ * @param {string} props.venue.name - The name of the venue.
+ * @param {string} props.venue.description - The description of the venue.
+ * @param {number} props.venue.price - The price of the venue.
+ * @param {string[]} props.venue.media - An array of image URLs for the venue.
+ * @param {Object} props.venue.meta - An object containing metadata for the venue.
+ * @param {number} props.venue.rating - The rating of the venue.
+ * @param {Object} props.venue.location - An object containing the location information for the venue.
+ * @param {string} props.venue.location.address - The address of the venue.
+ * @param {string} props.venue.location.city - The city of the venue.
+ * @param {string} props.venue.location.country - The country of the venue.
+ * @param {number} props.venue.maxGuests - The maximum number of guests allowed at the venue.
+ * @param {Object[]} props.venue.bookings - An array of booking objects for the venue.
+ * @param {Object} props.venue.owner - An object containing information about the owner of the venue.
+ * @param {string} props.venue.owner.name - The name of the owner of the venue.
+ * @param {string} props.venue.owner.avatar - The URL of the avatar for the owner of the venue.
+ * @returns {JSX.Element} A div element containing the venue details.
+ */
 const VenueDetails = ({ venue }) => {
   const [isEditModalOpen, toggleEditModal] = useToggle();
   const [isDeleteModalOpen, toggleDeleteModal] = useToggle();
@@ -39,10 +63,18 @@ const VenueDetails = ({ venue }) => {
     <div>
       {owner && isOwnerOfVenue && (
         <div className="flex gap-2 justify-end mb-3">
-          <button className="btnSecondary" onClick={toggleEditModal}>
+          <button
+            className="btn-secondary flex items-center gap-1"
+            onClick={toggleEditModal}
+          >
+            <TbHomeEdit size={20} />
             Edit
           </button>
-          <button className="dangerBtn" onClick={toggleDeleteModal}>
+          <button
+            className="btn-danger flex items-center gap-1"
+            onClick={toggleDeleteModal}
+          >
+            <CgTrash size={20} />
             Delete
           </button>
         </div>
@@ -59,64 +91,40 @@ const VenueDetails = ({ venue }) => {
       )}
       {media && <ImageGallery galleryImages={media} />}
 
-      <div className="my-5 flex flex-col md:flex-row justify-between items-start">
-        <div className="flex flex-col gap-2 mb-5">
+      <section className="flex flex-col gap-10 lg:flex-row lg:justify-between lg:gap-20">
+        <div className="w-full">
           <div>
-            <h1>{name}</h1>
-            {location && (
-              <div className="flex items-center gap-2">
-                <HiOutlineLocationMarker size={20} />{' '}
+            <div className="border-b pb-4 mt-5">
+              <h1>{name}</h1>
+              <div className="flex items-center gap-3 mt-2">
                 <Location
                   address={location.address}
                   city={location.city}
                   country={location.country}
                 />
+                <RxDividerVertical size={20} className="text-gray-300" />
+                <Rating rating={rating} />
               </div>
-            )}
-          </div>
-
-          <div className="flex items-center gap-5 mt-3">
-            <Rating rating={rating} />
-            {owner && (
-              <div className="flex items-center gap-2">
-                <p>Hosted by</p>
-                <Link
-                  to={`/profile/${owner.name}`}
-                  className="flex items-center gap-2"
-                >
-                  <img
-                    className="w-6 h-6 rounded-full"
-                    src={owner.avatar}
-                    alt={`Image of ${owner.name}`}
-                    onError={handleErrorImage}
-                  />
-                  <div>
-                    <h5 className="font-bold">{owner.name}</h5>
-                  </div>
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-      <section className="flex flex-col items-start gap-20 lg:flex-row">
-        <div className="lg:w-3/4">
-          <div>
-            <h2 className="mb-3">About the place</h2>
-            <p>{description}</p>
-          </div>
-          <h2 className="my-3 pt-5">Details</h2>
-          <div className="flex flex-wrap gap-6">
-            <div className="infoBadge">
-              <IoPeopleOutline size={20} />
-              <p>Maximum {maxGuests} guests</p>
             </div>
-            {meta && <VenueMeta meta={meta} />}
+            <div className="flex items-center gap-5 mt-7"></div>
+            <div>
+              <h2 className="mb-3">About the place</h2>
+              <Owner owner={owner} />
+              <p className="break-words mt-3">{description}</p>
+            </div>
+            <h2 className="my-3 pt-5">Details</h2>
+            <div className="flex flex-wrap gap-6">
+              <div className="metas-badge">
+                <IoPeopleOutline size={20} />
+                <p>Maximum {maxGuests} guests</p>
+              </div>
+              <Meta meta={meta} />
+            </div>
           </div>
         </div>
-        <div className="p-2 bg-white rounded-xl shadow-lg md:p-10">
+        <div className="w-fit max-w-[400px] px-5 py-7 mt-7 bg-white rounded-xl shadow-lg lg:p-9">
           <div className="mb-5 pb-5 border-b">
-            <h2 className="font-sans text-center">Book your stay</h2>
+            <h2 className="text-center">Book your stay</h2>
           </div>
           <p className="text-sm text-center">
             Select available dates in the calendar below
@@ -153,7 +161,6 @@ VenueDetails.propTypes = {
     owner: PropTypes.shape({
       name: PropTypes.string,
       avatar: PropTypes.string,
-      email: PropTypes.string,
     }),
   }).isRequired,
 };

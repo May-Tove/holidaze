@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { CgTrash } from 'react-icons/cg';
 import { TbPhotoPlus } from 'react-icons/tb';
-import { handleErrorImage } from '../../../../shared';
+import { handleErrorImage } from '../../../../utilities';
 
 const ImageInput = ({
   errors,
@@ -31,7 +30,7 @@ const ImageInput = ({
           <div key={index} className="flex flex-col items-end gap-2 w-fit">
             <div className="w-full flex items-center gap-2">
               <button
-                className="iconBtn"
+                className="icon-btn"
                 onClick={(e) => handleDeleteImageUrl(e, index)}
               >
                 <CgTrash size={20} />
@@ -42,40 +41,36 @@ const ImageInput = ({
                   type="url"
                   id={`media-${index}`}
                   value={url}
-                  name="media"
+                  name={`imageUrls[${index}]`}
                   placeholder=" "
-                  {...register(`imageUrls[${index}]`, {
-                    required: 'Please upload at least one image URL',
-                    pattern: {
-                      value: /^(ftp|http|https):\/\/[^ "]+$/,
-                      message: 'Invalid URL format',
-                    },
-                  })}
+                  {...register(`imageUrls[${index}]`)}
                   onChange={(e) => handleImageUrlChange(e, index)}
                 />
 
-                <label className="floating-label" htmlFor="media">
+                <label className="floating-label" htmlFor={`media-${index}`}>
                   Image
                 </label>
               </div>
             </div>
             <div className="w-full">
-              {errors.imageUrls && errors.imageUrls[index] && (
-                <span className="text-red-600 text-sm mt-1">
-                  {errors.imageUrls[index].message}
-                </span>
+              {errors.imageUrls && (
+                <p id="inputError">
+                  {errors.imageUrls[index]
+                    ? errors.imageUrls[index].message
+                    : ''}
+                </p>
               )}
               <img
                 className="w-full h-[200px] rounded"
                 src={url}
                 alt="Venue image"
-                onError={handleErrorImage}
+                onError={(e) => handleErrorImage({ e, mode: 'image' })}
               />
             </div>
           </div>
         ))}
         <button
-          className="iconBtn me-5"
+          className="icon-btn me-5"
           onClick={addImageUrlField}
           aria-label="Add a new image url input field"
         >

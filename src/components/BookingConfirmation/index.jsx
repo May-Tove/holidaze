@@ -30,9 +30,9 @@ const BookingConfirmation = ({
 }) => {
   return (
     <div className="modal overflow-y-auto">
-      <div className="relative modalBody">
+      <div className="relative modal-body">
         <button
-          className="absolute top-2 right-2 iconBtn"
+          className="absolute top-3 right-3 icon-btn"
           onClick={handleCloseBookingConfirmation}
         >
           <CgClose size={20} />
@@ -50,8 +50,8 @@ const BookingConfirmation = ({
               className="w-full h-48 rounded-2xl md:w-48"
             />
             <div className="flex flex-col gap-2">
-              <h4 className="text-left font-bold text-lg">{name}</h4>
-              <div className="flex items-start gap-3 text-left">
+              <h4 className="text-left font-semibold">{name}</h4>
+              <div className="flex items-start gap-3 text-left text-sm">
                 <TbCalendar className="min-w-[20px]" size={20} />
                 <p>
                   {format(new Date(dateFrom), 'EEE MMM dd, yyyy')} -{' '}
@@ -76,16 +76,16 @@ const BookingConfirmation = ({
                 <div className="flex flex-col items-start">
                   <p>
                     Total price{' '}
-                    <span className="font-bold text-primaryDark">
+                    <span className="font-semibold text-bluePop">
                       {`$${totalPrice}`}
                     </span>
                   </p>
-                  <span className="text-xs text-gray-500">Pay on arrival</span>
+                  <span className="text-xs text-lightGrey">Pay on arrival</span>
                 </div>
               </div>
             </div>
           </div>
-          <p className="text-gray-500 border-t pt-8 text-sm">
+          <p className="text-lightGrey border-t pt-8 text-sm">
             This booking is now added to your profile
           </p>
         </div>

@@ -1,19 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useLogin } from '../../context/LoginProvider';
 import useToggle from '../../hooks/useToggle';
 import useApi from '../../hooks/useApi';
 import {
   ProfileVenues,
-  Bookings,
+  ProfileBookings,
   VenueReservations,
 } from '../../components/Profile';
 import UpdateAvatar from '../../components/Forms/UpdateAvatar';
-import { API_PROFILE_URL, handleErrorImage } from '../../shared';
+import { API_PROFILE_URL } from '../../shared';
 import { TbDiscountCheckFilled, TbPhotoEdit } from 'react-icons/tb';
 import ProfileLoader from '../../components/Loaders/ProfileLoader';
 import Breadcrumbs from '../../components/Breadcrumbs';
+import Avatar from '../../components/Avatar';
+import SEOHelmet from '../../components/SEOHelmet';
 
 export const Profile = () => {
   const { name } = useParams();
@@ -53,35 +54,31 @@ export const Profile = () => {
     } else if (selectedTab === 'reservations') {
       return <VenueReservations name={name} />;
     } else if (selectedTab === 'bookings') {
-      return <Bookings bookings={bookings} />;
+      return <ProfileBookings bookings={bookings} />;
     }
   };
   return (
     <>
-      <Helmet>
-        <title>{`${name}'s Profile | Holidaze`}</title>
-        <meta
-          name="description"
-          content={
-            isOwnProfile
-              ? `${
-                  venueManager
-                    ? 'Manage your venues, track venue reservations, and view your bookings on your Holidaze profile.'
-                    : 'Track your bookings on your Holidaze profile.'
-                }`
-              : `Explore ${name}'s Holidaze profile.`
-          }
-        />
-      </Helmet>
+      <SEOHelmet
+        title={`${name}'s Profile | Holidaze`}
+        description={
+          isOwnProfile
+            ? `${
+                venueManager
+                  ? 'Manage your venues, track venue reservations, and view your bookings on your Holidaze profile.'
+                  : 'Track your bookings on your Holidaze profile.'
+              }`
+            : `Explore ${name}'s Holidaze profile.`
+        }
+      />
       <main className="main-layout">
         <Breadcrumbs page={name} />
         <div className="flex flex-col text-center items-center gap-3 m-auto mb-10">
           <div className="relative">
-            <img
+            <Avatar
               className="w-[200px] h-[200px] rounded-full shadow shadow-primaryLight"
               src={isOwnProfile ? avatar : data.avatar}
               alt={`Profile avatar of ${name}`}
-              onError={handleErrorImage}
             />
             {isOwnProfile && (
               <button
@@ -114,7 +111,7 @@ export const Profile = () => {
         )}
         {!venueManager && bookings ? (
           <section className="my-20">
-            <Bookings bookings={bookings} />
+            <ProfileBookings bookings={bookings} />
           </section>
         ) : (
           <div>

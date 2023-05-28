@@ -1,23 +1,45 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import SuccessMessage from '../../../shared/successMessage';
-import { NAME_REGEX } from '../../../shared';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import SuccessMessage from '../../SuccessMessage';
+import { NAME_REGEX, EMAIL_REGEX } from '../../../shared';
 
 /**
- * `ContactForm` component represents a contact form where users can provide their name, email, and message.
+ * Component that represents a contact form where users can provide their name, email, and message.
  * It uses 'react-hook-form' for handling form state and form validation.
  *
- * @component
  * @returns {React.ElementType} Returns the ContactForm component
  */
 const ContactForm = () => {
   const [success, setSuccess] = useState(false);
+
+  const schema = yup
+    .object({
+      name: yup
+        .string()
+        .required()
+        .matches(
+          NAME_REGEX,
+          'Name can only contain letters, numbers and underscores.'
+        ),
+      email: yup
+        .string()
+        .required()
+        .matches(
+          EMAIL_REGEX,
+          'Email address must be a valid noroff.no or stud.noroff.no email address.'
+        ),
+
+      message: yup.string().required().min(15),
+    })
+    .required();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({ resolver: yupResolver(schema) });
 
   const onSubmit = () => {
     reset();
@@ -41,18 +63,13 @@ const ContactForm = () => {
             id="name"
             className="floating-input peer"
             placeholder=" "
-            {...register('name', { required: true, pattern: NAME_REGEX })}
+            {...register('name')}
           />
           <label htmlFor="name" className="floating-label">
             Name
           </label>
         </div>
-        {errors.name && (
-          <span className="text-red-900 text-sm mt-1">
-            This field is required and can only contain letters, numbers, and
-            underscores.
-          </span>
-        )}
+        <p id="inputError">{errors.name?.message}</p>
       </div>
       <div>
         <div className="relative">
@@ -61,17 +78,13 @@ const ContactForm = () => {
             id="email"
             className="floating-input peer"
             placeholder=" "
-            {...register('email', { required: true, pattern: /\S+@\S+\.\S+/ })}
+            {...register('email')}
           />
           <label htmlFor="email" className="floating-label">
             Email
           </label>
         </div>
-        {errors.email && (
-          <span className="text-red-900 text-sm">
-            This field is required and must be a valid email address.
-          </span>
-        )}
+        <p id="inputError">{errors.email?.message}</p>
       </div>
       <div>
         <div className="relative">
@@ -80,17 +93,13 @@ const ContactForm = () => {
             id="message"
             className="h-[150px] floating-textarea peer"
             placeholder=" "
-            {...register('message', { required: true, minLength: 15 })}
+            {...register('message')}
           />
           <label htmlFor="message" className="floating-label">
             Message
           </label>
         </div>
-        {errors.message && (
-          <span className="text-red-900 text-sm">
-            Message must be at least 15 characters long.
-          </span>
-        )}
+        <p id="inputError">{errors.message?.message}</p>
       </div>
 
       <button className="btn" type="submit">

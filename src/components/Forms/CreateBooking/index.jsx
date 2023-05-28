@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import PropTypes from 'prop-types';
 import { DateRange } from 'react-date-range';
 import { eachDayOfInterval, format, parseISO } from 'date-fns';
+import './CreateBooking.css';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import useApi from '../../../hooks/useApi';
 import useToggle from '../../../hooks/useToggle';
 import useDisableCalendarDates from '../../../hooks/useDisableCalendarDates';
-import ErrorMessage from '../../../shared/errorMessage';
+import ErrorMessage from '../../ErrorMessage';
 import BookingConfirmation from '../../BookingConfirmation';
 import { API_BOOKINGS_URL } from '../../../shared';
 import {
@@ -43,12 +46,18 @@ export const CreateBooking = ({ venue, bookings, id, isLoggedIn, price }) => {
     bookings,
   });
 
+  const schema = yup
+    .object({
+      guests: yup.string().required().min(1),
+    })
+    .required();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm();
+  } = useForm({ resolver: yupResolver(schema) });
 
   const { fetchApi, isLoading, isError, errorMessage } = useApi();
 
@@ -122,7 +131,7 @@ export const CreateBooking = ({ venue, bookings, id, isLoggedIn, price }) => {
   }
 
   return (
-    <section className="w-full">
+    <>
       <form
         className="flex flex-col gap-3 mt-3 "
         onSubmit={handleSubmit(onSubmit)}
@@ -141,10 +150,10 @@ export const CreateBooking = ({ venue, bookings, id, isLoggedIn, price }) => {
             rangeColors={['#000']}
           />
         </div>
-        <div className="flex gap-3 mt-3">
+        <div className="flex gap-3 mt-3 w-full">
           <div className="relative w-full">
             <input
-              className="floating-input peer cursor-not-allowed w-full"
+              className="floating-input peer cursor-not-allowed"
               id="startDate"
               value={format(range[0].startDate, 'dd.MM.yyyy')}
               placeholder=" "
@@ -169,39 +178,32 @@ export const CreateBooking = ({ venue, bookings, id, isLoggedIn, price }) => {
             </label>
           </div>
         </div>
-        <div className="relative">
-          <input
-            className="floating-input peer"
-            type="number"
-            id="guests"
-            min={1}
-            placeholder=" "
-            {...register('guests', {
-              required: true,
-            })}
-          />
-          <label className="floating-label" htmlFor="guests">
-            Guests
-          </label>
+        <div>
+          <div className="relative">
+            <input
+              className="floating-input peer"
+              type="number"
+              id="guests"
+              placeholder=" "
+              {...register('guests')}
+            />
+            <label className="floating-label" htmlFor="guests">
+              Guests
+            </label>
+          </div>
+          <p id="inputError">{errors.guests?.message}</p>
         </div>
-        {errors.guests && (
-          <span className="text-red-600 text-sm">
-            Please fill in how many guests you would like to book for
-          </span>
-        )}
-
         {isLoggedIn ? (
           <button className="btn" type="submit" disabled={isLoading}>
             {isLoading ? 'Booking...' : 'Book'}
           </button>
         ) : (
-          <button className="btn opacity-50 cursor-not-allowed" disabled>
+          <button className="btn" disabled>
             Log in to book
           </button>
         )}
         {isError && <ErrorMessage message={errorMessage} />}
       </form>
-
       <div className="flex flex-col gap-5 pt-5 mt-5">
         <div className="flex items-center justify-between">
           <span className="text-lightGrey">Price per night</span>
@@ -212,11 +214,11 @@ export const CreateBooking = ({ venue, bookings, id, isLoggedIn, price }) => {
           <span className="font-medium">{nightsCount}</span>
         </div>
         <div className="flex items-center justify-between font-bold">
-          <span className="text-slate-600">Total price</span>
-          <span className="text-blue-400">{`$${totalPrice}`}</span>
+          <span className="text-primaryDark">Total price</span>
+          <span className="text-bluePop">{`$${totalPrice}`}</span>
         </div>
       </div>
-    </section>
+    </>
   );
 };
 

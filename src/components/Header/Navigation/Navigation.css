@@ -1,0 +1,10 @@
+.nav-link {
+  color: theme('colors.primary');
+  transition: all 0.3s ease-in-out;
+}
+.nav-link:hover,
+.nav-link:focus,
+.nav-link:focus-visible,
+.active {
+  color: theme('colors.primaryDark');
+}

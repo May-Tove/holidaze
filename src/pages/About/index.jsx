@@ -1,6 +1,6 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import Breadcrumbs from '../../components/Breadcrumbs';
+import SEOHelmet from '../../components/SEOHelmet';
 import aboutImgBathroom from '../../assets/luxury_bathroom.jpg';
 import aboutImgWindow from '../../assets/woman_in_window.jpg';
 import aboutImgTub from '../../assets/pexels-monstera-6620858.jpg';
@@ -12,13 +12,12 @@ import venueMng3 from '../../assets/venue_manager_3.jpg';
 export const About = () => {
   return (
     <>
-      <Helmet>
-        <title>About | Holidaze</title>
-        <meta
-          name="description"
-          content="Holidaze is the ultimate platform for booking accommodations worldwide, as well as a way for property owners to access a global audience. We provide a broad selection of venues to suit any vacation, inspired by our aim to make travel extraordinary. Start exploring with Holidaze today!"
-        />
-      </Helmet>
+      <SEOHelmet
+        title={'About | Holidaze'}
+        description={
+          'Holidaze is the ultimate platform for booking accommodations worldwide, as well as a way for property owners to access a global audience. We provide a broad selection of venues to suit any vacation, inspired by our aim to make travel extraordinary. Start exploring with Holidaze today!'
+        }
+      />
       <main>
         <div className="pt-28 w-[90vw] max-w-[1100px] m-auto">
           <Breadcrumbs page={'About'} />
@@ -56,7 +55,7 @@ export const About = () => {
             />
           </div>
         </section>
-        <section className="text-center mt-20 bg-gray-200 p-20 space-y-4">
+        <section className="text-center mt-20 bg-gray-100 p-20 space-y-4">
           <h2>Our Vision</h2>
           <p className="max-w-[900px] m-auto">
             We believe that travel has the power to transform lives. We strive
@@ -96,7 +95,7 @@ export const About = () => {
             />
           </div>
         </section>
-        <section className=" bg-gray-200 py-20 lg:mt-20">
+        <section className=" bg-gray-100 py-20 lg:mt-20">
           <div className="w-[90vw] max-w-[1100px] flex flex-col items-center gap-20 m-auto lg:flex-row">
             <div className="lg:pe-16">
               <h2 className="mb-3">For Venue Managers</h2>

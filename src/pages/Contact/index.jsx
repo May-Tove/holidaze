@@ -1,5 +1,4 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import ContactForm from '../../components/Forms/ContactForm';
 import { BiGroup } from 'react-icons/bi';
@@ -7,17 +6,18 @@ import { RiCustomerService2Line, RiQuestionnaireLine } from 'react-icons/ri';
 import { TbHome } from 'react-icons/tb';
 import office from '../../assets/office.jpg';
 import customerService from '../../assets/customer_service.jpg';
+import SEOHelmet from '../../components/SEOHelmet';
 
 export const Contact = () => {
   return (
     <>
-      <Helmet>
-        <title>Contact | Holidaze</title>
-        <meta
-          name="description"
-          content="Get in touch with the Holidaze team. Whether you have a question, need assistance, or have feedback, we're here to help."
-        />
-      </Helmet>
+      <SEOHelmet
+        title={'Contact | Holidaze'}
+        description={
+          "Get in touch with the Holidaze team. Whether you have a question, need assistance, or have feedback, we're here to help."
+        }
+      />
+
       <main>
         <div className="pt-28 w-[90vw] max-w-[1100px] m-auto">
           <Breadcrumbs page={'Contact'} />
@@ -53,9 +53,9 @@ export const Contact = () => {
             />
           </div>
         </section>
-        <section className="bg-primaryLight grid grid-cols-1 gap-16 m-auto px-5 py-16 mt-3 lg:py-20 lg:px-40 lg:mt-20 lg:grid-cols-2 lg:gap-28">
+        <section className="bg-gray-100 grid grid-cols-1 gap-16 m-auto px-5 py-16 mt-3 lg:py-20 lg:px-40 lg:mt-20 lg:grid-cols-2 lg:gap-28">
           <div className="flex gap-3 items-start">
-            <div className="mt-2 rounded-full w-fit h-10 flex items-center bg-primary text-primaryDark p-2 lg:h-16 lg:text-3xl">
+            <div className="mt-2 rounded-full w-fit h-10 flex items-center bg-primaryLight text-primaryDark p-2 lg:h-16 lg:text-3xl">
               <RiQuestionnaireLine />
             </div>
             <div>
@@ -69,7 +69,7 @@ export const Contact = () => {
             </div>
           </div>
           <div className="flex gap-3">
-            <div className="mt-2 rounded-full w-fit h-10 flex items-center bg-primary text-primaryDark p-2 lg:h-16 lg:text-3xl">
+            <div className="mt-2 rounded-full w-fit h-10 flex items-center bg-primaryLight text-primaryDark p-2 lg:h-16 lg:text-3xl">
               <BiGroup />
             </div>
             <div>
@@ -84,7 +84,7 @@ export const Contact = () => {
             </div>
           </div>
           <div className="flex gap-3">
-            <div className="mt-2 rounded-full w-fit h-10 flex items-center bg-primary text-primaryDark p-2 lg:h-16 lg:text-3xl">
+            <div className="mt-2 rounded-full w-fit h-10 flex items-center bg-primaryLight text-primaryDark p-2 lg:h-16 lg:text-3xl">
               <RiCustomerService2Line />
             </div>
             <div>
@@ -98,7 +98,7 @@ export const Contact = () => {
             </div>
           </div>
           <div className="flex gap-3">
-            <div className="mt-2 rounded-full w-fit h-10 flex items-center bg-primary text-primaryDark p-2 lg:h-16 lg:text-3xl">
+            <div className="mt-2 rounded-full w-fit h-10 flex items-center bg-primaryLight text-primaryDark p-2 lg:h-16 lg:text-3xl">
               <TbHome />
             </div>
             <div>

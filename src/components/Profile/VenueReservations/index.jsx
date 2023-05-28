@@ -1,19 +1,21 @@
 import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
+import './VenueReservations.css';
 import useApi from '../../../hooks/useApi';
 import useReservationFilterAndSort from '../../../hooks/useReservationFilterAndSort';
 import useBookingCalculations from '../../../hooks/useBookingCalculation';
 import { API_PROFILE_URL } from '../../../shared';
 import ReservationOverviewLoader from '../../Loaders/ReservationOverviewLoader';
-import ErrorMessage from '../../../shared/errorMessage';
-import sortBookingsByDate from '../../../utilities/sortBookingsByDate';
-import getStatus from '../../../utilities/getStatus';
+import ErrorMessage from '../../ErrorMessage';
+import {
+  getReservationStatus,
+  sortBookingsByDate,
+  handleErrorImage,
+} from '../../../utilities';
 
 /**
  * VenueReservations - A component for displaying reservations made at a logged in venue managers own venues. Reservations can be sorted by venue name or filtered by reservation status
- * @component
- *
  * @param {object} props
  * @param {string} props.name - Profile name to fetch bookings from API.
  *
@@ -80,7 +82,7 @@ export const VenueReservations = ({ name }) => {
 
   if (reservations && reservations.length <= 0) {
     return (
-      <div className="text-center pt-20 font-medium text-slate-400">
+      <div className="text-center no-results-message">
         No reservations has been made yet
       </div>
     );
@@ -93,27 +95,27 @@ export const VenueReservations = ({ name }) => {
         <p>Keep track of all the reservations at your venues</p>
       </div>
 
-      <div className="flex flex-col justify-between gap-3 my-5 sm:flex-row sm:items-end ">
+      <div className="flex flex-col justify-between gap-3 my-2 sm:flex-row sm:items-end ">
         <div className="flex gap-1 sm:items-center">
-          <div className="flex flex-col text-xs sm:text-sm">
-            <label htmlFor="statusSort">Sort by status</label>
+          <div className="relative">
             <select
               id="statusSort"
               onChange={(event) => handleStatusFilterChange(event.target.value)}
-              className="text-xs rounded-xl border border-slate-300 p-2 shadow-lg bg-white text-slate-500 sm:text-sm"
+              className="floating-input peer"
             >
               <option value="all">All</option>
               <option value="confirmed">Confirmed</option>
               <option value="in-house">In-House</option>
               <option value="checked-out">Checked Out</option>
             </select>
+            <label htmlFor="statusSort" className="floating-label">
+              Sort by status
+            </label>
           </div>
-
-          <div className="flex flex-col text-xs sm:text-sm">
-            <label htmlFor="venueSort">Sort by venue</label>
+          <div className="relative">
             <select
               id="venueSort"
-              className="text-xs rounded-xl border border-slate-300 p-2 shadow-lg bg-white text-slate-500 sm:text-sm"
+              className="floating-input peer"
               value={sortVenue}
               onChange={handleVenueSortChange}
             >
@@ -124,6 +126,9 @@ export const VenueReservations = ({ name }) => {
                 </option>
               ))}
             </select>
+            <label htmlFor="venueSort" className="floating-label">
+              Sort by venue
+            </label>
           </div>
         </div>
         <p className="text-xs sm:text-sm">
@@ -167,7 +172,7 @@ export const VenueReservations = ({ name }) => {
                   {filteredReservations.length === 0 ? (
                     <tr>
                       <td
-                        className="text-center py-10 font-medium text-slate-400"
+                        className="text-center no-results-message"
                         colSpan={7}
                       >
                         Currently no reservations
@@ -196,13 +201,16 @@ export const VenueReservations = ({ name }) => {
                           )}
                         </td>
                         <td className="table-content capitalize">
-                          {getStatus(booking)}
+                          {getReservationStatus(booking)}
                         </td>
                         <td className="table-content flex items-center gap-2">
                           <img
                             className="w-10 h-10 rounded"
                             src={booking.venueMedia[0]}
                             alt={`Image of ${booking.venueName}`}
+                            onError={(e) =>
+                              handleErrorImage({ e, mode: 'image' })
+                            }
                           />
                           <span>{booking.venueName}</span>
                         </td>

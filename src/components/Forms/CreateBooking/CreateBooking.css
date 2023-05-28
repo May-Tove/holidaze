@@ -1,0 +1,7 @@
+.calendarWrap .rdrMonth {
+  @apply w-full lg:w-96;
+}
+
+.calendarWrap .rdrDateDisplayWrapper {
+  display: none;
+}
