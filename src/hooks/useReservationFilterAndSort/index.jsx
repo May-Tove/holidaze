@@ -1,16 +1,12 @@
 import { useState } from 'react';
 import { parseISO } from 'date-fns';
-import { STATUS_TYPES } from '../../shared/constants';
+import { STATUS_TYPES } from '../../shared';
 
 /**
- * Custom hook to filter and sort reservations based on status and venue.
- * @param {Array<Object>} reservations - Array of reservations to be filtered and sorted.
- * @returns {Object} An object containing:
- *  - filteredReservations: Array of reservations filtered and sorted based on status and venue.
- *  - statusFilter: Current status filter.
- *  - setStatusFilter: Function to update status filter.
- *  - sortVenue: Current sort venue.
- *  - setSortVenue: Function to update sort venue.
+ * A custom React hook that filters and sorts an array of reservations based on status and venue.
+ *
+ * @param {Array} reservations - An array of reservation objects to filter and sort.
+ * @returns {Object} An object containing the filtered reservations, status filter, status filter setter, venue sort, and venue sort setter.
  */
 const useReservationFilterAndSort = (reservations) => {
   const [statusFilter, setStatusFilter] = useState(STATUS_TYPES.All);
@@ -20,18 +16,20 @@ const useReservationFilterAndSort = (reservations) => {
   const filteredReservations = reservations.filter((booking) => {
     const isVenueMatch =
       sortVenue === STATUS_TYPES.ALL || booking.venueName === sortVenue;
-    if (statusFilter === STATUS_TYPES.CONFIRMED) {
-      return isVenueMatch && parseISO(booking.dateFrom) > currentDate;
-    } else if (statusFilter === STATUS_TYPES.IN_HOUSE) {
-      return (
-        isVenueMatch &&
-        parseISO(booking.dateFrom) <= currentDate &&
-        parseISO(booking.dateTo) > currentDate
-      );
-    } else if (statusFilter === STATUS_TYPES.CHECKED_OUT) {
-      return isVenueMatch && parseISO(booking.dateTo) <= currentDate;
+    switch (statusFilter) {
+      case STATUS_TYPES.CONFIRMED:
+        return isVenueMatch && parseISO(booking.dateFrom) > currentDate;
+      case STATUS_TYPES.IN_HOUSE:
+        return (
+          isVenueMatch &&
+          parseISO(booking.dateFrom) <= currentDate &&
+          parseISO(booking.dateTo) > currentDate
+        );
+      case STATUS_TYPES.CHECKED_OUT:
+        return isVenueMatch && parseISO(booking.dateTo) <= currentDate;
+      default:
+        return isVenueMatch;
     }
-    return isVenueMatch;
   });
 
   return {

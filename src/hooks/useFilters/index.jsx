@@ -1,21 +1,16 @@
 import { useState, useEffect } from 'react';
 
 /**
- * useFilters is a custom hook that manages filters for venue data.
+ * A custom hook for filtering data based on search results and user-selected filters.
  *
- * It keeps track of filter settings for venues,
- * calculates minimum and maximum price from the venues,
- * and filters the search results based on the current filter settings.
- *
- * @param {Array} data - All venues.
- * @param {Array} searchResults - The search results that need to be filtered.
- *
- * @returns {Object} - An object containing the following properties:
- * - filters {Object} - The current filter settings.
- * - setFilters {Function} - Function to update the filter settings.
- * - filteredData {Array} - The filtered search results.
- * - minPrice {number} - The minimum price from the venue data.
- * - maxPrice {number} - The maximum price from the venue data.
+ * @param {Array} data - An array of venue objects containing the venue's price, rating, and meta information.
+ * @param {Array} searchResults - An array of venue objects containing the search results.
+ * @returns {Object} An object containing the filters object, a function to set the filters, the filtered data array, and the minimum and maximum prices.
+ * @property {Object} filters - An object containing the user-selected filters.
+ * @property {Function} setFilters - A function to set the filters object.
+ * @property {Array} filteredData - An array of venue objects containing the filtered search results.
+ * @property {number} minPrice - The minimum price of all the venues in the data array.
+ * @property {number} maxPrice - The maximum price of all the venues in the data array.
  */
 const useFilters = (data, searchResults) => {
   const [minPrice, setMinPrice] = useState(0);
@@ -37,7 +32,6 @@ const useFilters = (data, searchResults) => {
     guests: 1,
   });
 
-  // If data exists, it calculates the minimum and maximum price among all venues in the data and set the values to the priceRange in the filters. The 'priceRange' state will now hold the smallest and largest prices among the venues in the data.
   useEffect(() => {
     if (data && data.length > 0) {
       const newMinPrice = Math.min(...data.map((venue) => venue.price));
@@ -54,7 +48,6 @@ const useFilters = (data, searchResults) => {
     }
   }, [data]);
 
-  // Filters the 'searchResults' array to create a new 'filteredData' array. The filter method loops through each 'venue' in the 'searchResults' array and checks if it meets certain conditions. If the conditions are met, the 'venue' is added to the 'filteredData' array.
   const filteredData = searchResults.filter((venue) => {
     return (
       (!filters.breakfast || venue.meta.breakfast === true) &&

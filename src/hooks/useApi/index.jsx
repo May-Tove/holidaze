@@ -2,6 +2,19 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useLogin } from '../../context/LoginProvider';
 
+/**
+ * A custom hook for making API requests with Axios.
+ *
+ * @returns {Object} An object containing state variables and functions for making API requests.
+ * @property {Function} fetchApi - A function that makes an API request and updates the state variables accordingly.
+ * @property {Array} data - An array of data returned from the API.
+ * @property {boolean} isLoading - A boolean indicating whether the API request is currently loading.
+ * @property {boolean} isError - A boolean indicating whether an error occurred during the API request.
+ * @property {string} errorMessage - A string containing the error message if an error occurred during the API request.
+ * @property {boolean} success - A boolean indicating whether the API request was successful.
+ * @property {Array} searchResults - An array of search results returned from the API.
+ * @property {Function} setSearchResults - A function that updates the search results state variable.
+ */
 const useApi = () => {
   const [data, setData] = useState([]);
   const [success, setSuccess] = useState(null);
@@ -17,6 +30,14 @@ const useApi = () => {
     Authorization: `Bearer ${token}`,
   };
 
+  /**
+   * A function that makes an API request and updates the state variables accordingly.
+   *
+   * @param {string} url - The URL to make the API request to.
+   * @param {string} method - The HTTP method to use for the API request.
+   * @param {Object} data - The data to send with the API request.
+   * @returns {Promise} A promise that resolves with the API response data, or null if an error occurred.
+   */
   const fetchApi = async (url, method, data) => {
     setIsLoading(true);
     try {
@@ -38,12 +59,9 @@ const useApi = () => {
       setSuccess(false);
       setData([]);
 
-      // error.response is undefined when the error is client-side
       if (!error.response) {
         setErrorMessage(`Client-side error: ${error.message}`);
       } else {
-        // Server-side error
-        // error.response.data.errors is not guaranteed to be an array with at least one item
         const serverErrorMessage =
           error.response.data.errors &&
           Array.isArray(error.response.data.errors) &&

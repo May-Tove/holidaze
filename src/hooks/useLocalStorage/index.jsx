@@ -1,5 +1,12 @@
 import { useState } from 'react';
-// https://usehooks.com/useLocalStorage/
+
+/**
+ * Hook from https://usehooks.com/useLocalStorage/
+ *
+ * @param {string} key - The key to use for storing the data in local storage.
+ * @param {*} initialValue - The initial value to use if no value is found in local storage.
+ * @returns {Array} An array containing the stored value and a function to update the stored value.
+ */
 const useLocalStorage = (key, initialValue) => {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
@@ -15,7 +22,6 @@ const useLocalStorage = (key, initialValue) => {
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       // If error also return initialValue
-      console.log(error);
       return initialValue;
     }
   });
@@ -35,7 +41,7 @@ const useLocalStorage = (key, initialValue) => {
       }
     } catch (error) {
       // A more advanced implementation would handle the error case
-      console.log(error);
+      alert(`Error storing '${key}' to localStorage: ${error.message}`);
     }
   };
 
