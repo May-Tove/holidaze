@@ -50,7 +50,7 @@ const RemoveVenue = ({ id, handleClose }) => {
                 onClick={handleDeleteVenue}
                 disabled={isLoading}
               >
-                {isLoading ? 'Deleting...' : 'Delete'}
+                {isLoading ? 'Deleting...' : 'Yes, Delete'}
               </button>
               <button className="btn-secondary" onClick={handleClose}>
                 Cancel

@@ -55,8 +55,8 @@ describe('Register', () => {
   });
 
   it('Can register successfully as a customer', () => {
-    cy.get('input[name="name"]').type('registerCypress77');
-    cy.get('input[name="email"]').type('registerCypress77@noroff.no');
+    cy.get('input[name="name"]').type('regCypress36');
+    cy.get('input[name="email"]').type('regCypress36@noroff.no');
     cy.get('input[name="password"]').type('password');
     cy.get('input[name="avatar"]').type(
       'https://images.unsplash.com/photo-1541779408-c355f91b42c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80'
@@ -70,8 +70,8 @@ describe('Register', () => {
   });
 
   it('Can register successfully as a venue manager', () => {
-    cy.get('input[name="name"]').type('VenueManagerCypress77');
-    cy.get('input[name="email"]').type('VenueManagerCypress77@noroff.no');
+    cy.get('input[name="name"]').type('VMCypress36');
+    cy.get('input[name="email"]').type('VMCypress36@noroff.no');
     cy.get('input[name="password"]').type('password');
     cy.get('input[name="avatar"]').type(
       'https://images.unsplash.com/photo-1541779408-c355f91b42c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80'
@@ -85,7 +85,7 @@ describe('Register', () => {
     cy.url().should('include', '/login');
 
     // Log in and navigate to the profile
-    cy.get('input[type="email"]').type('VenueManagerCypress77@noroff.no');
+    cy.get('input[type="email"]').type('VMCypress36@noroff.no');
     cy.get('input[type="password"]').type('password');
     cy.get('button[type="submit"]').click();
 

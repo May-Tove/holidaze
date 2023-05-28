@@ -112,7 +112,7 @@
   }
 
   .modal-body {
-    @apply flex justify-center items-center m-auto bg-white max-w-fit my-10 p-5 rounded-lg;
+    @apply flex justify-center items-center m-auto bg-white max-w-fit my-10 p-5 rounded-lg z-10;
     width: 90vw;
   }
 

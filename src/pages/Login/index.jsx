@@ -49,7 +49,7 @@ export const Login = () => {
           </div>
           <LoginForm />
           <div className="text-center mt-10">
-            Do not have an account?{' '}
+            Do you not have an account?{' '}
             <Link to={'/register'} className="text-blue-800">
               Register
             </Link>

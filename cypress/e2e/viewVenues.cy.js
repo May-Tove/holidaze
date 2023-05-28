@@ -2,7 +2,7 @@ describe('A user', () => {
   beforeEach(() => {
     cy.clearLocalStorage();
     cy.visit('http://localhost:5173/holidaze/');
-    cy.get('a').contains('See all venues').should('be.visible').click();
+    cy.get('a').contains('Discover venues').should('be.visible').click();
   });
 
   it('Can view list of all venues', () => {
