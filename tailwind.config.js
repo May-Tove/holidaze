@@ -7,7 +7,6 @@ export default {
         primary: '#404B69',
         primaryLight: '#DBEDF3',
         primaryDark: '#283149',
-        secondary: '#9FC3C4',
         light: '#f0f0f0',
         lightGrey: '#6B7280',
         lightSlate: 'rgb(148 163 184)',

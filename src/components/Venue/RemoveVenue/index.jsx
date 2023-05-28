@@ -31,8 +31,12 @@ const RemoveVenue = ({ id, handleClose }) => {
       <div className="modal-body flex flex-col">
         {success ? (
           <div className="flex flex-col items-center gap-5 p-5">
-            <CgCheckO className="text-primary" size={40} />
-            <p>Successfully deleted</p>
+            <CgCheckO
+              className="text-primary"
+              size={40}
+              aria-label="Check icon"
+            />
+            <p>Venue is successfully deleted</p>
           </div>
         ) : (
           <>
@@ -46,7 +50,7 @@ const RemoveVenue = ({ id, handleClose }) => {
                 onClick={handleDeleteVenue}
                 disabled={isLoading}
               >
-                {isLoading ? 'Deleting...' : 'Delete'}
+                {isLoading ? 'Deleting...' : 'Yes, Delete'}
               </button>
               <button className="btn-secondary" onClick={handleClose}>
                 Cancel

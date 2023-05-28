@@ -98,8 +98,8 @@ describe('VenueForm', () => {
     fireEvent.change(screen.getByLabelText(/Parking/i), {
       target: { value: true },
     });
-    fireEvent.change(screen.getByLabelText(/Image/i), {
-      target: { value: ['image1.jpg', 'image2.jpg'] },
+    fireEvent.change(screen.getByTestId('image-input-0'), {
+      target: { value: 'image1.jpg' },
     });
 
     // Mock the API request and response

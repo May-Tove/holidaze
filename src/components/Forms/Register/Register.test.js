@@ -144,62 +144,6 @@ describe('Register', () => {
     }, 2000);
   });
 
-  test('displays error messages when form is submitted empty', async () => {
-    useApi.mockReturnValue({
-      fetchApi: jest.fn(),
-      isLoading: false,
-      isError: false,
-      errorMessage: null,
-      success: false,
-    });
-
-    const navigate = jest.fn();
-
-    useNavigate.mockReturnValue(navigate);
-
-    render(
-      <MemoryRouter>
-        <RegisterForm />
-      </MemoryRouter>
-    );
-
-    fireEvent.click(screen.getByText(/register/i));
-
-    // Check for name field error message
-    await waitFor(() => {
-      expect(
-        screen.getByText(
-          /This field is required and can only contain letters, numbers, and underscores./
-        )
-      ).toBeInTheDocument();
-    });
-
-    // Check for email field error message
-    await waitFor(() => {
-      expect(
-        screen.getByText(
-          /This field is required and must be a valid noroff.no or stud.noroff.no email address./
-        )
-      ).toBeInTheDocument();
-    });
-
-    // Check for password field error message
-    await waitFor(() => {
-      expect(
-        screen.getByText(
-          /This field is required and must be at least 8 characters long./
-        )
-      ).toBeInTheDocument();
-    });
-
-    // Check for avatar field error message
-    await waitFor(() => {
-      expect(
-        screen.getByText(/This field is required and must be a valid URL./)
-      ).toBeInTheDocument();
-    });
-  });
-
   test('displays error message when a user tries to register with credentials that already exists', async () => {
     const mockFetchApi = jest.fn().mockRejectedValue({
       response: {

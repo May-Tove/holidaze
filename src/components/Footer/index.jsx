@@ -16,13 +16,13 @@ const Footer = () => {
               <p> Follow us on social media</p>
               <div className="flex gap-3 items-center justify-center text-gray-400 md:justify-start">
                 <div className="rounded-full w-fit h-16 flex items-center border border-gray-400 p-2">
-                  <FaFacebook size={20} />
+                  <FaFacebook size={20} aria-label="Facebook icon" />
                 </div>
                 <div className="rounded-full w-fit h-16 flex items-center border border-gray-400 p-2">
-                  <RxTwitterLogo size={20} />
+                  <RxTwitterLogo size={20} aria-label="Twitter icon" />
                 </div>
                 <div className="rounded-full w-fit h-16 flex items-center border border-gray-400 p-2">
-                  <FaInstagram size={20} />
+                  <FaInstagram size={20} aria-label="Instagram icon" />
                 </div>
               </div>
             </div>

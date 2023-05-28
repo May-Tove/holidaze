@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 import { BsSliders } from 'react-icons/bs';
 
 /**
- * SearchBar Component
- *
  * A search bar component for searching venues and setting guest filters.
- *
- * @component
  * @param {Object[]} venues - The array of venues available to search
  * @param {function} setSearchResults - Function to set the search results
  * @param {function} setFilters - Function to set the number of guests
@@ -68,13 +64,14 @@ const SearchBar = ({
             <input
               className="floating-input peer"
               type="number"
+              id="guests"
               name="guests"
               value={guestNumber}
               min={1}
               onChange={handleGuestsChange}
               placeholder=" "
             />
-            <label className="floating-label" htmlFor={'guests'}>
+            <label className="floating-label" htmlFor="guests">
               Number of Guests
             </label>
           </div>
@@ -84,7 +81,7 @@ const SearchBar = ({
             onClick={toggleFilters}
             type="button"
           >
-            <BsSliders size={20} /> Filters
+            <BsSliders size={20} aria-label="Sliders icon" /> Filters
           </button>
         </div>
       </form>

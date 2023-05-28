@@ -22,7 +22,11 @@ const Location = ({ address, city, country }) => {
 
   return (
     <div className="flex items-center gap-2">
-      <HiOutlineLocationMarker size={20} className="mb-1" />{' '}
+      <HiOutlineLocationMarker
+        size={20}
+        aria-label="Location marker icon"
+        className="mb-1"
+      />{' '}
       <p className="capitalize">
         {isUnknown ? 'Location unknown' : `${address}, ${city}, ${country}`}
       </p>

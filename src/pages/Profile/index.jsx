@@ -1,24 +1,20 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLogin } from '../../context/LoginProvider';
 import useToggle from '../../hooks/useToggle';
 import useApi from '../../hooks/useApi';
-import {
-  ProfileVenues,
-  ProfileBookings,
-  VenueReservations,
-} from '../../components/Profile';
 import UpdateAvatar from '../../components/Forms/UpdateAvatar';
 import { API_PROFILE_URL } from '../../shared';
-import { TbDiscountCheckFilled, TbPhotoEdit } from 'react-icons/tb';
+import UserDetails from '../../components/Profile/UserDetails';
 import ProfileLoader from '../../components/Loaders/ProfileLoader';
 import Breadcrumbs from '../../components/Breadcrumbs';
-import Avatar from '../../components/Avatar';
 import SEOHelmet from '../../components/SEOHelmet';
+import RenderTabContent from '../../components/Profile/RenderTabContent';
+import ErrorMessage from '../../components/ErrorMessage';
 
 export const Profile = () => {
   const { name } = useParams();
-  const [selectedTab, setSelectedTab] = useState('venues');
+
   const [isUpdateAvatarOpen, toggleUpdateAvatar] = useToggle();
 
   const { token, avatar, profile } = useLogin();
@@ -38,25 +34,12 @@ export const Profile = () => {
   }
 
   if (isError) {
-    return <div>{errorMessage}</div>;
+    return <ErrorMessage message={errorMessage} />;
   }
 
   const { bookings, email, venueManager, venues } = data;
   const isOwnProfile = profile.name === name;
 
-  const handleTabClick = (tab) => {
-    setSelectedTab(tab);
-  };
-
-  const renderContent = () => {
-    if (selectedTab === 'venues') {
-      return <ProfileVenues venues={venues} isOwnProfile={isOwnProfile} />;
-    } else if (selectedTab === 'reservations') {
-      return <VenueReservations name={name} />;
-    } else if (selectedTab === 'bookings') {
-      return <ProfileBookings bookings={bookings} />;
-    }
-  };
   return (
     <>
       <SEOHelmet
@@ -73,35 +56,14 @@ export const Profile = () => {
       />
       <main className="main-layout">
         <Breadcrumbs page={name} />
-        <div className="flex flex-col text-center items-center gap-3 m-auto mb-10">
-          <div className="relative">
-            <Avatar
-              className="w-[200px] h-[200px] rounded-full shadow shadow-primaryLight"
-              src={isOwnProfile ? avatar : data.avatar}
-              alt={`Profile avatar of ${name}`}
-            />
-            {isOwnProfile && (
-              <button
-                className="p-2 rounded-full bg-primaryLight text-primaryDark absolute bottom-2 right-2 shadow"
-                onClick={toggleUpdateAvatar}
-                aria-label="Update avatar button"
-              >
-                <TbPhotoEdit size={25} />
-              </button>
-            )}
-          </div>
-
-          <div className="flex flex-col items-center gap-1">
-            <h1>{name}</h1>
-            {venueManager && (
-              <div className="flex items-center gap-1">
-                <TbDiscountCheckFilled className="text-blue-400" size={20} />
-                <p>Venue Manager</p>
-              </div>
-            )}
-            <p className="text-sm text-lightGrey">{email}</p>
-          </div>
-        </div>
+        <UserDetails
+          name={name}
+          email={email}
+          avatar={avatar}
+          isOwnProfile={isOwnProfile}
+          venueManager={venueManager}
+          toggleUpdateAvatar={toggleUpdateAvatar}
+        />
         {isUpdateAvatarOpen && (
           <UpdateAvatar
             profile={data}
@@ -109,52 +71,13 @@ export const Profile = () => {
             token={token}
           />
         )}
-        {!venueManager && bookings ? (
-          <section className="my-20">
-            <ProfileBookings bookings={bookings} />
-          </section>
-        ) : (
-          <div>
-            <div className="border-b border-gray-300">
-              <button
-                onClick={() => handleTabClick('venues')}
-                className={`p-4 border-b-2 ${
-                  selectedTab === 'venues'
-                    ? 'border-primaryDark text-primaryDark '
-                    : 'border-transparent hover:text-gray-600 hover:border-gray-300 '
-                }  `}
-              >
-                Venues
-              </button>
-              {isOwnProfile && (
-                <>
-                  <button
-                    onClick={() => handleTabClick('reservations')}
-                    className={`p-4 border-b-2 ${
-                      selectedTab === 'reservations'
-                        ? 'border-primaryDark text-primaryDark '
-                        : 'border-transparent hover:text-gray-600 hover:border-gray-300 '
-                    } `}
-                  >
-                    Venue Reservations
-                  </button>
-
-                  <button
-                    onClick={() => handleTabClick('bookings')}
-                    className={`p-4 border-b-2 ${
-                      selectedTab === 'bookings'
-                        ? 'border-primaryDark text-primaryDark '
-                        : 'border-transparent hover:text-gray-600 hover:border-gray-300 '
-                    } `}
-                  >
-                    My Bookings
-                  </button>
-                </>
-              )}
-            </div>
-            <section className="my-10">{renderContent()}</section>
-          </div>
-        )}
+        <RenderTabContent
+          venues={venues}
+          name={name}
+          bookings={bookings}
+          isOwnProfile={isOwnProfile}
+          venueManager={venueManager}
+        />
       </main>
     </>
   );

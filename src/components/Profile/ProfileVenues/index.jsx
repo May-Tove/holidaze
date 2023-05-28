@@ -13,7 +13,7 @@ import { TbHomePlus } from 'react-icons/tb';
  * @param {boolean} props.isOwnProfile - A boolean indicating whether the profile belongs to the current user.
  * @returns {JSX.Element} A list of venue cards, each containing information about the venue.
  */
-export const ProfileVenues = ({ venues, isOwnProfile }) => {
+const ProfileVenues = ({ venues, isOwnProfile }) => {
   const [isCreateVenueOpen, toggleCreateVenue] = useToggle();
 
   return (
@@ -26,7 +26,7 @@ export const ProfileVenues = ({ venues, isOwnProfile }) => {
             onClick={toggleCreateVenue}
             aria-label="Create new venue button"
           >
-            <TbHomePlus size={20} />
+            <TbHomePlus size={20} aria-label="House icon" />
             New venue
           </button>
         )}
@@ -55,3 +55,5 @@ ProfileVenues.propTypes = {
   ),
   isOwnProfile: PropTypes.bool,
 };
+
+export default ProfileVenues;

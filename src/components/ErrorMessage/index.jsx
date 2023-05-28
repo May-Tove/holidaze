@@ -16,7 +16,7 @@ const ErrorMessage = ({ message }) => {
       data-testid="error-message"
     >
       <div className="min-w-fit mt-1">
-        <BiErrorCircle size={20} />
+        <BiErrorCircle size={20} aria-label="Warning icon" />
       </div>
 
       {message ? <p>{message}</p> : <p>An unknown error occurred.</p>}

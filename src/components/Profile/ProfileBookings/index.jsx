@@ -16,7 +16,7 @@ import { sortBookingsByDate } from '../../../utilities';
  * @param {Array} props.bookings - An array of booking objects.
  * @returns {JSX.Element} A list of booking cards, each containing information about the venue, booking dates, number of nights, number of guests, location, and total price.
  */
-export const ProfileBookings = ({ bookings }) => {
+const ProfileBookings = ({ bookings }) => {
   const currentDate = new Date();
 
   // Filter out bookings with a departure date in the past
@@ -52,21 +52,25 @@ export const ProfileBookings = ({ bookings }) => {
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <TbCalendar className="min-w-[20px]" size={20} />
+                    <TbCalendar
+                      className="min-w-[20px]"
+                      size={20}
+                      aria-label="Calendar icon"
+                    />
                     <p>
                       {format(new Date(dateFrom), 'EEE MMM dd, yyyy')} -{' '}
                       {format(new Date(dateTo), 'EEE MMM dd, yyyy')}
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <BsMoonStars size={20} />
+                    <BsMoonStars size={20} aria-label="Moon icon" />
                     <p>
                       {calculateNumberOfNights(dateFrom, dateTo)}
                       <span> Nights</span>
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <BsPeople size={20} />
+                    <BsPeople size={20} aria-label="People icon" />
                     <p>
                       {guests} {guests === 1 ? 'Adult' : 'Adults'}
                     </p>
@@ -78,7 +82,7 @@ export const ProfileBookings = ({ bookings }) => {
                   />
                   <div className="lg:absolute lg:bottom-4 lg:right-4">
                     <div className="flex items-center gap-3">
-                      <TbTags size={20} />
+                      <TbTags size={20} aria-label="Tag icon" />
                       <p>
                         Total price{' '}
                         <span className="text-semibold text-bluePop">
@@ -113,3 +117,5 @@ ProfileBookings.propTypes = {
     })
   ),
 };
+
+export default ProfileBookings;

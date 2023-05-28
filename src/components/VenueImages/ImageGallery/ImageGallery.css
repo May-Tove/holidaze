@@ -5,7 +5,7 @@
   grid-gap: 5px;
 }
 
-.image-gallery img:first-child {
+.image-gallery button:first-child {
   grid-column: 1 / span 4;
   grid-row: 1 / span 2;
 }

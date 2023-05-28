@@ -58,14 +58,18 @@ const ImageGallery = ({ galleryImages }) => {
             {galleryImages &&
               defaultImages.map((image, index) => {
                 return (
-                  <img
-                    className="w-full h-full cursor-pointer hover:opacity-80 transition-opacity duration-300 rounded-2xl"
-                    src={image}
-                    alt={`Image ${index + 1}`}
+                  <button
                     key={index}
                     onClick={() => handleOpenModal(index)}
-                    onError={(e) => handleErrorImage({ e, mode: 'image' })}
-                  />
+                    className="hover:opacity-80 focus:outline-blue-500 focus:ring-2 focus:ring-blue-500 transition-opacity duration-300 rounded-2xl w-full h-full"
+                  >
+                    <img
+                      className="w-full h-full rounded-2xl"
+                      src={image}
+                      alt={`Image number ${index + 1} in gallery`}
+                      onError={(e) => handleErrorImage({ e, mode: 'image' })}
+                    />
+                  </button>
                 );
               })}
             {galleryImages.length > 3 && (

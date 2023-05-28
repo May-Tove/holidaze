@@ -40,7 +40,7 @@ const VenueCard = ({ venue: { name, id, price, media, rating, location } }) => {
             <Rating rating={rating} />
           </div>
           <div className="flex items-center gap-1 pb-3">
-            <HiOutlineLocationMarker />
+            <HiOutlineLocationMarker aria-label="Location marker icon" />
             <p>
               {location?.city || 'City Unknown'},{' '}
               {location?.country || 'Country Unknown'}

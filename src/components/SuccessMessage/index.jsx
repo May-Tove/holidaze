@@ -16,7 +16,7 @@ const SuccessMessage = ({ message }) => {
       role="alert"
       data-testid="success-message"
     >
-      <CgCheckO size={20} />
+      <CgCheckO size={20} aria-label="Check icon" />
       <p>{message}</p>
     </div>
   );

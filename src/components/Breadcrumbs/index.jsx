@@ -20,18 +20,18 @@ const Breadcrumbs = ({ page, venueName }) => {
           <>
             <li className="text-primaryDark hover:underline">
               <Link to={'/venues'} className="flex items-center ">
-                <MdOutlineChevronRight />
+                <MdOutlineChevronRight aria-label="Chevron right icon" />
                 <span>Venues</span>
               </Link>
             </li>
             <li className="flex items-center text-lightGrey">
-              <MdOutlineChevronRight />
+              <MdOutlineChevronRight aria-label="Chevron right icon" />
               <span>{venueName}</span>
             </li>
           </>
         ) : (
           <li className="flex items-center text-lightGrey">
-            <MdOutlineChevronRight />
+            <MdOutlineChevronRight aria-label="Chevron right icon" />
             <span>{page}</span>
           </li>
         )}
