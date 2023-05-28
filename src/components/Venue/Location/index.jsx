@@ -24,7 +24,7 @@ const Location = ({ address, city, country }) => {
     <div className="flex items-center gap-2">
       <HiOutlineLocationMarker
         size={20}
-        aria-aria-label="Location marker icon"
+        aria-label="Location marker icon"
         className="mb-1"
       />{' '}
       <p className="capitalize">

@@ -94,7 +94,7 @@ describe('A logged in venue manager can manage venues', () => {
     cy.wait(500);
 
     cy.contains('Are you sure you want to delete this venue?');
-    cy.get('button').contains('Yes, delete this venue').click();
+    cy.get('button').contains('Delete').click();
     cy.wait(300);
     cy.contains('Successfully deleted').should('be.visible');
     cy.wait(1000);

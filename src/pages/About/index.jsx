@@ -64,7 +64,7 @@ export const About = () => {
             experience to all.
           </p>
         </section>
-        <section className="flex flex-col items-center gap-20 my-20 w-[90vw] max-w-[1200px] m-auto lg:flex-row-reverse">
+        <section className="flex flex-col items-center gap-20 my-20 w-[90vw] max-w-[1000px] m-auto lg:flex-row-reverse">
           <div>
             <h2 className="mt-6 mb-3">For Travelers</h2>
             <p>
@@ -89,7 +89,7 @@ export const About = () => {
           </div>
         </section>
         <section className="py-20 lg:mt-20">
-          <div className="w-[90vw] max-w-[1200px] flex flex-col items-center gap-20 m-auto lg:flex-row">
+          <div className="w-[90vw] max-w-[1000px] flex flex-col items-center gap-20 m-auto lg:flex-row">
             <div className="lg:pe-16">
               <h2 className="mb-3">For Venue Managers</h2>
               <p>

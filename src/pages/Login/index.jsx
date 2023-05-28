@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import LoginForm from '../../components/Forms/Login';
-import image from '../../assets/chill-beach.jpg';
-import image2 from '../../assets/food.jpg';
+import beachImage from '../../assets/chill-beach.jpg';
+import foodImage from '../../assets/food.jpg';
+import livingroomImage from '../../assets/livingroom.jpg';
+import bedImage from '../../assets/bed.jpg';
 import SEOHelmet from '../../components/SEOHelmet';
 
 export const Login = () => {
@@ -18,25 +20,25 @@ export const Login = () => {
         <div className="hidden w-1/2 grid-cols-2 grid-rows-3 gap-4 h-[700px] lg:grid ">
           <img
             className="h-full w-full rounded-3xl row-span-1 shadow-xl"
-            src={image2}
-            alt=""
+            src={foodImage}
+            alt="Breakfast plate"
           />
           <img
             className="h-full w-full rounded-3xl row-span-2 shadow-xl"
-            src={image}
-            alt=""
+            src={beachImage}
+            alt="Couple relaxing by the water"
           />
 
           <img
             className="h-full w-full rounded-3xl row-span-2 shadow-xl"
-            src="https://images.pexels.com/photos/4913317/pexels-photo-4913317.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt=""
+            src={livingroomImage}
+            alt="Small and cozy living room"
           />
 
           <img
             className="h-full w-full rounded-3xl row-span-1 shadow-xl"
-            src="https://images.unsplash.com/photo-1630809355701-af054d63cb31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=782&q=80"
-            alt=""
+            src={bedImage}
+            alt="Hotel bed"
           />
         </div>
 

@@ -4,8 +4,13 @@ import SEOHelmet from '../../components/SEOHelmet';
 import Hero from '../../components/Hero';
 import AboutImage from '../../assets/about-section.jpg';
 import ContactImage from '../../assets/contact-section.jpg';
-import RegisterImage from '../../assets/register-section.jpg';
+import registerImage1 from '../../assets/register-img-2.jpg';
+import registerImage2 from '../../assets/register-img-3.jpg';
+import registerImage3 from '../../assets/register-img-4.jpg';
 
+/**
+ * The Home component represents the landing page of Holidaze.
+ */
 export const Home = () => {
   return (
     <>
@@ -19,7 +24,7 @@ export const Home = () => {
         <Hero />
         <section className="w-3/4 flex flex-col-reverse lg:flex-row gap-12 items-center m-auto mb-32">
           <div
-            className="w-screen lg:w-2/5 bg-cover bg-center h-48 lg:h-[650px] 2xl:h-[700px] rounded-full"
+            className="w-[300px] h-[420px] md:w-[440px] md:h-[650px] bg-cover bg-center  rounded-full"
             style={{
               backgroundImage: `url(${AboutImage})`,
             }}
@@ -58,24 +63,32 @@ export const Home = () => {
             opens up a world of benefits, exclusive deals, and more. Join the
             Holidaze family today!
           </p>
-          <Link to={'/register'} className="btn w-fit">
+          <Link to={'/register'} className="btn w-fit md:mb-20">
             Register
           </Link>
-          <div
-            className="w-screen lg:w-2/5 bg-cover bg-center h-48 lg:h-[650px] 2xl:h-[700px] rounded-full"
-            style={{
-              backgroundImage: `url(${RegisterImage})`,
-            }}
-          ></div>
+          <div className="flex justify-center relative my-60">
+            <div
+              className="w-[200px] h-[320px] md:w-[320px] md:h-[480px]  bg-cover bg-center rounded-full absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
+              style={{
+                backgroundImage: `url(${registerImage1})`,
+              }}
+            ></div>
+            <div
+              className="w-[150px] h-[250px] md:w-[240px] md:h-[350px] bg-cover bg-center rounded-full absolute left-0 top-1/2 transform -translate-x-[-30%] -translate-y-1/2 z-0"
+              style={{
+                backgroundImage: `url(${registerImage2})`,
+              }}
+            ></div>
+            <div
+              className="w-[150px] h-[250px] md:w-[240px] md:h-[350px] bg-cover bg-center rounded-full absolute right-0 top-1/2 transform translate-x-[-30%] -translate-y-1/2 z-0"
+              style={{
+                backgroundImage: `url(${registerImage3})`,
+              }}
+            ></div>
+          </div>
         </section>
 
-        <section className="w-3/4 flex flex-col-reverse lg:flex-row gap-12 items-center m-auto mb-12">
-          <div
-            className="w-screen lg:w-2/5 bg-cover bg-center h-48 lg:h-[650px] 2xl:h-[700px] rounded-full"
-            style={{
-              backgroundImage: `url(${ContactImage})`,
-            }}
-          ></div>
+        <section className="w-3/4 flex flex-col lg:flex-row gap-12 items-center m-auto mb-12">
           <div className="w-full lg:w-3/5  flex flex-col gap-4">
             <p className="uppercase text-xs font-bold text-primary tracking-widest">
               We got you!
@@ -83,7 +96,7 @@ export const Home = () => {
             <h2 className="text-2xl lg:text-4xl mb-4">
               Let us help make your travel planning stress-free
             </h2>
-            <p>
+            <p className="max-w-[700px]">
               Travel planning should be exciting, not stressful! Our team of
               travel enthusiasts is here to assist you, provide personalized
               advice, and help you discover the perfect stay for your next
@@ -91,10 +104,16 @@ export const Home = () => {
               and connect you with a global audience. Reach out today, and let
               us make travel dreams a reality.
             </p>
-            <Link to={'/contact'} className="btn w-max">
+            <Link to={'/contact'} className="btn w-fit mb-10 md:mb-0">
               Contact
             </Link>
           </div>
+          <div
+            className="w-[300px] h-[420px] md:w-[440px] md:h-[650px]  bg-cover bg-center rounded-full"
+            style={{
+              backgroundImage: `url(${ContactImage})`,
+            }}
+          ></div>
         </section>
       </main>
     </>

@@ -61,7 +61,7 @@ const ImageGallery = ({ galleryImages }) => {
                   <button
                     key={index}
                     onClick={() => handleOpenModal(index)}
-                    className="hover:opacity-80 focus:outline-blue-500 focus:ring-2 focus:ring-blue-500 transition-opacity duration-300 rounded-2xl"
+                    className="hover:opacity-80 focus:outline-blue-500 focus:ring-2 focus:ring-blue-500 transition-opacity duration-300 rounded-2xl w-full h-full"
                   >
                     <img
                       className="w-full h-full rounded-2xl"
