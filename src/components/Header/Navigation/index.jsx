@@ -6,7 +6,12 @@ import useToggle from '../../../hooks/useToggle';
 import UserNavigation from '../UserNavigation';
 import { HiBars2, HiOutlineXMark, HiOutlineSun } from 'react-icons/hi2';
 
-const Header = () => {
+/**
+ * A component that displays the header navigation bar.
+ *
+ * @returns {JSX.Element} A header element containing the navigation bar.
+ */
+const Navigation = () => {
   const [isOpenUserNav, toggleUserNav] = useToggle(false);
   const [isOpenMainMenu, toggleMainMenu] = useToggle(false);
 
@@ -20,16 +25,16 @@ const Header = () => {
       >
         <Link
           to={'/'}
-          className="font-serif font-black text-xl tracking-widest text-primaryDark flex items-center gap-2"
+          className="font-serif font-bold text-xl tracking-widest text-primaryDark flex items-center gap-2"
         >
-          <HiOutlineSun size={25} />
+          <HiOutlineSun size={25} aria-label="Sun icon" />
           Holidaze
         </Link>
 
         <ul
           className={`gap-7 items-center ${
             isOpenMainMenu
-              ? 'fixed top-16 left-0 h-screen w-screen flex flex-col pt-16 bg-slate-200'
+              ? 'fixed top-16 left-0 h-screen w-screen flex flex-col pt-16 bg-slate-100'
               : 'hidden'
           }   lg:flex`}
         >
@@ -83,12 +88,6 @@ const Header = () => {
                 >
                   Login
                 </Link>
-                <Link
-                  to={'/register'}
-                  className="text-sm px-2 py-1 rounded-lg bg-blue-200 text-blue-600 hover:bg-blue-300 transition-colors duration-300"
-                >
-                  Register
-                </Link>
               </>
             )}
           </div>
@@ -109,4 +108,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Navigation;

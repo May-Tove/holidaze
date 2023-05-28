@@ -1,10 +1,10 @@
-.nav-link {
-  color: theme('colors.primary');
-  transition: all 0.3s ease-in-out;
+.nav-link,
+.active {
+  @apply font-medium text-darkSlate transition-colors duration-300 ease-in-out;
 }
 .nav-link:hover,
 .nav-link:focus,
 .nav-link:focus-visible,
 .active {
-  color: theme('colors.primaryDark');
+  @apply font-medium text-bluePop;
 }

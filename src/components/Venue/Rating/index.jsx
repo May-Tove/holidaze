@@ -12,7 +12,11 @@ import { BsFillStarFill } from 'react-icons/bs';
 const Rating = ({ rating }) => {
   return (
     <div className="flex items-center gap-2">
-      <BsFillStarFill size={15} className="text-yellow-400 mb-1" />
+      <BsFillStarFill
+        size={15}
+        aria-label="Star icon"
+        className="text-yellow-400 mb-1"
+      />
       <span>{typeof rating === 'number' ? rating.toFixed(1) : rating}</span>
     </div>
   );

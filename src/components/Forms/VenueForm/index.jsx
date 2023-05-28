@@ -140,7 +140,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
               className="bg-gray-200 p-1 rounded-lg hover:bg-gray-300"
               onClick={handleClose}
             >
-              <CgClose size={20} />
+              <CgClose size={20} aria-label="Close icon" />
             </button>
           </div>
           <div>

@@ -67,14 +67,14 @@ const VenueDetails = ({ venue }) => {
             className="btn-secondary flex items-center gap-1"
             onClick={toggleEditModal}
           >
-            <TbHomeEdit size={20} />
+            <TbHomeEdit size={20} aria-label="Edit icon" />
             Edit
           </button>
           <button
             className="btn-danger flex items-center gap-1"
             onClick={toggleDeleteModal}
           >
-            <CgTrash size={20} />
+            <CgTrash size={20} aria-label="Trash can icon" />
             Delete
           </button>
         </div>
@@ -102,7 +102,11 @@ const VenueDetails = ({ venue }) => {
                   city={location.city}
                   country={location.country}
                 />
-                <RxDividerVertical size={20} className="text-gray-300" />
+                <RxDividerVertical
+                  size={20}
+                  aria-label="Divider icon"
+                  className="text-gray-300"
+                />
                 <Rating rating={rating} />
               </div>
             </div>
@@ -115,7 +119,7 @@ const VenueDetails = ({ venue }) => {
             <h2 className="my-3 pt-5">Details</h2>
             <div className="flex flex-wrap gap-6">
               <div className="metas-badge">
-                <IoPeopleOutline size={20} />
+                <IoPeopleOutline size={20} aria-label="Group of people icon" />
                 <p>Maximum {maxGuests} guests</p>
               </div>
               <Meta meta={meta} />

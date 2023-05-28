@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import Avatar from '../../Avatar';
 
 /**
@@ -20,19 +19,16 @@ const Owner = ({ owner }) => {
   return (
     <div className="flex items-center gap-2">
       <p>Hosted by</p>
-      <Link
-        to={`/profile/${owner?.name}`}
-        className="flex items-center gap-2 hover:underline"
-      >
+      <div className="flex items-center gap-2 hover:underline">
         <Avatar
           className="w-6 h-6 rounded-full"
           src={owner?.avatar}
           alt={`Image of ${owner?.name}`}
         />
         <div>
-          <h5 className="font-bold ">{owner?.name}</h5>
+          <p className="font-bold ">{owner?.name}</p>
         </div>
-      </Link>
+      </div>
     </div>
   );
 };

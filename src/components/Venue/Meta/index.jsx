@@ -26,26 +26,26 @@ const Meta = ({ meta }) => {
     <>
       {wifi && (
         <div className="metas-badge">
-          <FiWifi size={20} />
+          <FiWifi size={20} aria-label="Wi-Fi icon" />
           <p>Free Wi-Fi</p>
         </div>
       )}
       {breakfast && (
         <div className="metas-badge">
-          <FiCoffee size={20} />
+          <FiCoffee size={20} aria-label="Coffee icon" />
           <p>Breakfast included</p>
         </div>
       )}
       {pets && (
         <div className="metas-badge">
-          <MdOutlinePets size={20} />
+          <MdOutlinePets size={20} aria-label="Pets icon" />
           <p>Pets allowed</p>
         </div>
       )}
 
       {parking && (
         <div className="metas-badge">
-          <IoCarSportOutline size={20} />
+          <IoCarSportOutline size={20} aria-label="Car icon" />
           <p>Free parking on site</p>
         </div>
       )}

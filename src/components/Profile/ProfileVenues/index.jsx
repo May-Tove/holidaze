@@ -26,7 +26,7 @@ export const ProfileVenues = ({ venues, isOwnProfile }) => {
             onClick={toggleCreateVenue}
             aria-label="Create new venue button"
           >
-            <TbHomePlus size={20} />
+            <TbHomePlus size={20} aria-label="House icon" />
             New venue
           </button>
         )}

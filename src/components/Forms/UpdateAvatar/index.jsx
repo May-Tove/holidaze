@@ -63,7 +63,7 @@ const UpdateAvatar = ({ profile, handleClose }) => {
   return (
     <>
       <div className="modal">
-        <div className="modal-body min-w-[500px]">
+        <div className="modal-body min-w-[90vw] md:min-w-[40vw]">
           <form
             className="w-full h-full space-y-5"
             onSubmit={handleSubmit(onSubmit)}
@@ -71,7 +71,7 @@ const UpdateAvatar = ({ profile, handleClose }) => {
             <div className="flex items-center justify-between border-b pb-5">
               <h2>Edit avatar</h2>
               <button className="icon-btn" onClick={handleClose}>
-                <CgClose size={20} />
+                <CgClose size={20} aria-label="Close icon" />
               </button>
             </div>
             <div className="flex flex-col w-full">
@@ -95,7 +95,7 @@ const UpdateAvatar = ({ profile, handleClose }) => {
                   className="icon-btn flex items-center gap-1"
                   onClick={handleClearInputField}
                 >
-                  <CgClose size={15} /> Clear
+                  <CgClose size={15} aria-label="Close icon" /> Clear
                 </button>
               </div>
               <p id="inputError">{errors.avatar?.message}</p>

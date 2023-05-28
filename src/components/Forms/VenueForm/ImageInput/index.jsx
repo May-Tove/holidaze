@@ -33,7 +33,7 @@ const ImageInput = ({
                 className="icon-btn"
                 onClick={(e) => handleDeleteImageUrl(e, index)}
               >
-                <CgTrash size={20} />
+                <CgTrash size={20} aria-label="Trash can icon" />
               </button>
               <div className="relative w-full">
                 <input
@@ -74,7 +74,7 @@ const ImageInput = ({
           onClick={addImageUrlField}
           aria-label="Add a new image url input field"
         >
-          <TbPhotoPlus size={30} />
+          <TbPhotoPlus size={30} aria-label="Add more images icon" />
         </button>
       </div>
 
