@@ -4,7 +4,7 @@
 
 # Holidaze - Project Exam 2023
 
-Image will be here
+![Preview](./src/assets/holidaze-preview.png)
 
 ## Table of Contents
 
@@ -13,7 +13,7 @@ Image will be here
 - [Testing](#testing)
 - [Install the project](#getting-started)
 - [Contact](#contact)
-    
+
 ## Project Overview
 
 Holidaze is the final project for my front-end studies at Noroff. This application represents a complete design and development solution for a fictitious company, Holidaze, offering a platform that serves two distinct user groups - holidaymakers seeking venue bookings, and venue managers seeking a platform to manage venues and bookings.
@@ -36,7 +36,6 @@ User Stories implemented in this project include:
 - A registered user may update their avatar
 - A registered user may logout
 
-
 This project makes use of the Holidaze API as documented in the Noroff API documentation. And has been planned using GitHub project that is linked to this repo.
 
 ## Built with
@@ -54,22 +53,21 @@ This project also includes a few testing suites:
 
 - Cypress: For end-to-end testing to simulate real user interactions.
 - Jest: For unit testing to validate individual functions and components.
-    
+
 ## Getting started
 
 To run this project locally, follow these steps:
 
-1. Clone the repository to your local machine.
-2. Install dependencies with the command:
+1.  Clone the repository to your local machine.
+2.  Install dependencies with the command:
 
         npm install
 
-3. Start the development server with:
+3.  Start the development server with:
 
         npm run dev
 
 The application should now be running at localhost:5000 (or your configured local port).
-
 
 ## Contact
 
