@@ -9,16 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout under $GITHUB_WORKSPACE
-        uses: actions/checkout@main
-        
+        uses: actions/checkout@v2
+
       - name: Install dependencies
         run: npm i
         working-directory: ${{ github.workspace }}
 
-
       - name: run cypress tests with electron
         uses: cypress-io/github-action@v4
         with:
-         start: npm run dev -- --host 0.0.0.0
-         wait-on: "http://127.0.0.1:5173/holidaze/"
-         browser: electron
+          start: npm run dev -- --host 0.0.0.0
+          wait-on: "http://127.0.0.1:5173/holidaze/"
+          browser: electron
