@@ -1,19 +1,18 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
-import VenuesList from '../../components/Venues';
+import VenuesList from '../../components/VenuesList';
 import Breadcrumbs from '../../components/Breadcrumbs';
+import SEOHelmet from '../../components/SEOHelmet';
 
 export const Venues = () => {
   return (
     <>
-      <Helmet>
-        <title>Venues | Holidaze</title>
-        <meta
-          name="description"
-          content="Explore a diverse selection of unique accommodations available worldwide on Holidaze. From beachside retreats to city escapes, find the perfect place for your next adventure!"
-        />
-      </Helmet>
-      <main className="main-layout min-h-screen">
+      <SEOHelmet
+        title={'Venues | Holidaze'}
+        description={
+          'Explore a diverse selection of unique accommodations available worldwide on Holidaze. From beachside retreats to city escapes, find the perfect place for your next adventure!'
+        }
+      />
+      <main className="main-layout">
         <Breadcrumbs page={'Venues'} />
         <VenuesList />
       </main>

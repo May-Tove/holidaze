@@ -1,21 +1,20 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import BackgroundHero from '../../assets/bg-hero.jpg';
+import BackgroundHero from '../../assets/beach.jpg';
 import AboutImage from '../../assets/about-section.jpg';
 import ContactImage from '../../assets/contact-section.jpg';
 import RegisterImage from '../../assets/register-section.jpg';
+import SEOHelmet from '../../components/SEOHelmet';
 
 export const Home = () => {
   return (
     <>
-      <Helmet>
-        <title>Home | Holidaze</title>
-        <meta
-          name="description"
-          content="Holidaze is your ultimate destination for booking and renting out any type of accommodation all around the world. Discover amazing vacation experiences or list your venue to attract a worldwide audience. Start your journey with Holidaze today!"
-        />
-      </Helmet>
+      <SEOHelmet
+        title={'Home | Holidaze'}
+        description={
+          'Holidaze is your ultimate destination for booking and renting out any type of accommodation all around the world. Discover amazing vacation experiences or list your venue to attract a worldwide audience. Start your journey with Holidaze today!'
+        }
+      />
       <main>
         <section
           className="bg-cover bg-center h-screen flex flex-col gap-20 justify-center items-center mb-20"
@@ -74,52 +73,6 @@ export const Home = () => {
             streets of Tokyo, we have a wide range of accommodations in some of
             the worlds most iconic and beautiful destinations.
           </p>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 justify-center text-white">
-            <div className="category-card-container">
-              <Link
-                to={'/venues'}
-                className="category-card rounded-full"
-                style={{
-                  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.73)),url(${BackgroundHero})`,
-                }}
-              >
-                <h3 className="font-serif text-2xl">Hotels</h3>
-              </Link>
-            </div>
-            <div className="category-card-container">
-              <Link
-                to={'/venues'}
-                className="category-card rounded-full"
-                style={{
-                  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.73)),url(${BackgroundHero})`,
-                }}
-              >
-                <h3 className="font-serif text-2xl">Cabin</h3>
-              </Link>
-            </div>
-            <div className="category-card-container">
-              <Link
-                to={'/venues'}
-                className="category-card rounded-full"
-                style={{
-                  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.73)),url(${BackgroundHero})`,
-                }}
-              >
-                <h3 className="font-serif text-2xl">Villas</h3>
-              </Link>
-            </div>
-            <div className="category-card-container">
-              <Link
-                to={'/venues'}
-                className="category-card rounded-full"
-                style={{
-                  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.73)),url(${BackgroundHero})`,
-                }}
-              >
-                <h3 className="font-serif text-2xl">Treehouses</h3>
-              </Link>
-            </div>
-          </div>
         </section>
         <section className="w-3/4 flex flex-col lg:flex-row gap-12  items-center m-auto mb-32">
           <div className="w-full lg:w-3/5  flex flex-col gap-4">

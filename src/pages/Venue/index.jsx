@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import useApi from '../../hooks/useApi';
 import VenueDetailsLoader from '../../components/Loaders/VenueDetailsLoader';
 import VenueDetails from '../../components/Venue/VenueDetails';
 import { API_VENUE_URL } from '../../shared';
 import Breadcrumbs from '../../components/Breadcrumbs';
-import ErrorMessage from '../../shared/errorMessage';
+import ErrorMessage from '../../components/ErrorMessage';
+import SEOHelmet from '../../components/SEOHelmet';
 
 export const Venue = () => {
   let { id } = useParams();
@@ -35,13 +35,10 @@ export const Venue = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{`${data.name} - Holidaze`}</title>
-        <meta
-          name="description"
-          content={`Discover ${data.name}, a venue located in ${data.location?.city}. Book with Holidaze today for an unforgettable travel experience!`}
-        />
-      </Helmet>
+      <SEOHelmet
+        title={`${data.name} | Holidaze`}
+        description={`Discover ${data.name}, a venue located in ${data.location?.city}. Book with Holidaze today for an unforgettable travel experience!`}
+      />
       <main className="main-layout">
         <Breadcrumbs page={'venue'} venueName={data.name} />
         <VenueDetails venue={data} />
