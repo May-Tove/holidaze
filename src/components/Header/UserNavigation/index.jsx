@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useLogin } from '../../../context/LoginProvider';
 import { MdOutlineLogout } from 'react-icons/md';
 import { CgProfile } from 'react-icons/cg';
-import { handleErrorImage } from '../../../shared';
+import Avatar from '../../Avatar';
 
 const UserNavigation = ({ toggle, isOpen }) => {
   const { setIsLoggedIn, profile, avatar } = useLogin();
@@ -17,50 +17,39 @@ const UserNavigation = ({ toggle, isOpen }) => {
   return (
     <div>
       <button
-        className="flex items-center text-primaryDark"
+        className="border-4 border-transparent rounded-full flex items-center text-primaryDark transition-all duration-300 hover:border-slate-300"
         id="dropdownAvatarNameButton"
         onClick={toggle}
         aria-label="Profile menu button"
       >
         <span className="sr-only">Open Menu</span>
-        <img
+        <Avatar
           className="w-7 h-7 lg:w-10 lg:h-10 rounded-full"
           src={avatar}
           alt={`Profile image of ${profile.name}`}
-          onError={(e) => handleErrorImage({ e, mode: 'avatar' })}
         />
       </button>
-
       <div
         className={`${
           isOpen ? 'block' : 'hidden'
-        }  absolute right-0 top-20 w-full rounded-b-xl rounded-e-none shadow-lg bg-primaryLight flex flex-col items-center justify-center gap-5 py-5 lg:w-[300px]`}
+        }  absolute right-0 top-16 w-full rounded-b-xl rounded-e-none shadow-lg bg-slate-100 flex flex-col items-center justify-center gap-5 py-5 lg:w-[300px] lg:top-20`}
         id="dropdownAvatarName"
       >
-        <Link
-          to={`/profile/${profile.name}`}
-          className="px-4 py-3 text-sm text-gray-700 flex flex-col items-center text-center"
-          onClick={toggle}
-        >
-          <img className="w-10 h-10 rounded-full" src={avatar} alt="" />
-
-          <div className="font-medium">{profile.name}</div>
-          <div>{profile.email}</div>
-        </Link>
         <ul
-          className="py-2 text-sm space-y-5 w-full text-center flex flex-col items-center"
+          className="py-2 text-sm space-y-5 w-full text-center flex flex-col items-center divide-y"
           aria-labelledby="dropdownAvatarNameButton"
         >
-          <li>
+          <li className="w-full">
             <Link
+              to={`/profile/${profile.name}`}
               className="flex items-center gap-1 px-4 py-2 text-primaryDark hover:bg-gray-100 w-full"
               onClick={toggle}
             >
               <CgProfile size={15} />
-              Add new venue
+              Profile
             </Link>
           </li>
-          <li>
+          <li className="w-full">
             <Link
               to={'/'}
               className="flex items-center gap-1 px-4 py-2 text-sm text-primaryDark hover:bg-gray-100 w-full"

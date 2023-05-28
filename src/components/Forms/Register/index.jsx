@@ -4,15 +4,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import useApi from '../../../hooks/useApi';
-import ErrorMessage from '../../../shared/errorMessage';
-import SuccessMessage from '../../../shared/successMessage';
-import {
-  API_AUTH_URL,
-  AVATAR_REGEX,
-  EMAIL_REGEX,
-  NAME_REGEX,
-} from '../../../shared';
+import ErrorMessage from '../../ErrorMessage';
+import SuccessMessage from '../../SuccessMessage';
+import { API_AUTH_URL, EMAIL_REGEX, NAME_REGEX } from '../../../shared';
 
+/**
+ * A form component for registering a new user.
+ *
+ * @returns {JSX.Element} A form element with input fields for name, email, password, avatar, and a checkbox for venue manager. Also includes a submit button and error/success messages.
+ */
 const RegisterForm = () => {
   const schema = yup
     .object({
@@ -33,8 +33,8 @@ const RegisterForm = () => {
       password: yup.string().required().min(8),
       avatar: yup
         .string()
-        .required()
-        .matches(AVATAR_REGEX, 'Avatar must be a valid URL.'),
+        .url('Avatar must be a valid URL if provided.')
+        .notRequired(),
     })
     .required();
 

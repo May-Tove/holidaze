@@ -2,9 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import useImageSlider from '../../../hooks/useImageSlider';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
-import { handleErrorImage } from '../../../shared';
+import { handleErrorImage } from '../../../utilities';
 import placeholderImg from '../../../assets/placeholderImg@2x.jpg';
 
+/**
+ * A component that displays a slider of images.
+ *
+ * @param {Object} props - The component props.
+ * @param {string[]} props.media - An array of image URLs.
+ */
 const ImageSlider = ({ media }) => {
   const slides = media.map((image) => ({ url: image }));
 

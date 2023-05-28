@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import SuccessMessage from '../../../shared/successMessage';
+import SuccessMessage from '../../SuccessMessage';
 import { NAME_REGEX, EMAIL_REGEX } from '../../../shared';
 
 /**
- * `ContactForm` component represents a contact form where users can provide their name, email, and message.
+ * Component that represents a contact form where users can provide their name, email, and message.
  * It uses 'react-hook-form' for handling form state and form validation.
  *
- * @component
  * @returns {React.ElementType} Returns the ContactForm component
  */
 const ContactForm = () => {

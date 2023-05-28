@@ -5,14 +5,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useLogin } from '../../../context/LoginProvider';
 import useApi from '../../../hooks/useApi';
-import ErrorMessage from '../../../shared/errorMessage';
-import SuccessMessage from '../../../shared/successMessage';
+import ErrorMessage from '../../ErrorMessage';
+import SuccessMessage from '../../SuccessMessage';
 import { CgClose } from 'react-icons/cg';
-import {
-  API_PROFILE_URL,
-  handleErrorImage,
-  AVATAR_REGEX,
-} from '../../../shared';
+import { API_PROFILE_URL } from '../../../shared';
+import Avatar from '../../Avatar';
 
 /**
  * A component that allows users to update their avatar.
@@ -29,8 +26,8 @@ const UpdateAvatar = ({ profile, handleClose }) => {
     .object({
       avatar: yup
         .string()
-        .required()
-        .matches(AVATAR_REGEX, 'Avatar must be a valid URL.'),
+        .url('Avatar must be a valid URL if provided.')
+        .notRequired(),
     })
     .required();
 
@@ -66,14 +63,14 @@ const UpdateAvatar = ({ profile, handleClose }) => {
   return (
     <>
       <div className="modal">
-        <div className="modalBody min-w-[500px]">
+        <div className="modal-body min-w-[500px]">
           <form
             className="w-full h-full space-y-5"
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex items-center justify-between border-b pb-5">
               <h2>Edit avatar</h2>
-              <button className="iconBtn" onClick={handleClose}>
+              <button className="icon-btn" onClick={handleClose}>
                 <CgClose size={20} />
               </button>
             </div>
@@ -95,38 +92,31 @@ const UpdateAvatar = ({ profile, handleClose }) => {
                 </div>
 
                 <button
-                  className="iconBtn flex items-center gap-1"
+                  className="icon-btn flex items-center gap-1"
                   onClick={handleClearInputField}
                 >
                   <CgClose size={15} /> Clear
                 </button>
               </div>
               <p id="inputError">{errors.avatar?.message}</p>
-              <img
-                className="h-[150px] w-[150px] rounded-full mt-5 m-auto"
+              <Avatar
                 src={inputValue}
                 alt="Avatar"
-                onError={(e) => handleErrorImage({ e, mode: 'avatar' })}
+                className="h-[150px] w-[150px] rounded-full mt-5 m-auto"
               />
             </div>
-            <div>
-              <div className="flex gap-3 justify-end border-t pt-5">
-                <button className="btn" type="submit" disabled={isLoading}>
-                  {isLoading ? 'Updating...' : 'Update'}
-                </button>
-                <button
-                  className="py-2 px-3 bg-gray-200 rounded-lg"
-                  onClick={handleClose}
-                >
-                  Cancel
-                </button>
-              </div>
-
-              {isError && <ErrorMessage message={errorMessage} />}
-              {success && (
-                <SuccessMessage message="Successfully changed avatar" />
-              )}
+            <div className="flex gap-3 justify-end border-t pt-5">
+              <button className="btn" type="submit" disabled={isLoading}>
+                {isLoading ? 'Updating...' : 'Update'}
+              </button>
+              <button className="btn-secondary" onClick={handleClose}>
+                Cancel
+              </button>
             </div>
+            {isError && <ErrorMessage message={errorMessage} />}
+            {success && (
+              <SuccessMessage message="Successfully changed avatar" />
+            )}
           </form>
         </div>
       </div>

@@ -1,13 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './ImageGallery.css';
 import useToggle from '../../../hooks/useToggle';
+import useImageSlider from '../../../hooks/useImageSlider';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import { CgClose } from 'react-icons/cg';
+import { handleErrorImage } from '../../../utilities';
 import ImageSlider from '../ImageSlider';
-import { handleErrorImage } from '../../../shared';
-import useImageSlider from '../../../hooks/useImageSlider';
 import placeholderImg from '../../../assets/placeholderImg@2x.jpg';
 
+/**
+ * A component for displaying an image gallery with a modal view for all images.
+ *
+ * @param {Object} props - The component props.
+ * @param {string[]} props.galleryImages - An array of image URLs to display in the gallery.
+ * @returns {JSX.Element} The ImageGallery component.
+ */
 const ImageGallery = ({ galleryImages }) => {
   const [isImgGalleryOpen, toggleImgGallery] = useToggle();
   const { slideNumber, setSlideNumber, prevSlide, nextSlide } =
@@ -25,13 +33,8 @@ const ImageGallery = ({ galleryImages }) => {
   }
 
   // If there is only one image in the array, it should take up the entire grid, if not, the custom class should be applied.
-  let gridLayout = '';
-
-  if (galleryImages.length === 1) {
-    gridLayout = 'col-span-5 row-span-2';
-  } else {
-    gridLayout = 'image-gallery';
-  }
+  const gridLayout =
+    galleryImages.length === 1 ? 'col-span-5 row-span-2' : 'image-gallery';
 
   if (galleryImages.length === 0) {
     return (
@@ -81,7 +84,7 @@ const ImageGallery = ({ galleryImages }) => {
           <div className="modal">
             <div className="flex items-center justify-center m-auto w-[90vw] max-w-fit mt-20">
               <button
-                className="iconBtn absolute top-5 right-5"
+                className="icon-btn absolute top-5 right-5"
                 onClick={toggleImgGallery}
               >
                 <CgClose size={20} />
@@ -106,7 +109,7 @@ const ImageGallery = ({ galleryImages }) => {
 
               <div>
                 <img
-                  className="w-full max-w-[90vw] h-[250px] lg:h-[600px] m-auto"
+                  className="w-full m-auto max-w-[90vw] h-[250px] lg:h-[600px]"
                   src={galleryImages[slideNumber]}
                   alt={`Image number ${slideNumber + 1}`}
                 />

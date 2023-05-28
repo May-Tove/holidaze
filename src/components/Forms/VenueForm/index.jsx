@@ -8,8 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { API_VENUE_URL } from '../../../shared';
 import { CgClose } from 'react-icons/cg';
 import ImageInput from './ImageInput';
-import ErrorMessage from '../../../shared/errorMessage';
-import SuccessMessage from '../../../shared/successMessage';
+import ErrorMessage from '../../ErrorMessage';
+import SuccessMessage from '../../SuccessMessage';
 
 export const VenueForm = ({ mode, venue, handleClose }) => {
   const imageSchema = yup.object().shape({
@@ -125,7 +125,7 @@ export const VenueForm = ({ mode, venue, handleClose }) => {
 
   return (
     <div className="modal overflow-y-auto">
-      <div className="modalBody lg:min-w-[80vw]">
+      <div className="modal-body lg:min-w-[80vw]">
         <form
           className="w-full h-full space-y-7"
           onSubmit={handleSubmit(onSubmit)}

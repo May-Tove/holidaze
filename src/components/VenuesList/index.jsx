@@ -6,21 +6,15 @@ import VenueCard from '../VenueCard';
 import SearchBar from '../SearchBar';
 import Filters from '../Filters/VenueFilters';
 import AllVenuesLoader from '../Loaders/AllVenuesLoader';
-import ErrorMessage from '../../shared/errorMessage';
+import ErrorMessage from '../ErrorMessage';
 import { API_VENUE_URL } from '../../shared';
 
 /**
- * VenuesList is a component that displays a list of venues.
+ * A component that displays a list of venues.
  *
  * It fetches data from an API, allows for searching and filtering of the venues,
  * and displays each venue using the `VenueCard` component.
- *
- * If the data is still loading, `AllVenuesLoader` is displayed.
- * If there is an error during fetching, an error message is displayed.
- *
- * It makes use of the `useApi`, `useFilters`, and `useToggle` custom hooks.
- *
- * @returns {React.Element} The rendered VenuesList component.
+ * @returns {JSX.Element} A list of venues.
  */
 const VenuesList = () => {
   const [isFiltersOpen, toggleFilters] = useToggle();
@@ -85,9 +79,7 @@ const VenuesList = () => {
             <VenueCard key={venue.id} venue={venue} />
           ))
         ) : (
-          <div className="my-7">
-            <p className="font-bold text-gray-400">No matching results</p>
-          </div>
+          <p className="no-results-message">No matching results</p>
         )}
       </section>
     </>

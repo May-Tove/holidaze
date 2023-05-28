@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
  * CheckboxInput Component
  *
  * A reusable checkbox input component with label.
- *
- * @component
  * @param {string} name - The unique identifier for the checkbox
  * @param {boolean} checked - The checked status of the checkbox
  * @param {function} onChange - Function to handle the change event of the checkbox

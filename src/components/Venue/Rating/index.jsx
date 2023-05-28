@@ -1,12 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IoMdStar } from 'react-icons/io';
+import { BsFillStarFill } from 'react-icons/bs';
 
+/**
+ * A component that displays a rating as a star icon and a number.
+ *
+ * @param {Object} props - The component props.
+ * @param {number} props.rating - The rating to display.
+ * @returns {JSX.Element} A rating component.
+ */
 const Rating = ({ rating }) => {
   return (
-    <div className="flex items-center justify-center gap-1 px-2 py-1 h-fit bg-primaryLight text-primaryDark rounded-full text-sm">
-      <IoMdStar size={15} />
-      <span>{rating}</span>
+    <div className="flex items-center gap-2">
+      <BsFillStarFill size={15} className="text-yellow-400 mb-1" />
+      <span>{typeof rating === 'number' ? rating.toFixed(1) : rating}</span>
     </div>
   );
 };

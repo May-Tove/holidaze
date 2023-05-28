@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import { useLogin } from '../../../context/LoginProvider';
 import useApi from '../../../hooks/useApi';
 import { API_AUTH_URL, EMAIL_REGEX } from '../../../shared';
-import ErrorMessage from '../../../shared/errorMessage';
+import ErrorMessage from '../../ErrorMessage';
 
 /**
  * A component that displays and validates a login form, allowing a user to log in.

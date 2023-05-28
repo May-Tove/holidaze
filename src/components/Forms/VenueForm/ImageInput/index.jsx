@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { CgTrash } from 'react-icons/cg';
 import { TbPhotoPlus } from 'react-icons/tb';
-import { handleErrorImage } from '../../../../shared';
+import { handleErrorImage } from '../../../../utilities';
 
 const ImageInput = ({
   errors,
@@ -31,7 +30,7 @@ const ImageInput = ({
           <div key={index} className="flex flex-col items-end gap-2 w-fit">
             <div className="w-full flex items-center gap-2">
               <button
-                className="iconBtn"
+                className="icon-btn"
                 onClick={(e) => handleDeleteImageUrl(e, index)}
               >
                 <CgTrash size={20} />
@@ -71,7 +70,7 @@ const ImageInput = ({
           </div>
         ))}
         <button
-          className="iconBtn me-5"
+          className="icon-btn me-5"
           onClick={addImageUrlField}
           aria-label="Add a new image url input field"
         >

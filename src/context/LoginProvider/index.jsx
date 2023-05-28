@@ -2,7 +2,14 @@ import React, { createContext, useContext } from 'react';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import PropTypes from 'prop-types';
 
-//https://www.youtube.com/watch?v=v2R0DFXqaF0&t=445s&ab_channel=FullStackNiraj
+/**
+ * Found on YouTube: //https://www.youtube.com/watch?v=v2R0DFXqaF0&t=445s&ab_channel=FullStackNiraj
+ * A context provider for managing login state and user profile information.
+ *
+ * @param {Object} props - The component props.
+ * @param {ReactNode} props.children - The child components to render.
+ * @returns {JSX.Element} The LoginProvider component.
+ */
 const LoginContext = createContext();
 
 const LoginProvider = ({ children }) => {
@@ -29,6 +36,11 @@ const LoginProvider = ({ children }) => {
   );
 };
 
+/**
+ * A custom hook for accessing the LoginContext.
+ *
+ * @returns {Object} An object containing the login state and user profile information.
+ */
 export const useLogin = () => useContext(LoginContext);
 
 LoginProvider.propTypes = {

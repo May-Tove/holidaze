@@ -7,8 +7,6 @@ import CheckboxInput from '../CheckboxInput';
  * Filters Component
  *
  * A filter component for setting filters on venues.
- *
- * @component
  * @param {Object} filters - The current filters state
  * @param {function} setFilters - Function to set the filters state
  * @param {number} minPrice - The minimum price allowed for price filter
@@ -74,26 +72,24 @@ const Filters = ({
       priceRange: { min: minPrice, max: maxPrice },
       guests: 1,
     });
-
-    setTimeout(() => {
-      toggleFilters();
-    }, 1000);
   };
 
   return (
     <section className="modal overflow-y-auto">
-      <div className="modalBody flex flex-col">
-        <div className="w-full">
-          <div className="flex items-center justify-between border-b pb-5">
-            <h2>Filters</h2>
-            <button className="iconBtn" onClick={toggleFilters}>
-              <CgClose size={20} />
-            </button>
-          </div>
+      <div className="modal-body flex flex-col">
+        <div className="w-full flex items-center justify-between border-b pb-5">
+          <h2>Filters</h2>
+          <button
+            className="icon-btn flex items-center text-sm gap-1"
+            onClick={handleClearFilter}
+          >
+            <CgClose size={15} />
+            Clear Filters
+          </button>
         </div>
-        <form className="pb-5">
+        <form className="py-5">
           <div className="flex flex-col gap-3">
-            <p className="font-bold mt-3">Amenities</p>
+            <p className="font-semibold">Amenities</p>
             {amenities.map((amenity) => (
               <CheckboxInput
                 key={amenity.name}
@@ -103,7 +99,7 @@ const Filters = ({
                 label={amenity.label}
               />
             ))}
-            <p className="mt-4 font-bold">Rating</p>
+            <p className="font-semibold mt-5">Rating</p>
             {ratings.map((rating) => (
               <CheckboxInput
                 key={rating}
@@ -113,7 +109,7 @@ const Filters = ({
                 label={`${rating} star${rating > 1 ? 's' : ''}`}
               />
             ))}
-            <p className="mt-4 font-bold">Price Range</p>
+            <p className="font-semibold mt-5">Price Range</p>
             <div className="flex items-center gap-3">
               <div className="relative">
                 <input
@@ -151,8 +147,8 @@ const Filters = ({
           <button className="btn w-full" onClick={toggleFilters}>
             Show results
           </button>
-          <button className="btn w-full" onClick={handleClearFilter}>
-            Clear filters
+          <button className="btn-secondary w-full" onClick={toggleFilters}>
+            Close
           </button>
         </div>
       </div>
