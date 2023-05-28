@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import BackgroundHero from '../../assets/beach.jpg';
+import SEOHelmet from '../../components/SEOHelmet';
+import Hero from '../../components/Hero';
 import AboutImage from '../../assets/about-section.jpg';
 import ContactImage from '../../assets/contact-section.jpg';
 import RegisterImage from '../../assets/register-section.jpg';
-import SEOHelmet from '../../components/SEOHelmet';
 
 export const Home = () => {
   return (
@@ -16,19 +16,7 @@ export const Home = () => {
         }
       />
       <main>
-        <section
-          className="bg-cover bg-center h-screen flex flex-col gap-20 justify-center items-center mb-20"
-          style={{
-            backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)),url(${BackgroundHero})`,
-          }}
-        >
-          <h1 className="text-white pt-20 text-center text-4xl lg:text-7xl w-3/4">
-            Time for a getaway? Find the ideal place to stay
-          </h1>
-          <Link className="btn" to={'/venues'}>
-            See all venues
-          </Link>
-        </section>
+        <Hero />
         <section className="w-3/4 flex flex-col-reverse lg:flex-row gap-12 items-center m-auto mb-32">
           <div
             className="w-screen lg:w-2/5 bg-cover bg-center h-48 lg:h-[650px] 2xl:h-[700px] rounded-full"
@@ -41,70 +29,38 @@ export const Home = () => {
               Who are we?
             </p>
             <h2 className="text-2xl lg:text-4xl mb-4">
-              Your ultimate destination for booking and renting out
-              accommodations worldwide
+              Welcome to Holidaze - Your Gateway to Extraordinary Stays
             </h2>
             <p>
-              Our user-friendly platform offers a wide range of accommodations,
-              from cozy apartments to luxurious villas, at the best prices
-              available. But that’s not all – at Holidaze, we also make it easy
-              for property owners to rent out their accommodations to a global
-              audience of travelers.
+              Discover a plethora of accommodations worldwide, from cozy city
+              apartments to extravagant beach villas. But Holidaze is not just
+              for the wanderers! It is a comprehensive platform where property
+              owners can effortlessly rent out their spaces to globetrotters.
             </p>
             <p>
-              Whether you have a spare room, an entire apartment, or a vacation
-              home, you can list your property with us and start earning money.
-              So why wait? Whether you’re looking to book your dream vacation or
-              rent out your property to travelers worldwide, Holidaze has
-              everything you need to make your travel dreams a reality.
+              Got a spare room or a vacation home? Why not transform it into an
+              earning asset? List your property with us and start benefiting
+              from a worldwide audience of travelers. Holidaze is where
+              travelers meet hosts!
             </p>
           </div>
         </section>
-        <section className="w-3/4 gap-4 flex flex-col m-auto mb-32">
+        <section className="w-3/4 gap-4 flex flex-col items-center m-auto mb-32">
           <p className="uppercase text-center text-xs font-bold text-primary tracking-widest">
-            Popular categories
+            Register an account
           </p>
           <h2 className="text-2xl lg:text-4xl text-center mb-4 w-full lg:w-3/4 m-auto">
-            Looking for some travel inspiration? Check out our most popular
-            categories
+            Quick Registration, Endless Possibilities
           </h2>
-          <p className="text-center mb-12 w-full lg:w-3/4 m-auto">
-            From the white sandy beaches of the Caribbean to the bustling
-            streets of Tokyo, we have a wide range of accommodations in some of
-            the worlds most iconic and beautiful destinations.
+          <p className="text-center w-full lg:w-3/4 m-auto">
+            Start your journey with us - be it for discovering your dream
+            vacation stay or listing your own property. Our easy registration
+            opens up a world of benefits, exclusive deals, and more. Join the
+            Holidaze family today!
           </p>
-        </section>
-        <section className="w-3/4 flex flex-col lg:flex-row gap-12  items-center m-auto mb-32">
-          <div className="w-full lg:w-3/5  flex flex-col gap-4">
-            <p className="uppercase text-xs font-bold text-primary tracking-widest">
-              Register an account
-            </p>
-            <h2 className="text-2xl lg:text-4xl mb-4">
-              Book your next stay or rent out your accommodation to the world?
-              Register at Holidaze today!
-            </h2>
-            <p>
-              Registering an account with us is quick and easy, and it unlocks a
-              world of possibilities for your next vacation. With an account,
-              you can easily save your favorite accommodations, access exclusive
-              deals, and receive personalized recommendations based on your
-              travel preferences.
-            </p>
-            <p>
-              Do you have a property that you would like to rent out to
-              travelers worldwide? At Holidaze, we make it easy to connect with
-              potential guests and maximize your earning potential.
-            </p>
-            <p>
-              By listing your property on our website, you gain access to a
-              global audience of travelers who are looking for unique and
-              memorable accommodations. Our user-friendly platform allows you to
-              manage your accommodations and accept bookings all in one place.
-            </p>
-            <Link to={'/register'} className="btn w-max">
-              Register
-            </Link>
-          </div>
+          <Link to={'/register'} className="btn w-fit">
+            Register
+          </Link>
           <div
             className="w-screen lg:w-2/5 bg-cover bg-center h-48 lg:h-[650px] 2xl:h-[700px] rounded-full"
             style={{
@@ -112,6 +68,7 @@ export const Home = () => {
             }}
           ></div>
         </section>
+
         <section className="w-3/4 flex flex-col-reverse lg:flex-row gap-12 items-center m-auto mb-12">
           <div
             className="w-screen lg:w-2/5 bg-cover bg-center h-48 lg:h-[650px] 2xl:h-[700px] rounded-full"
@@ -127,17 +84,12 @@ export const Home = () => {
               Let us help make your travel planning stress-free
             </h2>
             <p>
-              Our team of experts is here to answer your questions, provide
-              personalized recommendations based on your preferences and budget,
-              and help you find the perfect accommodations for your next
-              adventure.
-            </p>
-            <p>
-              If you’re a property owner looking to rent out your
-              accommodations, our team can also help you maximize your earning
-              potential and connect with a global audience of travelers. Contact
-              us today to learn more about how we can help you list your
-              property on our platform and reach a wider audience.
+              Travel planning should be exciting, not stressful! Our team of
+              travel enthusiasts is here to assist you, provide personalized
+              advice, and help you discover the perfect stay for your next
+              adventure. For the hosts, we are here to optimize your listings
+              and connect you with a global audience. Reach out today, and let
+              us make travel dreams a reality.
             </p>
             <Link to={'/contact'} className="btn w-max">
               Contact

@@ -4,6 +4,15 @@ import { CgTrash } from 'react-icons/cg';
 import { TbPhotoPlus } from 'react-icons/tb';
 import { handleErrorImage } from '../../../../utilities';
 
+/**
+ * ImageInput Component
+ * @param {Object} props - Props of the component
+ * @param {Object} props.errors - Errors of the input field
+ * @param {Function} props.register - React Hook Form register function
+ * @param {Array} props.imageUrls - Array of image URLs
+ * @param {Function} props.handleImageUrlChange - Function to handle image URL change
+ * @param {Function} props.setImageUrls - Function to set image URLs
+ */
 const ImageInput = ({
   errors,
   register,
@@ -40,6 +49,7 @@ const ImageInput = ({
                   className="floating-input peer"
                   type="url"
                   id={`media-${index}`}
+                  data-testid={`image-input-0`}
                   value={url}
                   name={`imageUrls[${index}]`}
                   placeholder=" "

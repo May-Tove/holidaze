@@ -11,6 +11,14 @@ import ImageInput from './ImageInput';
 import ErrorMessage from '../../ErrorMessage';
 import SuccessMessage from '../../SuccessMessage';
 
+/**
+ * VenueForm is a component for creating or updating a venue.
+ *
+ * @param {Object} props - The properties passed down to this component.
+ * @param {'create'|'update'} props.mode - The mode of the form, either 'create' or 'update'.
+ * @param {Function} props.handleClose - The function to be called when the form is closed.
+ * @param {Object} props.venue - The current state of the venue that the form represents.
+ */
 export const VenueForm = ({ mode, venue, handleClose }) => {
   const imageSchema = yup.object().shape({
     imageUrls: yup

@@ -16,7 +16,7 @@ import { sortBookingsByDate } from '../../../utilities';
  * @param {Array} props.bookings - An array of booking objects.
  * @returns {JSX.Element} A list of booking cards, each containing information about the venue, booking dates, number of nights, number of guests, location, and total price.
  */
-export const ProfileBookings = ({ bookings }) => {
+const ProfileBookings = ({ bookings }) => {
   const currentDate = new Date();
 
   // Filter out bookings with a departure date in the past
@@ -117,3 +117,5 @@ ProfileBookings.propTypes = {
     })
   ),
 };
+
+export default ProfileBookings;

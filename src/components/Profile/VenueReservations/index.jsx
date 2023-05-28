@@ -29,7 +29,7 @@ import {
  *   return <VenueReservations name='JohnDoe' />;
  * }
  */
-export const VenueReservations = ({ name }) => {
+const VenueReservations = ({ name }) => {
   const { fetchApi, data, isLoading, isError, errorMessage } = useApi();
 
   const fetchData = useCallback(async () => {
@@ -230,3 +230,5 @@ export const VenueReservations = ({ name }) => {
 VenueReservations.propTypes = {
   name: PropTypes.string.isRequired,
 };
+
+export default VenueReservations;
