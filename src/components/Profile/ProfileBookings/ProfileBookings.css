@@ -1,0 +1,11 @@
+.booking-card {
+  @apply relative flex flex-col gap-3 bg-white shadow-lg rounded-2xl md:flex-row;
+}
+
+.booking-card img {
+  @apply w-full h-full transition-all duration-500 ease-in-out;
+}
+
+.booking-card:hover img {
+  transform: scale(1.2);
+}

@@ -16,7 +16,7 @@
   }
 
   h2 {
-    font-size: larger;
+    font-size: 22px;
   }
 
   h3 {
@@ -31,16 +31,16 @@
     background-color: #f9f9f9;
     color: rgb(49, 49, 49);
   }
+
+  main {
+    min-height: 100vh;
+  }
 }
 
 @layer components {
   .btn {
-    background-color: black;
-    border-radius: 10px;
-    padding: 0.5rem 1rem;
-    color: white;
-    letter-spacing: 1.5px;
-    transition: all 0.3s ease-in-out;
+    @apply rounded-md tracking-wider capitalize bg-black text-white transition-all duration-300 ease-in-out;
+    padding: 0.4rem 0.7rem;
   }
 
   .btn:hover,
@@ -49,7 +49,23 @@
     background-color: theme('colors.primary');
   }
 
-  .iconBtn {
+  .btn:disabled {
+    @apply opacity-50 cursor-not-allowed bg-black;
+  }
+
+  .btn-secondary {
+    @apply rounded-md tracking-wider text-primary transition-all duration-300 ease-in-out;
+    background-color: rgb(233, 233, 233);
+    padding: 0.4rem 0.7rem;
+  }
+
+  .btn-secondary:hover,
+  .btn-secondary:focus,
+  .btn-secondary:focus-visible {
+    background-color: rgb(211, 211, 211);
+  }
+
+  .icon-btn {
     background-color: rgb(243, 243, 243);
     padding: 7px;
     border-radius: 10px;
@@ -57,31 +73,22 @@
     transition: all 0.3s ease-in-out;
   }
 
-  .iconBtn:hover,
-  .iconBtn:focus,
-  .iconBtn:focus-visible {
+  .icon-btn:hover,
+  .icon-btn:focus,
+  .icon-btn:focus-visible {
     background-color: #e7e7e7;
   }
 
-  .dangerBtn {
+  .btn-danger {
+    @apply rounded-md tracking-wider transition-all duration-300 ease-in-out text-white;
     background-color: rgb(206, 0, 0);
-
-    color: white;
-    border-radius: 10px;
     padding: 0.4rem 0.7rem;
-    letter-spacing: 1.5px;
-    transition: all 0.3s ease-in-out;
-    font-size: small;
   }
 
-  .btnSecondary {
-    background-color: theme('colors.primaryLight');
-    color: theme('colors.primaryDark');
-    border-radius: 10px;
-    padding: 0.4rem 0.7rem;
-    letter-spacing: 1.5px;
-    transition: all 0.3s ease-in-out;
-    font-size: small;
+  .btn-danger:hover,
+  .btn-danger:focus,
+  .btn-danger:focus-visible {
+    background-color: rgb(154, 0, 0);
   }
 
   .slideBtn {
@@ -91,10 +98,9 @@
 
 @layer utilities {
   .main-layout {
+    @apply m-auto py-36;
     width: 90vw;
     max-width: 1200px;
-    margin: 0 auto;
-    padding: 7rem 0;
   }
 
   .decor-img {
@@ -102,108 +108,23 @@
   }
 
   .modal {
-    background-color: rgba(0, 0, 0, 0.8);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 50;
+    @apply fixed top-0 left-0 w-full h-full z-50 bg-black/80;
   }
 
-  .modalBody {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-    background-color: white;
-    border-radius: 1rem;
-    padding: 2rem;
-    margin-top: 3rem;
-    margin-bottom: 3rem;
+  .modal-body {
+    @apply flex justify-center items-center m-auto bg-white max-w-fit my-10 p-5 rounded-lg;
     width: 90vw;
-    max-width: fit-content;
   }
 
-  .infoBadge {
+  .metas-badge {
     @apply flex items-center gap-2 text-sm rounded-xl bg-white border border-slate-300 text-slate-500 px-3 py-2 shadow-lg;
-  }
-
-  .nav-link {
-    color: theme('colors.primary');
-    transition: all 0.3s ease-in-out;
-  }
-  .nav-link:hover,
-  .nav-link:focus,
-  .nav-link:focus-visible,
-  .active {
-    color: theme('colors.primaryDark');
-  }
-
-  .category-card-container {
-    overflow: hidden;
-  }
-
-  .bookingCard {
-    @apply relative flex flex-col md:flex-row gap-3 bg-white shadow-lg rounded-2xl min-h-[200px] md:max-h-[250px] lg:max-h-[220px];
-  }
-
-  .bookingCard img {
-    width: 100%;
-    height: 100%;
-    transition: all 0.5s ease;
-  }
-
-  .bookingCard:hover img {
-    transform: scale(1.2);
-  }
-
-  .bookingCard #bookingCardPrice {
-    @apply lg:absolute lg:bottom-4 lg:right-4;
-  }
-
-  .category-card {
-    background-position: center;
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    height: 350px;
-    transition: all 0.5s ease;
-  }
-
-  .category-card:hover,
-  .category-card:focus,
-  .category-card:focus-visible {
-    transform: scale(1.2);
-  }
-
-  .image-gallery {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(2, minmax(0, 1fr));
-    grid-gap: 5px;
-  }
-
-  .image-gallery img:first-child {
-    grid-column: 1 / span 4;
-    grid-row: 1 / span 2;
-  }
-
-  .calendarWrap .rdrDateDisplayWrapper {
-    display: none;
   }
 
   .floating-input,
   .floating-textarea {
-    display: block;
+    @apply w-full text-sm bg-transparent rounded-lg;
     padding: 12px 9px;
-    width: 100%;
-    font-size: small;
-    background-color: transparent;
     border: 1px solid rgb(204, 204, 204);
-    border-radius: 0.5rem;
   }
 
   .floating-input:focus,
@@ -213,91 +134,14 @@
   }
 
   .floating-label {
-    position: absolute;
-    font-size: small;
-    color: theme('colors.lightGrey');
-    @apply duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1;
-  }
-
-  .table-heading {
-    @apply px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider;
-  }
-
-  .table-content {
-    @apply px-6 py-4 whitespace-nowrap text-sm;
+    @apply absolute text-sm text-lightGrey duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1;
   }
 
   #inputError {
     @apply text-red-600 text-sm mt-1;
   }
-}
 
-/*:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+  .no-results-message {
+    @apply py-10 font-medium text-lightGrey;
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}*/
+}
