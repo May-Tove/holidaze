@@ -16,7 +16,7 @@
 
 ## Project Overview
 
-Holidaze is the final project for my front-end studies at Noroff. This application represents a complete design and development solution for a fictitious company, Holidaze, offering a platform that serves two distinct user groups - holidaymakers seeking venue bookings, and venue managers seeking a platform to manage venues and bookings.
+Holidaze is the final project for my front-end studies at Noroff. This application represents a complete design and development solution for a fictitious company, Holidaze, offering a platform that serves two distinct user groups - holidaymakers seeking venue bookings, and venue managers seeking a platform to manage venues and bookings. Project management was a part of the assignemtn and is planned using Adobe XD for wireframing and prototyping as well as GitHub projects to set up a kanban board and gantt chart.
 
 User Stories implemented in this project include:
 
@@ -36,23 +36,29 @@ User Stories implemented in this project include:
 - A registered user may update their avatar
 - A registered user may logout
 
-This project makes use of the Holidaze API as documented in the Noroff API documentation. And has been planned using GitHub project that is linked to this repo.
+This project makes use of the Holidaze API as documented in the Noroff API documentation.
 
 ## Built with
 
-- Vite
-- React (>16)
-- Tailwind CSS (>3)
+- [Vite](https://vitejs.dev/)
+- [React](https://react.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
 - JavaScript ES6+
 - HTML5
 - CSS3
+- [Noroff Holidaze API](https://noroff-api-docs.netlify.app/holidaze/authentication)
 
-## Testing
+### Testing
 
 This project also includes a few testing suites:
 
-- Cypress: For end-to-end testing to simulate real user interactions.
-- Jest: For unit testing to validate individual functions and components.
+- [Cypress](https://www.cypress.io/): For end-to-end testing to simulate real user interactions.
+- [Jest](https://jestjs.io/): For unit testing to validate individual functions and components.
+
+### Planning
+
+- Adobe XD - design wireframes and prototype
+- Github Projects - Kanban and Gantt chart
 
 ## Getting started
 
