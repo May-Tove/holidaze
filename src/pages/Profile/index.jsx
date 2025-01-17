@@ -29,37 +29,36 @@ export const Profile = () => {
     fetchData();
   }, [fetchData]);
 
-  if (isLoading) {
-    return <ProfileLoader />;
-  }
+  // Loading and error handling early return
+  if (isLoading) return <ProfileLoader />;
+  if (isError) return <ErrorMessage message={errorMessage} />;
 
-  if (isError) {
-    return <ErrorMessage message={errorMessage} />;
-  }
+  // Destructuring data once
+  const { bookings, email, venueManager, venues, avatar: profileAvatar } = data;
 
-  const { bookings, email, venueManager, venues } = data;
+  // Check if the profile is owned by the user
   const isOwnProfile = profile.name === name;
+  const displayAvatar = isOwnProfile ? avatar : profileAvatar;
+
+  // SEO Meta data
+  const seoDescription = isOwnProfile
+    ? venueManager
+      ? 'Manage your venues, track venue reservations, and view your bookings on your Holidaze profile.'
+      : 'Track your bookings on your Holidaze profile.'
+    : `Explore ${name}'s Holidaze profile.`;
 
   return (
     <>
       <SEOHelmet
         title={`${name}'s Profile | Holidaze`}
-        description={
-          isOwnProfile
-            ? `${
-                venueManager
-                  ? 'Manage your venues, track venue reservations, and view your bookings on your Holidaze profile.'
-                  : 'Track your bookings on your Holidaze profile.'
-              }`
-            : `Explore ${name}'s Holidaze profile.`
-        }
+        description={seoDescription}
       />
       <main className="main-layout">
         <Breadcrumbs page={name} />
         <UserDetails
           name={name}
           email={email}
-          avatar={avatar}
+          avatar={displayAvatar}
           isOwnProfile={isOwnProfile}
           venueManager={venueManager}
           toggleUpdateAvatar={toggleUpdateAvatar}
