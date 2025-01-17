@@ -7,6 +7,7 @@ import useApi from '../../../hooks/useApi';
 import ErrorMessage from '../../ErrorMessage';
 import SuccessMessage from '../../SuccessMessage';
 import { API_AUTH_URL, EMAIL_REGEX, NAME_REGEX } from '../../../shared';
+import { useLogin } from '../../../context/LoginProvider';
 
 /**
  * A form component for registering a new user.
@@ -47,15 +48,31 @@ const RegisterForm = () => {
 
   const navigate = useNavigate();
 
+  const { setIsLoggedIn, setProfile, setToken, setAvatar } = useLogin();
   const { fetchApi, isLoading, isError, errorMessage, success } = useApi();
 
   const onSubmit = async (formData) => {
-    await fetchApi(`${API_AUTH_URL}/register`, 'post', formData);
+    const registerRes = await fetchApi(
+      `${API_AUTH_URL}/register`,
+      'post',
+      formData
+    );
 
-    reset();
-    setTimeout(() => {
-      navigate('/login');
-    }, 2000);
+    //Login and navigate to user profile if registration is succesful
+    if (registerRes && registerRes.status >= 200) {
+      const loginRes = await fetchApi(
+        `${API_AUTH_URL}/login`,
+        'post',
+        formData
+      );
+
+      setIsLoggedIn(true);
+      setProfile(loginRes.data);
+      setToken(loginRes.data.accessToken);
+      setAvatar(loginRes.data.avatar);
+      navigate(`/profile/${loginRes.data.name}`);
+      reset();
+    }
   };
 
   return (
