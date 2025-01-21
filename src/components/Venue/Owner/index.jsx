@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '../../Avatar';
+import { Link } from 'react-router-dom';
 
 /**
  * A component that displays the owner of a venue.
@@ -26,7 +27,9 @@ const Owner = ({ owner }) => {
           alt={`Image of ${owner?.name}`}
         />
         <div>
-          <p className="font-bold ">{owner?.name}</p>
+          <Link to={`/profile/${owner?.name}`} className="font-bold">
+            {owner?.name}
+          </Link>
         </div>
       </div>
     </div>
